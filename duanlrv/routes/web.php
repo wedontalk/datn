@@ -100,3 +100,4 @@ Auth::routes();
 
 // Route::get('/', [HomeController::class, 'index']);
 // Route::get('/trang-chu', [HomeController::class, 'index']);
+// test
