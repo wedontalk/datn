@@ -286,7 +286,7 @@ class HomeController extends Controller
             $message->to($email,$name)->subject($title_mail);
             $message->from('hieuhaohoa201@gmail.com');
         });
-        // session::forget('cart');
+        session::forget('cart');
         session::forget('coupon');
         
 
