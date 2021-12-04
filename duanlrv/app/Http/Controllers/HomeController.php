@@ -162,20 +162,31 @@ class HomeController extends Controller
             ];
         session()->put('Wishlists', $Wishlists);
         $Wishlists =session()->get('Wishlists');
-        echo "<pre>";
-        print_r(session()->get('Wishlists'));
-        print_r(count(session()->get('Wishlists')));
-        return response()->json([
-            'code'=>200,
-            'message'=>'success'
+        return redirect()->back();
+        // echo "<pre>";
+        // print_r(session()->get('Wishlists'));
+        // print_r(count(session()->get('Wishlists')));
+        // return response()->json([
+        //     'code'=>200,
+        //     'message'=>'success'
 
-        ], 200);
+        // ], 200);
         
     }
-    function deleteWishlist($id, Request $request){
-        // $product = $this-> products->find($id);
-        $request->session()->pull('Wishlists', '1');
+
+    public function deleteWishlist(Request $request){
+        if($request->id){
+            $Wishlists =session()->get('Wishlists');
+            unset($Wishlists[$request->id]);
+            session()->put('Wishlists',$Wishlists);
+            $Wishlists =session()->get('Wishlists');
+            // $Wishlist=View('site.contentWishlist',compact('wishlist'))->render();
+            // return response()->json(['contentWishlist'=> $Wishlist]);
+        } 
+        
+
     }
+   
      public function WishlistsViews(){
         $Wishlists= session()->get('Wishlists');
         return view("site.WishlistsView",compact('Wishlists'));
