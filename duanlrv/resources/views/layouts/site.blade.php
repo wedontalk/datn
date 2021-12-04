@@ -205,13 +205,13 @@
                 <nav class="nav-menu mobile-menu">
                     <ul>
                         <li class="active"><a href="{{route('home')}}">Trang chủ</a></li>
-                        <li><a href="./shop.html">Giới thiệu</a></li>
+                        <li><a href="introduce">Giới thiệu</a></li>
                         <li><a href="{{route('products')}}">Cửa hàng</a>
 
                         <li><a href="./blog.html">Tin Tức</a></li>
-                        <li><a href="./contact.html">Liên Hệ</a></li>
+                        <li><a href="contact">Liên Hệ</a></li>
                         <!-- <li><a href="#">Cửa hàng</a></li>-->
-                        <li><a href="./contact.html">Dịch vụ</a></li> 
+                        <li><a href="calendar">Dịch vụ</a></li> 
                         
                     </ul>
                 </nav>
