@@ -135,18 +135,9 @@
                     <div class="col-lg-3 text-right col-md-3">
                         <ul class="nav-right">
                             <li class="heart-icon">
-                                <a href="/wishlist">
+                                <a href="#">
                                     <i class="icon_heart_alt"></i>
-                                    <span>
-                                        @if (session('Wishlists'))
-                                        @php
-                                          echo count(session()->get('Wishlists'));
-                                       
-                                        @endphp
-                                        @else
-                                            0
-                                        @endif
-                                       </span>
+                                    <span>1</span>
                                 </a>
                              </li>
                                             @php 
@@ -214,13 +205,13 @@
                 <nav class="nav-menu mobile-menu">
                     <ul>
                         <li class="active"><a href="{{route('home')}}">Trang chủ</a></li>
-                        <li><a href="introduce">Giới thiệu</a></li>
+                        <li><a href="./shop.html">Giới thiệu</a></li>
                         <li><a href="{{route('products')}}">Cửa hàng</a>
 
                         <li><a href="./blog.html">Tin Tức</a></li>
-                        <li><a href="contact">Liên Hệ</a></li>
+                        <li><a href="./contact.html">Liên Hệ</a></li>
                         <!-- <li><a href="#">Cửa hàng</a></li>-->
-                        <li><a href="calendar">Dịch vụ</a></li> 
+                        <li><a href="./contact.html">Dịch vụ</a></li> 
                         
                     </ul>
                 </nav>
