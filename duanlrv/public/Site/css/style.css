@@ -427,6 +427,7 @@ ol {
 .inner-header .advanced-search {
 	height: 50px;
 	border: 1px solid #ebebeb;
+	margin-top:35px;
 }
 
 .inner-header .advanced-search .category-btn {
@@ -490,7 +491,8 @@ ol {
 }
 
 .inner-header .nav-right {
-	padding: 10px 0;
+    padding: 10px 0;
+    margin-top: 35px;
 }
 
 .inner-header .nav-right li {
