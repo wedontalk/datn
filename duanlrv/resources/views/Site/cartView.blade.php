@@ -104,17 +104,10 @@
         $(document).on('click','.cart_update',cartUpdate);
         $(document).on('click','.deleteCart',deleteCart);
         $(document).on('click','.removeCart',removeCart);
+        
 
         
     });
    
 </script>
 @endsection
-
-@section('js')
-    <script>
-        $(document).ready(function() {
-            alert('sadsadsada');
-        });
-    </script>
-@stop
