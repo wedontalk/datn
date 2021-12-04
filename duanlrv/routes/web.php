@@ -92,6 +92,15 @@ Route::group(['prefix' => '/', 'checkUser'=>'auth'], function(){
     Route::post("/save_checkout", "HomeController@save_checkout")->name('save_checkout');
     Route::post("/payment/online", "HomeController@createpayment")->name('payment.online');
     Route::get("/return-vnpay", "HomeController@return")->name('payment.return');
+
+    Route::view('/contact', 'Site.contact');
+    Route::view('/introduce', 'Site.introduce');
+    Route::view('/blog', 'Site.blog');
+    Route::get('/calendar', [HomeController::class, 'calendar'])->name('calendar');
+    Route::post('/addcalendar', [HomeController::class, 'Addcalendar'])->name('addcalendar');
+    Route::get('/wishlist', [HomeController::class, 'WishlistsViews'])->name('wishlist');
+    Route::get('/addToWishlist/{id}', [HomeController::class, 'addtoWishlist'])->name('addtowishlist');
+    Route::get('/delete-Wishlist/{id}', [HomeController::class, 'deleteWishlist'])->name('deletewishlists');
     
 });
 
