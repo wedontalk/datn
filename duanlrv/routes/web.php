@@ -69,14 +69,9 @@ Route::group(['prefix' => '/', 'checkUser'=>'auth'], function(){
     Route::get('/danh-muc-san-pham/{slug}', [categoryController::class, 'show_category_home']);
     Route::get('/chi-tiet-san-pham/{slug_product}', [HomeController::class, 'productDetail']);
     Route::get('/chi-tiet-san-pham/{slug}', [HomeController::class, 'productDetail']);
-    Route::view('/contact', 'Site.contact');
-    Route::view('/introduce', 'Site.introduce');
-    Route::view('/blog', 'Site.blog');
-    Route::get('/calendar', [HomeController::class, 'calendar'])->name('calendar');
-    Route::post('/addcalendar', [HomeController::class, 'Addcalendar'])->name('addcalendar');
-    Route::get('/wishlist', [HomeController::class, 'WishlistsViews'])->name('wishlist');
-    Route::get('/addToWishlist/{id}', [HomeController::class, 'addtoWishlist'])->name('addtowishlist');
-    Route::get('/delete-Wishlist/{id}', [HomeController::class, 'deleteWishlist'])->name('deletewishlists');
+    Route::post('/check-coupon', [HomeController::class, 'check_coupon'])->name('check_coupon');
+    Route::get('/unset-coupon', [HomeController::class, 'unset_coupon']);
+
     // Route::get('/danh-muc-phu-kien', [categoryController::class, 'show_category_phukien']);   
     // Route::get('/danh-muc-san-pham/{slug_category_product}', [categoryController::class, 'show_category_home']);
     // Route::get('/chi-tiet-san-pham/{slug}', [productController::class, 'chi_tiet_san_pham']);    
@@ -93,6 +88,10 @@ Route::group(['prefix' => '/', 'checkUser'=>'auth'], function(){
     Route::post('/check-register', [accountController::class, 'check_register']);
 
     Route::post('/load-comment', [productController::class, 'load_comment']);
+    Route::post("/select-thanhpho", "HomeController@select_thanhpho");
+    Route::post("/save_checkout", "HomeController@save_checkout")->name('save_checkout');
+    Route::post("/payment/online", "HomeController@createpayment")->name('payment.online');
+    Route::get("/return-vnpay", "HomeController@return")->name('payment.return');
     
 });
 

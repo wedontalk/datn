@@ -45,7 +45,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <div class="single-banner">
-                        <img src="{{ asset('site/img/banner-1.jpg') }}" alt="">
+                        <img src="{{ asset('uploads/cho2.jpg') }}" alt="" width="400px" height="250px">
                         <div class="inner-text">
                             <h4>Chó</h4>
                         </div>
@@ -53,7 +53,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="single-banner">
-                        <img src="{{ asset('site/img/banner-2.jpg') }}" alt="">
+                        <img src="{{ asset('uploads/meo2.jpg') }}" alt="" width="400px" height="250px">
                         <div class="inner-text">
                             <h4>Mèo</h4>
                         </div>
@@ -61,9 +61,9 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="single-banner">
-                        <img src="{{ asset('site/img/banner-3.jpg') }}" alt="">
+                        <img src="{{ asset('uploads/dichvu.jpg') }}" alt="" width="400px" height="250px">
                         <div class="inner-text">
-                            <h4>Phụ kiện đáng yêu</h4>
+                            <h4>Dịch vụ chăm sóc</h4>
                         </div>
                     </div>
                 </div>

@@ -136,7 +136,7 @@
             @if($donhangcount)
                 @foreach($donhangcount as $dh)
                 <a class="dropdown-item media" href="{{url('/admin/chi-tiet-don-hang/'.$dh->order_id)}}">
-                    <span class="photo media-left"><img src="{{asset('uploads')}}/{{$dh->dsuser->avatar}}" alt="{{$dh->dsuser->avatar}}"></span>
+                    <span class="photo media-left"><img src="{{asset('uploads')}}/{{$dh->avatar}}" alt="{{$dh->avatar}}"></span>
                     <div class="message media-body">
                         <span class="name float-left">{{$dh->order_name}}</span>
                         <span class="time float-right">Ngày đặt hàng: {{$dh->order_date}}</span>
