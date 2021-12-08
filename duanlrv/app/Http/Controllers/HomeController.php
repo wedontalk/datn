@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\coso;
 use App\Models\navmenu;
+use App\Models\rating;
 use App\Models\datlich;
 use App\Models\dichvucoso;
 use App\Models\information;
@@ -61,7 +62,8 @@ class HomeController extends Controller
         $categoryNav = information::where('slug_product', $slug)->first();
         $detail_product = information::orderBy('id')->where('id',$categoryNav->id)->where('id_status', 1)->get();
         $danhmuc = navmenu::orderBy('id','ASC')->where('hidden', 1)->get();
-       return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc'));
+        $ratingAVG = rating::where('product_id',$slug)->avg('rating_star');
+       return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc','ratingAVG'));
     }
     public function products()
     {

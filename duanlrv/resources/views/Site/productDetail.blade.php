@@ -62,19 +62,22 @@
                                     <h3>{{$val->title}}</h3>
                                     <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
                                 </div>
-                                
+                            @if(Route::has('login'))
+                            @auth
                                 <div id="rateYo"></div>
                                 <form action="{{URL::to('/account-rating')}}" method="post" class="form-inline" role="form" id="formRating">
                                 @csrf
                                    
                                         <input type="hidden" class="form-control" name="rating_star" id="rating_star">
                                         <input type="hidden" class="form-control" name="product_id" value="{{$val->slug_product}}">
-                                        <input type="hidden" class="form-control" name="account_id" value="{{auth()->user()->id}}">
+                                        <input type="hidden" class="form-control" name="account_id" value="{{Auth::user()->id}}">
                                     
                                 </form>
-                              
+                            
+                            @else
                                 <div id="rateYo1"></div>
-                                
+                            @endif
+                            @endif
                                 
                                 <div class="pd-desc">
                                     <!-- <p>{{$val->description}}</p> -->
@@ -362,4 +365,29 @@
         </div>
     </div>
     <!-- Related Products Section End -->
-@stop
+    @section('js')
+<script>
+    jQuery(document).ready(function($){
+ 
+        
+        let ratingAVG = '{{$ratingAVG}}'
+        $("#rateYo").rateYo({
+                  rating: ratingAVG,
+                  nomalFill:"#A0A0A0",
+                ratedFill:"#ffff00",
+            }).on("rateyo.set", function (e, data) {
+                $('#rating_star').val(data.rating);
+            //alert("The rating is set to " + data.rating + "!");
+            $('#formRating').submit();
+        });
+        $("#rateYo1").rateYo({
+                  rating: ratingAVG,
+                  nomalFill:"#A0A0A0",
+                ratedFill:"#ffff00",
+            }).on("rateyo.set", function (e, data) {
+                alert("Bạn chưa đăng nhập, vui lòng đăng nhập để đánh giá!");
+                });
+
+});
+</script>
+@stop()

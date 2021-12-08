@@ -80,9 +80,9 @@ Route::group(['prefix' => '/', 'checkUser'=>'auth'], function(){
     Route::get('/login-customer', [accountController::class, 'login_customer']);
     Route::post('/check-login', [accountController::class, 'check_login']);
     Route::get('/logout', [accountController::class, 'logout']);
-    Route::get('/show-profile', [accountController::class, 'show_profile'])->middleware('account');
-    Route::post('/update-profile', [accountController::class, 'update_profile'])->middleware('account');
-    Route::post('/account-rating', [accountController::class, 'account_rating'])->middleware('account');
+    Route::get('/show-profile', [accountController::class, 'show_profile']);
+    Route::post('/update-profile', [accountController::class, 'update_profile']);
+    Route::post('/account-rating', [accountController::class, 'account_rating']);
 
     Route::get('/register', [accountController::class, 'register']);
     Route::post('/check-register', [accountController::class, 'check_register']);

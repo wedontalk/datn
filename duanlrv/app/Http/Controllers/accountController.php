@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\account;
+use App\Models\rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use App\Repositories\account\accountInterface;
+
 class accountController extends Controller
 {
     protected $account;
@@ -177,5 +179,15 @@ class accountController extends Controller
         }
         return redirect()->back();
         
+    }
+    public function account_rating(Request $request){
+        $model = rating::where($request->only('product_id','account_id'))->first();
+        if($model){
+            rating::where($request->only('product_id','account_id'))->update($request->only('rating_star'));
+        }else{
+            rating::create($request->only('account_id','product_id','rating_star',));
+        }
+        
+        return redirect()->back();
     }
 }
