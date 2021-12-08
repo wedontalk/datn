@@ -1,8 +1,6 @@
 @extends('layouts.site')
-
 @section('main')
-
-    <!-- Breadcrumb Section Begin -->
+  <!-- Breadcrumb Section Begin -->
     <div class="breacrumb-section">
         <div class="container">
             <div class="row">
@@ -20,17 +18,17 @@
 
     <!-- Product Shop Section Begin -->
     <section class="product-shop spad page-details">
-    @foreach($detail_product as $key => $value)
+    @foreach($detail_product as $val)
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
                     <div class="filter-widget">
                         <h4 class="fw-title">Danh mục</h4>
+                        @foreach($danhmuc as $dm)
                         <ul class="filter-catagories">
-                            <li><a href="#">Men</a></li>
-                            <li><a href="#">Women</a></li>
-                            <li><a href="#">Kids</a></li>
+                            <li><a href="#">{{$dm->name_nav}}</a></li>
                         </ul>
+                        @endforeach
                     </div>
                     
                     
@@ -42,82 +40,78 @@
                        
                         <div class="col-lg-6">
                             <div class="product-pic-zoom">
-                                <img class="product-big-img" src="img/product-single/product-1.jpg" alt="">
+                                <img class="product-big-img form-group" src="{{asset('uploads')}}/{{$val->image[0]}}" width="100%" height="250px">
                                 <div class="zoom-icon">
                                     <i class="fa fa-search-plus"></i>
                                 </div>
                             </div>
                             <div class="product-thumbs">
                                 <div class="product-thumbs-track ps-slider owl-carousel">
-                                    <div class="pt active" data-imgbigurl="img/product-single/product-1.jpg"><img
-                                            src="img/product-single/product-1.jpg" alt=""></div>
-                                    <div class="pt" data-imgbigurl="img/product-single/product-2.jpg"><img
-                                            src="img/product-single/product-2.jpg" alt=""></div>
-                                    <div class="pt" data-imgbigurl="img/product-single/product-3.jpg"><img
-                                            src="img/product-single/product-3.jpg" alt=""></div>
-                                    <div class="pt" data-imgbigurl="img/product-single/product-3.jpg"><img
-                                            src="img/product-single/product-3.jpg" alt=""></div>
+                            @foreach($val->image as $img1)
+                                    <div class="pt active" data-imgbigurl="{{asset('uploads')}}/{{$img1}}">
+                                        <img src="{{asset('uploads')}}/{{$img1}}" alt="" height="100px" width="100%">
+                                    </div>
+                            @endforeach
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="product-details">
                                 <div class="pd-title">
-                                    <span>oranges</span>
-                                    <h3>{{$value->title}}</h3>
+                                    <span>{{$val->category->name}}</span>
+                                    <h3>{{$val->title}}</h3>
                                     <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
                                 </div>
                                 
-                                @if(auth()->guard('cus')->check())
                                 <div id="rateYo"></div>
                                 <form action="{{URL::to('/account-rating')}}" method="post" class="form-inline" role="form" id="formRating">
                                 @csrf
                                    
                                         <input type="hidden" class="form-control" name="rating_star" id="rating_star">
-                                        <input type="hidden" class="form-control" name="product_id" value="{{$value->slug_product}}">
-                                        <input type="hidden" class="form-control" name="account_id" value="{{auth()->guard('cus')->user()->id}}">
+                                        <input type="hidden" class="form-control" name="product_id" value="{{$val->slug_product}}">
+                                        <input type="hidden" class="form-control" name="account_id" value="{{auth()->user()->id}}">
                                     
                                 </form>
-                                @else
+                              
                                 <div id="rateYo1"></div>
-                                @endif
                                 
                                 
                                 <div class="pd-desc">
-                                    <p>{{$value->description}}</p>
-                                    <h4>{{number_format($value->price,0,',','.')}}VND</h4>
+                                    <!-- <p>{{$val->description}}</p> -->
+                                    <hr>
+                                    <h4>{{number_format($val->price,0,',','.')}}VND</h4>
                                 </div>
                                 
                                 
                                 <div class="quantity">
                                     
-                                    <a href="#" class="primary-btn pd-cart">Add To Cart</a>
+                                    <a href="#" class="primary-btn pd-cart">Thêm vào giỏ hàng</a>
                                 </div>
                                 
                                 <ul class="pd-tags">
-                                    <li><span>Danh muc</span>:{{$value->name}}</li>
+                                    <li><span>Danh mục</span>:{{$val->category->name}}</li>
                                     
                                 </ul>
                                 <?php
-                                    if($value->render == Null){?>
+                                    if($val->render == Null){?>
                                     
-                                    <p class="card-text">Thuong Hieu: {{$value->brand}}</p>
+                                    <p class="card-text">Thuong Hieu: {{$val->brand}}</p>
                                     <?php }else{ ?>
-                                        <p class="card-text">Giới tính: {{$value->render}}</p>
+                                        <p class="card-text">Giới tính: {{$val->render}}</p>
                                         <?php } ?>
                                 
                                         <?php
-                                    if($value->render == Null){?>
+                                    if($val->render == Null){?>
                                     
-                                    <p class="card-text">So Luong: {{$value->quantity}}</p>
+                                    <p class="card-text">So Luong: {{$val->quantity}}</p>
                                     <?php }else{ ?>
-                                        <p class="card-text">Tuổi:{{$value->age}}</p>
+                                        <p class="card-text">Tuổi:{{$val->age}}</p>
                                         <?php } ?>
                                 
-                                <p class="card-text">Tình trạng:{{$value->status}}</p>
+                                <p class="card-text">Tình trạng:{{$val->status}}</p>
                                 <p class="card-text">Vận chuyển: có phí</p>
                                 
-                                <p class="card-text">Mô tả thêm: {{$value->description}}</p>
+                                <p class="card-text">Mô tả thêm: {{$val->description}}</p>
                                
                             </div>
                         </div>
@@ -127,13 +121,13 @@
                         <div class="tab-item">
                             <ul class="nav" role="tablist">
                                 <li>
-                                    <a class="active" data-toggle="tab" href="#tab-1" role="tab">DESCRIPTION</a>
+                                    <a class="active" data-toggle="tab" href="#tab-1" role="tab">Mô Tả</a>
                                 </li>
                                 <li>
-                                    <a data-toggle="tab" href="#tab-2" role="tab">SPECIFICATIONS</a>
+                                    <a data-toggle="tab" href="#tab-2" role="tab">Thông số</a>
                                 </li>
                                 <li>
-                                    <a data-toggle="tab" href="#tab-3" role="tab">Customer Reviews (02)</a>
+                                    <a data-toggle="tab" href="#tab-3" role="tab">Nhận xét</a>
                                 </li>
                             </ul>
                         </div>
@@ -143,16 +137,13 @@
                                     <div class="product-content">
                                         <div class="row">
                                             <div class="col-lg-7">
-                                                <h5>Introduction</h5>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                                    ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                                    aliquip ex ea commodo consequat. Duis aute irure dolor in </p>
-                                                <h5>Features</h5>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                                    ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                                    aliquip ex ea commodo consequat. Duis aute irure dolor in </p>
+                                                @foreach($detail_product as $detail)
+                                                <p>{!!$detail->description!!}</p>
+                                                @endforeach
+                                                <!-- <h5>Mô tả sản phẩm</h5>
+                                                <p>
+                                                    
+                                                </p> -->
                                             </div>
                                             <div class="col-lg-5">
                                                 <img src="img/product-single/tab-desc.jpg" alt="">
@@ -225,7 +216,7 @@
                                     <h4>2 Comments</h4>
                                         <form>
                                             @csrf
-                                            <input type="hidden" name="comment_product_id" class="comment_product_id" value="{{$value->id}}">
+                                            <input type="hidden" name="comment_product_id" class="comment_product_id" value="{{$val->id}}">
                                             <div class="comment_show"></div>
 
                                         </form>
@@ -264,7 +255,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <h2>Related Products</h2>
+                        <h2>Sản phẩm khác</h2>
                     </div>
                 </div>
             </div>
@@ -371,3 +362,4 @@
         </div>
     </div>
     <!-- Related Products Section End -->
+@stop

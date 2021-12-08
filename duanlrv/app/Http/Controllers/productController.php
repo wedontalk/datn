@@ -28,6 +28,11 @@ class productController extends Controller
     public function index()
     {
         $data = $this->qlsanpham->getsanpham();
+        // $arrName= [];
+        // for ($i = 0; $i < count($data->image); $i++) {
+        //     $test = array_push($arrName, $data[$i]->image);
+        // }
+        // implode(", ",$arrName);
         $danhmuc = navmenu::orderBy('id', 'ASC')->select('id','name_nav','slug')->get();
         $xetduyet = trangthai::orderBy('id', 'ASC')->select('id','name_type')->get();
         foreach($danhmuc as $key => $dm) {
@@ -91,7 +96,9 @@ class productController extends Controller
      */
     public function store(Request $request)
     {
-        $uploadfile = $request->merge(['id_product' => \Str::slug($request->id)]);
+        $images = $request->image;
+        $request->merge(['image' => implode(", ",$images)]);
+        $uploadfile = $request->merge(['id_product' => $request->id]);
         $request->merge(['slug_product' => \Str::slug($request->title).'-'. \Carbon\Carbon::now()->timestamp]);
         $request->merge(['type_post' => 1]);
         if($this->qlsanpham->create($request->all()))
@@ -111,7 +118,9 @@ class productController extends Controller
      */
     public function show($id)
     {
-        //
+        $imagene = information::findOrFail($id);
+
+        return view('admin.qlsanpham.index');
     }
 
     /**

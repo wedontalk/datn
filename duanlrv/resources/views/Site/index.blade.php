@@ -98,7 +98,7 @@
                                 @foreach($products as $items)
                             <div class="product-item" >
                                 <div class="pi-pic" >
-                                    <img src="{{ asset('uploads') }}/{{$items->image}}" alt=""style="height: 350px">
+                                    <img src="{{ asset('uploads') }}/{{$items->image[0]}}" alt=""style="height: 350px">
                                     <div class="sale">Sale</div>
                                     <div class="icon">
                                         <i class="icon_heart_alt"></i>
@@ -282,7 +282,7 @@
                         @foreach($products as $items)
                             <div class="product-item" >
                                 <div class="pi-pic" >
-                                    <img src="{{ asset('uploads') }}/{{$items->image}}" alt=""style="height: 350px">
+                                    <img src="{{ asset('uploads') }}/{{$items->image[0]}}" alt=""style="height: 350px">
                                     <div class="sale">Sale</div>
                                     <div class="icon">
                                         <i class="icon_heart_alt"></i>

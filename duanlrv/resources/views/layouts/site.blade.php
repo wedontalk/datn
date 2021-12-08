@@ -118,7 +118,7 @@
                 <div class="row">
                     <div class="col-lg-2 col-md-2">
                         <div class="logo">
-                            <a href="./index.html">
+                            <a href="{{route('home')}}">
                                 <img src="{{ asset('site/img/logo1.png') }}" width="100px" alt="">
                             </a>
                         </div>
@@ -205,14 +205,12 @@
                 <nav class="nav-menu mobile-menu">
                     <ul>
                         <li class="active"><a href="{{route('home')}}">Trang chủ</a></li>
-                        <li><a href="introduce">Giới thiệu</a></li>
                         <li><a href="{{route('products')}}">Cửa hàng</a>
-
+                        <li><a href="introduce">Giới thiệu</a></li>
                         <li><a href="./blog.html">Tin Tức</a></li>
                         <li><a href="contact">Liên Hệ</a></li>
                         <!-- <li><a href="#">Cửa hàng</a></li>-->
-                        <li><a href="calendar">Dịch vụ</a></li> 
-                        
+                        <li><a href="{{route('calendar')}}">Dịch vụ</a></li> 
                     </ul>
                 </nav>
                 <div id="mobile-menu-wrap"></div>

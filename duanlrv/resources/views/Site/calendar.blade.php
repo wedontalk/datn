@@ -213,10 +213,6 @@
                 <div class="col-xs-12">
                     <div class="col-md-12">
                         <h3> Đăng Ký Thông Tin</h3>
-                        {{-- {{-- <div class="form-group">
-                            <label class="control-label">First Name</label>
-                            <input  maxlength="100" type="text" required="required" class="form-control" placeholder="Enter First Name"  />
-                        </div> --}}
                         <div class="form-group">
                             <label class="control-label">Họ và Tên</label>
                             <input type="text" required="required" class="form-control name" placeholder="Họ và Tên" name="name" onchange="onchange_1()"/>
@@ -374,7 +370,7 @@
                             <p><strong>Ghi Chú: </strong><span id="ghichu" style="width: 100%;"> </span></p> 
                         </div> 
                     <br>
-                    
+                    <input type="hidden" name="id_user" value="{{Auth::user()->id}}"/>
                 </div>
                 <button class="btn btn-success btn-lg d-flex justify-content-center" style="margin:auto;width:200px" type="submit">Finish!</button>
             </div>

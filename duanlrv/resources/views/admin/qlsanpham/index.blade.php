@@ -90,7 +90,7 @@
                                 </td>
                                 <div class="modal fade bd-example-modal-lg{{$dt->id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
-                                    <div class="modal-content model-ct">
+                                    <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">chi tiết : {{$dt->id}} - {{$dt->title}}</h5>
                                         </div>
@@ -98,10 +98,10 @@
                                             <div class="row">
                                                 <div class="col-6">
                                                     <div class="form-group form-gr-img">
-                                                        <img src="{{asset('uploads/'.$dt->image)}}" alt="" width="100%" height="200px">
+                                                        <img src="{{asset('uploads/')}}/{{$dt->image[0]}}" alt="" width="100%" height="200px">  
                                                     </div>
                                                     <div class="form-group">
-                                                        <textarea class="description_t" cols="43" rows="9" disabled>{{$dt->description}}</textarea>
+                                                        <textarea class="description_t" cols="43" rows="9" disabled>{!! $dt->description !!}</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">

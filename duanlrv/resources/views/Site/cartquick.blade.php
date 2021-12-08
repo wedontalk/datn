@@ -27,7 +27,7 @@
                                         
                                         @endphp
                                             <tr>
-                                                <td class="si-pic"><img src="site/img/products/{{$CartItem['images']}}" width="100px" alt=""></td>
+                                                <td class="si-pic"><img src="site/img/products/{{$CartItem['images'][0]}}" width="100px" alt=""></td>
                                                 <td class="si-text">
                                                     <div class="product-selected">
                                                         <h6>{{$CartItem['name']}}</h6>

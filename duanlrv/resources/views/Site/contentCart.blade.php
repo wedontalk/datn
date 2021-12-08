@@ -45,8 +45,7 @@
                             @endphp
                             <tbody>
                                 <tr>
-                                    <!-- <td class="cart-pic first-row"><img src="Site/img/products/{{$CartItem['images']}}" width="150px"alt=""></td> -->
-                                    <td class="cart-pic first-row"><img src="{{asset('uploads')}}/{{$CartItem['images']}}" width="150px"alt=""></td>
+                                    <td class="cart-pic first-row"><img src="{{asset('uploads')}}/{{$CartItem['images'][0]}}" width="150px"alt=""></td>
                                     <td class="cart-title first-row">
                                         <h5>{{$CartItem['name']}}</h5>
                                     </td>

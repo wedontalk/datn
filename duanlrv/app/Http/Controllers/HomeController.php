@@ -8,8 +8,11 @@ use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\coso;
+use App\Models\navmenu;
 use App\Models\datlich;
 use App\Models\dichvucoso;
+use App\Models\information;
+use App\Models\category;
 use Illuminate\Support\Facades\Redirect;
 use App\Repositories\qlsanpham\qlsanphamInterface;
 use Illuminate\Support\Facades\View;
@@ -55,11 +58,10 @@ class HomeController extends Controller
 
     public function productDetail($slug)
     {   
-        $categoryNav = DB::Table('nav_menu')->orderby('id')->get();
-        $detail_product = DB::table('information_post')
-        ->join('categories','categories.id_category','information_post.id_category')
-        ->where('slug_product',$slug)->get();
-       return view('Site.productDetail',compact('detail_product','categoryNav'));
+        $categoryNav = information::where('slug_product', $slug)->first();
+        $detail_product = information::orderBy('id')->where('id',$categoryNav->id)->where('id_status', 1)->get();
+        $danhmuc = navmenu::orderBy('id','ASC')->where('hidden', 1)->get();
+       return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc'));
     }
     public function products()
     {
@@ -202,6 +204,7 @@ class HomeController extends Controller
         $data->name = $req->name;
         $data->phone = $req->phone;
         $data->email = $req->email;
+        $data->id_user = $req->id_user;
         $data->address = $req->address;
         $data->ghichu = $req->ghichu;
         $data->id_coso = $req->CS;
