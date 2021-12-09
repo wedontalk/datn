@@ -366,28 +366,45 @@
     </div>
     <!-- Related Products Section End -->
     @section('js')
-<script>
-    jQuery(document).ready(function($){
- 
-        
-        let ratingAVG = '{{$ratingAVG}}'
-        $("#rateYo").rateYo({
-                  rating: ratingAVG,
-                  nomalFill:"#A0A0A0",
-                ratedFill:"#ffff00",
-            }).on("rateyo.set", function (e, data) {
-                $('#rating_star').val(data.rating);
-            //alert("The rating is set to " + data.rating + "!");
-            $('#formRating').submit();
-        });
-        $("#rateYo1").rateYo({
-                  rating: ratingAVG,
-                  nomalFill:"#A0A0A0",
-                ratedFill:"#ffff00",
-            }).on("rateyo.set", function (e, data) {
-                alert("Bạn chưa đăng nhập, vui lòng đăng nhập để đánh giá!");
-                });
+    <script>
+        jQuery(document).ready(function($){
+    
+            
+            let ratingAVG = '{{$ratingAVG}}'
+            $("#rateYo").rateYo({
+                    rating: ratingAVG,
+                    nomalFill:"#A0A0A0",
+                    ratedFill:"#ffff00",
+                }).on("rateyo.set", function (e, data) {
+                    $('#rating_star').val(data.rating);
+                //alert("The rating is set to " + data.rating + "!");
+                $('#formRating').submit();
+            });
+            $("#rateYo1").rateYo({
+                    rating: ratingAVG,
+                    nomalFill:"#A0A0A0",
+                    ratedFill:"#ffff00",
+                }).on("rateyo.set", function (e, data) {
+                    alert("Bạn chưa đăng nhập, vui lòng đăng nhập để đánh giá!");
+                    });
 
-});
-</script>
+    });
+    </script>
+    <script type="text/javascript">
+        jQuery(document).ready(function($){
+            load_comment();
+            function load_comment(){
+                var product_id = $('.comment_product_id').val();
+                var _token = $('input[name="_token"]').val();
+                $.ajax({
+                    url:"{{url('/load-comment')}}",
+                    method:"POST",
+                    data:{product_id:product_id, _token:_token},
+                    success:function(data){
+                        $('#comment_show').html(data);
+                    }
+                });
+            }
+        });
+    </script>
 @stop()

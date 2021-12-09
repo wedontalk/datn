@@ -58,6 +58,8 @@ Route::group(['prefix' => '/', 'checkUser'=>'auth'], function(){
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/chitiet', 'HomeController@productDetail')->name('productDetail');
     Route::get('/cua-hang', 'HomeController@products')->name('products');
+    Route::get('/tin-tuc', 'HomeController@blog')->name('blog');
+    Route::get('/news/{slug}', [HomeController::class, 'news'])->name('news');
     Route::get('/checkout', 'HomeController@dichvu')->name('dichvu');
     Route::get('/addToCart/{id}', [HomeController::class, 'addToCart'])->name('addToCart');
     Route::get('/gio-hang', [HomeController::class, 'cartViews'])->name('cartViews');

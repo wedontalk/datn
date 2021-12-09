@@ -207,7 +207,7 @@
                         <li class="active"><a href="{{route('home')}}">Trang chủ</a></li>
                         <li><a href="{{route('products')}}">Cửa hàng</a>
                         <li><a href="introduce">Giới thiệu</a></li>
-                        <li><a href="./blog.html">Tin Tức</a></li>
+                        <li><a href="{{route('blog')}}">Tin Tức</a></li>
                         <li><a href="contact">Liên Hệ</a></li>
                         <!-- <li><a href="#">Cửa hàng</a></li>-->
                         <li><a href="{{route('calendar')}}">Dịch vụ</a></li> 
