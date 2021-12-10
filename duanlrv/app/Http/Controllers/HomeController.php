@@ -6,6 +6,7 @@ use DB;
 use Session;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
+use Auth;
 use App\Http\Requests;
 use App\Models\coso;
 use App\Models\navmenu;
@@ -14,6 +15,8 @@ use App\Models\datlich;
 use App\Models\dichvucoso;
 use App\Models\information;
 use App\Models\category;
+use App\Models\news;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Redirect;
 use App\Repositories\qlsanpham\qlsanphamInterface;
 use Illuminate\Support\Facades\View;
@@ -63,7 +66,8 @@ class HomeController extends Controller
         $detail_product = information::orderBy('id')->where('id',$categoryNav->id)->where('id_status', 1)->get();
         $danhmuc = navmenu::orderBy('id','ASC')->where('hidden', 1)->get();
         $ratingAVG = rating::where('product_id',$slug)->avg('rating_star');
-       return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc','ratingAVG'));
+        $comment = Comment::get();
+       return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc','ratingAVG','comment'));
     }
     public function products()
     {
@@ -72,7 +76,24 @@ class HomeController extends Controller
        $category_by_id = DB::table('categories')->get();
        return view('Site.products',compact('products','categoryNav','category_by_id'));
     }
+    public function binh_luan(Request $request ,$id){
+        $data = array();
+        $data['comment'] = $request->content;
+        $data['comment_product_id'] = Auth::user()->id;
+        $data['comment_name'] = Auth::user()->name;
+        DB::table('comment')->insert($data);
+        return redirect()->back();
+    }
+    public function blog(){
+        $blog =news::orderBy('id','ASC')->where('hidden', 1)->get();
 
+        return view('Site.blog',compact('blog'));
+    }
+    public function news($slug){
+        $news =news::orderBy('id','ASC')->where('hidden', 1)->where('slug',$slug)->get();
+
+        return view('Site.blogDetail',compact('news'));
+    }
     // public function productDetail()
     // {
     //    return view('Site.productDetail');

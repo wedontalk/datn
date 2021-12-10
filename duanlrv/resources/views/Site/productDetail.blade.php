@@ -215,31 +215,54 @@
                                 </div>
                                 
                                 <div class="tab-pane fade" id="tab-3" role="tabpanel">
+                                    
                                     <div class="customer-review-option">
                                     <h4>2 Comments</h4>
-                                        <form>
+                                    @foreach ($comment as $commentt)
+                                    <div class="comment-option">
+
+                                        <div class="co-item">
+                                                <div class="avatar-pic">
+                                                    
+                                                    <img src="img/product-single/avatar-1.png" alt="">
+                                                </div>
+                                                <div class="avatar-text">
+                                                    <!-- <div class="at-rating">
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                    </div> -->
+                                                    <h5>{{$commentt->comment_name}} <span>27 Aug 2019</span></h5>
+                                                    <div class="at-reply">{{$commentt->comment}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                        <!-- <form>
                                             @csrf
                                             <input type="hidden" name="comment_product_id" class="comment_product_id" value="{{$val->id}}">
                                             <div class="comment_show"></div>
 
-                                        </form>
+                                        </form> -->
+                                        @if(Route::has('login'))
+                                        @auth
                                         <div class="leave-comment">
                                             <h4>Viết đánh giá của bạn</h4>
-                                            <form action="#" class="comment-form">
+                                            <form action="{{URL::to('/binh-luan/'.Auth::user()->id)}}" class="comment-form">
                                                 <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <input type="text" placeholder="Tên bình luận" class="comment_name">
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="text" placeholder="Email">
-                                                    </div>
                                                     <div class="col-lg-12">
-                                                        <textarea placeholder="Nội dung bình luận" class="comment_content"></textarea>
+                                                        <textarea placeholder="Nội dung bình luận" class="comment_content" name="content"></textarea>
                                                         <button type="submit" class="site-btn send-comment">Gửi bình luận</button>
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
+                                        @else
+                                        <h4>Đăng nhập để bình luận</h3>
+                                        @endif
+                                        @endif
                                     </div>
                                 </div>
                             </div>
