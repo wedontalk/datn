@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('layout.css')
+@section('css')
  <style>
      .namedm{
          font-size:15px;
@@ -7,31 +7,79 @@
          color: blue;
      }
  </style>
+ <style>
+     .pagination{
+         padding: 0;
+     }
+     /* You can remove these code below*/
+  :root {
+    --primary: #08aeea;
+    --secondary: #13D2B8;
+    --purple: #bd93f9;
+    --pink: #ff6bcb;
+    --blue: #8be9fd;
+    --gray: #333;
+    --font: "Poppins", sans-serif;
+    --gradient: linear-gradient(40deg, #ff6ec4, #7873f5);
+    --shadow: 0 0 15px 0 rgba(0,0,0,0.05);
+  }*{box-sizing:border-box;}input,button,textarea{border:0;outline:none;}
+  /* Main code */
+  
+          .pagination {
+            display: flex;
+            justify-content: left;
+          }
+          .page-item {
+            margin: 0 0.5rem;
+            font-size: 1.2rem;
+            color: #999;
+            cursor: pointer;
+            transition: all 0.2s linear;
+          }
+          .page-item.active .page-link{
+            background-image: linear-gradient( 135deg, #90F7EC 10%, #32CCBC 100%);
+            background-color:transparent;
+            border-radius:5px;
+            padding: 5px 10px;
+          }
+          .pagi-item.is-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+          .pagi-item:hover,
+          .pagi-item.is-active {
+            color: var(--secondary);
+          }
+          .page-link{
+            padding:5px 10px;
+            border:none;
+          }
+ </style>
 @endsection
 @section('main')
 <div class="breadcrumbs">
-            <div class="breadcrumbs-inner">
-                <div class="row m-0">
-                    <div class="col-sm-4">
-                        <div class="page-header float-left">
-                            <div class="page-title">
-                                <h1>Danh sách quản lý dịch vụ</h1>
-                            </div>
-                        </div>
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Danh sách quản lý dịch vụ</h1>
                     </div>
-                    <div class="col-sm-8">
-                        <div class="page-header float-right">
-                            <div class="page-title">
-                                <ol class="breadcrumb text-right">
-                                    <li><a href="{{route('qldichvu.create')}}" active>Thêm cơ sở</a></li>
-                                    <li><a href="#" active>Thêm dịch vụ</a></li>
-                                </ol>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a href="{{route('qldichvu.create')}}" active>Thêm cơ sở</a></li>
+                            <li><a href="#" active>Thêm dịch vụ</a></li>
+                        </ol>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
     <div class="content">
         <div class="card cart-bg">
             <div class="card-header">
@@ -53,7 +101,6 @@
                     </div>
                 </div>
             </div>
-            <x-alert></x-alert>
             <div class="table-stats order-table ov-h">
                 <table class="table">
                     <thead>
@@ -156,12 +203,12 @@
             <div class="">{{$data->appends(request()->all())->links()}}</div>
         </div>
     </div>
+    <x-alert></x-alert>
 @stop()
 
 
 @section('js')
 <script src="{{asset('adm/assets/js/danhsach.js')}}"></script>
-
     <script>
         jQuery(document).ready(function($) {
             $('.btndelete').click(function(ev) {

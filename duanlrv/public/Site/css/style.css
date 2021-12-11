@@ -3325,14 +3325,14 @@ ol {
 	line-height: 30px;
 }
 
-.blog-details-inner .blog-detail-desc p:first-of-type:first-letter {
+/* .blog-details-inner .blog-detail-desc p:first-of-type:first-letter {
 	float: left;
 	font-size: 60px;
 	text-transform: uppercase;
 	color: #252525;
 	margin-top: 14px;
 	margin-right: 10px;
-}
+} */
 
 .blog-details-inner .blog-quote {
 	margin-bottom: 65px;

@@ -45,7 +45,13 @@
                             @endphp
                             <tbody>
                                 <tr>
-                                    <td class="cart-pic first-row"><img src="{{asset('uploads')}}/{{$CartItem['images'][0]}}" width="150px"alt=""></td>
+                                    <td class="cart-pic first-row">
+                                    @if(json_decode($CartItem['images']))
+                                        <img src="{{asset('uploads')}}/{{json_decode($CartItem['images'])[0]}}" width="150px"alt="">
+                                    @else
+                                        <img src="{{asset('uploads')}}/{{$CartItem['images']}}" width="150px" alt="">
+                                    @endif
+                                    </td>
                                     <td class="cart-title first-row">
                                         <h5>{{$CartItem['name']}}</h5>
                                     </td>

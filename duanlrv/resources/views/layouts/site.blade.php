@@ -173,6 +173,9 @@
                                 <a href="#base">lịch sử mua hàng</a>
                                 <!-- đăng xuất -->
                                 <a href="{{ route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a>
+                                <form action="{{ route('logout')}}" method="post" id="logout-form" style="display:none">
+                                    @csrf
+                                </form>
                             </div>
                         @endif
                         @else
@@ -294,7 +297,7 @@
     <script src="{{ asset('Site/js/main.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.slim.js" ></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <!-- JavaScript -->
     <!-- <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script> -->
     <script src="{{ asset('Site/js/alert.min.js') }}"></script>

@@ -10,6 +10,29 @@
  </style>
 @endsection
 @section('main')
+    <div class="breadcrumbs">
+        <div class="breadcrumbs-inner">
+            <div class="row m-0">
+                <div class="col-sm-4">
+                    <div class="page-header float-left">
+                        <div class="page-title">
+                            <h1>Danh sách quản lý dịch vụ</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="page-header float-right">
+                        <div class="page-title">
+                            <ol class="breadcrumb text-right">
+                                <li><a class="btn bg-flat-color-6" style="color:#fff" id="deleteAllselected">Delete All</a></li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- danh sách  -->
     <div class="content">
         <div class="card cart-bg">
             <div class="card-header">
@@ -36,7 +59,8 @@
                 <table class="table ">
                     <thead>
                         <tr>
-                            <th class="serial">#</th>
+                            <th ><input type="checkbox" id="checkAll" /></th>
+                            <th class="serial">id</th>
                             <th class="avatar">mã đơn hàng</th>
                             <th>Thời gian đặt hàng</th>
                             <th>Trạng thái</th>
@@ -48,7 +72,8 @@
                     </thead>
                     <tbody>
                         @foreach($data as $dt)
-                            <tr>
+                            <tr id="sid{{$dt->order_id}}">
+                                <td><input type="checkbox" class="checkboxclass" name="ids" value="{{$dt->order_id}}"></td>
                                 <td>{{$dt->order_id}}</td>
                                 <td>
                                     <span>{{$dt->order_code}}</span>
@@ -57,9 +82,9 @@
                                     <span>{{$dt->created_at}}</span>
                                 </td>
                                 <td>
-                                    <select class="trangthai badge" style="background-color:#50C7C7">
+                                    <select class="trangthai badge" data-order_id="{{$dt->order_id}}" style="background-color:#50C7C7">
                                         @foreach($xetduyet as $xd)
-                                            <option name="id_status" {{($xd->id == $dt->id_status) ? 'selected':'' }} id="item" data-order_id="{{$dt->order_id}}" value="{{$xd->id}}">{{$xd->name_type}}</option>
+                                            <option name="id_status" {{($xd->id == $dt->id_status) ? 'selected':'' }} id="item" value="{{$xd->id}}">{{$xd->name_type}}</option>
                                         @endforeach
                                     </select>
                                 </td>
@@ -113,11 +138,11 @@
     <script>
     jQuery(document).ready(function($) {
         $(document).on('change', '.trangthai', function(){
+            var order_id =$(this).data('order_id');
             var id_status = $(this).val();
-            var order_id =$('#item').data('order_id');
             var _token = $('input[name="_token"]').val();
             $.ajax({
-                url:'{{url('/admin/update-trangthai')}}', 
+                url:'{{route('updatedh')}}', 
                 method:'post',
                 data:{order_id:order_id, id_status:id_status, _token: _token},
                 success: function(data) 
@@ -134,5 +159,44 @@
             });
         });
     });
+    </script>
+    <!-- jquery thông báo lỗi -->
+    <script>
+        jQuery(document).ready(function($) {
+            var test = function(){
+            var name = $('#testalert').addClass('hide');
+            };
+            setTimeout(test, 3000);
+        });
+    </script>
+    <!-- jquery xóa tất cả -->
+    <script>
+        jQuery(document).ready(function($) {
+            $('#checkAll').click(function(){
+                $(".checkboxclass").prop('checked', $(this).prop('checked'));
+            });
+            $('#deleteAllselected').click(function(e){
+                e.preventDefault();
+                var allids = [];
+                var _token = $('input[name="_token"]').val();
+                $('input:checkbox[name=ids]:checked').each(function(){
+                    allids.push($(this).val());
+                });
+                $.ajax({
+                    url:'{{route('deletechecked')}}',
+                    type:"delete",
+                    data:{
+                        _token:_token,
+                        ids:allids
+                    },
+                    success:function(data){
+                        $.each(allids,function(key,val){
+                            $("#sid"+val).remove();
+                            $(".content").load('{{url('/admin/donhang')}}');
+                        });
+                    }
+                });
+            });
+        });
     </script>
 @stop()

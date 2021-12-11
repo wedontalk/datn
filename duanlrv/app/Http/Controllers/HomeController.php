@@ -19,6 +19,7 @@ use App\Models\news;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Redirect;
 use App\Repositories\qlsanpham\qlsanphamInterface;
+use App\Repositories\slide\slideInterface;
 use Illuminate\Support\Facades\View;
 use SebastianBergmann\Environment\Console;
 
@@ -27,9 +28,11 @@ session_start();
 class HomeController extends Controller
 {
     protected $products;
-    public function __construct(qlsanphamInterface $products)
+    protected $slide;
+    public function __construct(qlsanphamInterface $products, slideInterface $slide)
     {
         $this->products = $products;
+        $this->slide = $slide;
        
     }
 
@@ -51,11 +54,10 @@ class HomeController extends Controller
     public function index()
     {
        $products= $this-> products ->getAll();
-       $categoryNav = DB::Table('nav_menu')->orderby('id')->get();
+       $categoryNav = navmenu::orderby('id')->get();
        return view('Site.index',compact('products','categoryNav'));
-
-       return view('Site.index',compact('products'));
     }
+
     public function dichvu(){
         return view('site.checkout');
     }
@@ -71,9 +73,9 @@ class HomeController extends Controller
     }
     public function products()
     {
-        $categoryNav = DB::Table('nav_menu')->orderby('id')->get();
-       $products= $this->products->getAll();
-       $category_by_id = DB::table('categories')->get();
+        $categoryNav = navmenu::orderby('id')->get();
+        $products= $this->products->getshow();
+        $category_by_id = DB::table('categories')->get();
        return view('Site.products',compact('products','categoryNav','category_by_id'));
     }
     public function binh_luan(Request $request ,$id){
@@ -85,7 +87,7 @@ class HomeController extends Controller
         return redirect()->back();
     }
     public function blog(){
-        $blog =news::orderBy('id','ASC')->where('hidden', 1)->get();
+        $blog =news::orderBy('id','ASC')->where('hidden', 1)->search()->paginate(10);
 
         return view('Site.blog',compact('blog'));
     }

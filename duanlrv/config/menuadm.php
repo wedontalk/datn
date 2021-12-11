@@ -150,6 +150,19 @@ return [
         ]
     ],
     [
+        'label' => 'QL đơn hàng',
+        'routes' => 'donhang.index',
+        'icon' => 'fa fa-truck',
+        'items' =>
+        [
+            [
+                'iconnew' => 'fa fa-book',
+                'label' => 'DS đơn hàng',
+                'route' => 'donhang.index'
+                ],
+        ]
+    ],
+    [
         'label' => 'Tin Tức',
         'routes' => 'admin.dashboard',
         'icon' => 'fa fa-signal',
@@ -164,19 +177,6 @@ return [
                 'iconnew' => 'fa fa-rss',
                 'label' => 'Thêm Tin tức',
                 'route' => 'news.create'
-                ],
-        ]
-    ],
-    [
-        'label' => 'QL đơn hàng',
-        'routes' => 'donhang.index',
-        'icon' => 'fa fa-truck',
-        'items' =>
-        [
-            [
-                'iconnew' => 'fa fa-book',
-                'label' => 'DS đơn hàng',
-                'route' => 'donhang.index'
                 ],
         ]
     ],

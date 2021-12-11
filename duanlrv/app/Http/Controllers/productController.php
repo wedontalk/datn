@@ -33,6 +33,7 @@ class productController extends Controller
         //     $test = array_push($arrName, $data[$i]->image);
         // }
         // implode(", ",$arrName);
+
         $danhmuc = navmenu::orderBy('id', 'ASC')->select('id','name_nav','slug')->get();
         $xetduyet = trangthai::orderBy('id', 'ASC')->select('id','name_type')->get();
         foreach($danhmuc as $key => $dm) {

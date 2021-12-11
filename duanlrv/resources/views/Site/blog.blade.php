@@ -24,12 +24,12 @@
                     <div class="blog-sidebar">
                         <div class="search-form">
                             <h4>Search</h4>
-                            <form action="#">
-                                <input type="text" placeholder="Search . . .  ">
+                            <form action="" method="GET" role="form">
+                                <input type="text" placeholder="Search . . .  " name="key">
                                 <button type="submit"><i class="fa fa-search"></i></button>
                             </form>
                         </div>
-                        <div class="blog-catagory">
+                        <!-- <div class="blog-catagory">
                             <h4>Categories</h4>
                             <ul>
                                 <li><a href="#">Fashion</a></li>
@@ -37,9 +37,9 @@
                                 <li><a href="#">Picnic</a></li>
                                 <li><a href="#">Model</a></li>
                             </ul>
-                        </div>
+                        </div> -->
                         <div class="recent-post">
-                            <h4>Recent Post</h4>
+                            <h4>Bài Đăng gần đây</h4>
                             <div class="recent-blog">
                                 <a href="#" class="rb-item">
                                     <div class="rb-pic">
@@ -79,7 +79,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="blog-tags">
+                        <!-- <div class="blog-tags">
                             <h4>Product Tags</h4>
                             <div class="tag-item">
                                 <a href="#">Towel</a>
@@ -90,7 +90,7 @@
                                 <a href="#">Men's hats</a>
                                 <a href="#">Backpack</a>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="col-lg-9 order-1 order-lg-2">
@@ -99,13 +99,13 @@
                         <div class="col-lg-6 col-sm-6">
                             <div class="blog-item">
                                 <div class="bi-pic">
-                                    <img src="img/blog/blog-1.jpg" alt="">
+                                    <img src="{{asset('uploads')}}/{{$news->image}}" alt="" height="350px">
                                 </div>
                                 <div class="bi-text">
                                     <a href="{{URL::to('/news/'.$news->slug)}}">
                                         <h4>{{$news->name_post}}</h4>
                                     </a>
-                                    <p>Tin tuc <span>- May 19, 2019</span></p>
+                                    <p>Tin tuc <span>{{$news->updated_at}}</span></p>
                                 </div>
                             </div>
                         </div>

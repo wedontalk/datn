@@ -5,6 +5,9 @@
 
 
 <style>
+    .content{
+        background:#fff;
+    }
     /* .btn-text-ne{
         position: absolute;
         bottom:10;
@@ -54,14 +57,15 @@
 </style>
 @stop()
 @section('main')
-<div class="card-header">
-            <center><strong class="card-title"><h3>FORM THÊM CƠ SỞ</h3></strong></center>
-</div>
+<div class="content">
+    <div class="card-header">
+        <center><strong class="card-title"><h3>FORM THÊM CƠ SỞ</h3></strong></center>
+    </div>
 <form action="{{route('qldichvu.store')}}" method="POST" enctype="multipart/form-data">
 @csrf
 <div class="row">
-<div class="content col-md-7" style="background:#fff;">
-    <div class="col-sm-12 " style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; border-radius:5px; padding:20px 10px">
+<div class="col-7">
+    <div class="col-sm-12 " style="background-color:#fff; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; border-radius:5px; padding:20px 10px">
         <div class="form-group row">
             <label for="staticEmail" class="col-sm-3 col-form-label">Tên cơ sở</label>
             <div class="col-sm-9">
@@ -107,11 +111,14 @@
             </div>
         </div>
         <br>
+        <div class="form-group" style="padding:0.2rem 0; background:white">
+            <button class="button-effect btn-text-ne ">nhập thông tin <i class="fa fa-long-arrow-right"></i></button>
+        </div>
     </div>
 </div>
 <!-- nhập thông tin địa chỉ -->
-<div class="content col-md-5" style="background-color:#fff;">
-    <div class="col-sm-12" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; border-radius:5px; padding:5px 10px">
+<div class=" col-5">
+    <div class="col-sm-12" style="background-color:#fff; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; border-radius:5px; padding:5px 10px">
         <div class="form-group row">
             <label class="col-sm-5 col-form-label">Tỉnh - Thành Phố</label>
             <div class="col-sm-7">
@@ -148,23 +155,18 @@
     </div>
     <!--mô tả -->
     <br>
-    <div class="col-sm-12" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; border-radius:5px;padding:5px 10px">
+    <div class="col-sm-12" style="background-color:#fff; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; border-radius:5px;padding:5px 10px">
         <div class="form-group row">
             <div class="col-sm-12">
-                <textarea class="form-control" name="description" id="content" rows="1" cols="5"></textarea>
+                <textarea class="form-control" name="description" id="content" rows="2" cols="5"></textarea>
             </div>
         </div>
     </div>
 </div>
 </div>
 
-<div class="content" style="padding:0.2rem 0; background:white">
-    <button class="button-effect btn-text-ne ">nhập thông tin <i class="fa fa-long-arrow-right"></i></button>
-</div>
-
-
-
 </form>
+</div>
 
 <!-- modal thêm hình -->
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -197,7 +199,7 @@
         // Summernote
         $('#content').summernote({
             placeholder:'nhập mô tả...',
-            height:70,
+            height:100,
         });
     });
 </script>

@@ -11,6 +11,7 @@ use App\Models\category;
 use App\Models\datlich;
 use App\Models\donhang;
 use App\Models\account;
+use App\Models\slide;
 use Carbon\Carbon;
 use App\Controllers\HomeController;
 class AppServiceProvider extends ServiceProvider
@@ -114,6 +115,7 @@ class AppServiceProvider extends ServiceProvider
             Carbon::now('Asia/Ho_Chi_Minh')->toDateString()
             ])->get());
             $view->with('ttaccount', account::orderBy('id','asc')->get());
+            $view->with('slidene', slide::orderBy('id','asc')->get());
             $view->with('categoryNav', navmenu::orderBy('id','asc')->get());
         });
 

@@ -40,18 +40,24 @@
                        
                         <div class="col-lg-6">
                             <div class="product-pic-zoom">
-                                <img class="product-big-img form-group" src="{{asset('uploads')}}/{{$val->image[0]}}" width="100%" height="250px">
+                                @if(json_decode($val->image))
+                                    <img class="product-big-img form-group" src="{{asset('uploads')}}/{{json_decode($val->image)[0]}}" width="100%" height="250px">
+                                @else
+                                    <img class="product-big-img form-group" src="{{asset('uploads')}}/{{$val->image}}" width="100%" height="250px">
+                                @endif
                                 <div class="zoom-icon">
                                     <i class="fa fa-search-plus"></i>
                                 </div>
                             </div>
                             <div class="product-thumbs">
                                 <div class="product-thumbs-track ps-slider owl-carousel">
-                            @foreach($val->image as $img1)
+                                @if(json_decode($val->image))
+                                @foreach(json_decode($val->image) as $img1)
                                     <div class="pt active" data-imgbigurl="{{asset('uploads')}}/{{$img1}}">
                                         <img src="{{asset('uploads')}}/{{$img1}}" alt="" height="100px" width="100%">
                                     </div>
-                            @endforeach
+                                @endforeach
+                                @endif
                                 </div>
                             </div>
                         </div>
@@ -387,6 +393,7 @@
             </div>
         </div>
     </div>
+@stop()
     <!-- Related Products Section End -->
     @section('js')
     <script>

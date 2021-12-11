@@ -27,13 +27,16 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::post("/select-thanhpho", "cosoController@select_thanhpho");
     Route::get('/chi-tiet-don-hang/{slug}', 'donhangController@chitietdh');
     Route::post('/updateajax', 'dichvuController@update_ajax');
-    Route::post("/update-trangthai", "donhangController@update_trangthai");
+    Route::post("/update-trangthai", "donhangController@update_trangthai")->name('updatedh');
     Route::post("/filter-by-date", "AdminController@filter_by_date");
     Route::post("/order-date", "AdminController@order_date");
     Route::post("/dashboard-filter", "AdminController@dashboard_filter");
     Route::get("/loadajax", "dichvuController@loadajax")->name('loadajax');
     Route::get("/thongtin", "accountController@showaccount")->name('thongtin');
     Route::get("/updateaccount", "accountController@update_thongtin")->name('updateaccount');
+    Route::delete("/delete-checked", "donhangController@deletechecked")->name('deletechecked');
+    Route::delete("/delete-news", "newsController@deletenews")->name('deletenews');
+    Route::post("/load-coupon", "couponController@loadcoupon")->name('loadcoupon');
     Route::resources([
         'menu' => 'menuController',
         'category' => 'categoryController',

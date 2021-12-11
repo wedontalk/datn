@@ -6,6 +6,9 @@
 
 <style>
 /* You can remove these code below*/
+.content{
+    background:#fff;
+}
 :root {
     --primary: #08aeea;
     --secondary: #13D2B8;
@@ -51,13 +54,14 @@
 </style>
 @stop()
 @section('main')
+<div class="content">
 <div class="card-header">
-            <center><strong class="card-title"><h3>FORM THÊM CƠ SỞ</h3></strong></center>
+    <center><strong class="card-title"><h3>FORM THÊM CƠ SỞ</h3></strong></center>
 </div>
 <form action="{{route('qldichvu.update',$qldichvu->id)}}" method="POST" enctype="multipart/form-data">
 @csrf @method('PUT')
 <div class="row">
-<div class="content col-md-7" style="background:#fff;">
+<div class=" col-7" >
     <div class="col-sm-12 " style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; border-radius:5px; padding:20px 10px">
         <div class="form-group row">
             <label for="staticEmail" class="col-sm-3 col-form-label">Tên cơ sở</label>
@@ -106,10 +110,13 @@
             </div>
         </div>
         <br>
+        <div class="" style="padding:0.2rem 0;">
+            <button class="button-effect btn-text-ne ">Sửa thông tin <i class="fa fa-long-arrow-right"></i></button>
+        </div>
     </div>
 </div>
 <!-- nhập thông tin địa chỉ -->
-<div class="content col-md-5" style="background-color:#fff;">
+<div class=" col-5">
     <div class="col-sm-12" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; border-radius:5px; padding:5px 10px">
         <div class="form-group row">
             <label class="col-sm-5 col-form-label">Tỉnh - Thành Phố</label>
@@ -157,14 +164,8 @@
     </div>
 </div>
 </div>
-
-<div class="content" style="padding:0.2rem 0; background:white">
-    <button class="button-effect btn-text-ne ">Sửa thông tin <i class="fa fa-long-arrow-right"></i></button>
-</div>
-
-
-
 </form>
+</div>
 
 <!-- modal thêm hình -->
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -197,7 +198,7 @@
         // Summernote
         $('#content').summernote({
             placeholder:'nhập mô tả...',
-            height:70,
+            height:85,
             codemirror: { // codemirror options
                 theme: 'monokai'
             }

@@ -1,7 +1,18 @@
 @extends('layouts.site')
 
 @section('main')
-
+<style>
+    .page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    font-size: 18px;
+}
+.pagination .disabled{
+    font-size:18px;
+}
+</style>
     <!-- Breadcrumb Section Begin -->
     <div class="breacrumb-section">
         <div class="container">
@@ -124,7 +135,11 @@
                             <div class="col-lg-4 col-sm-6">
                                 <div class="product-item">
                                     <div class="pi-pic">
-                                        <img src="{{ asset('uploads') }}/{{$product->image[0]}}" height="250px" alt="">
+                                        @if(json_decode($product->image))
+                                            <img src="{{ asset('uploads') }}/{{json_decode($product->image)[0]}}" height="250px" alt="">
+                                        @else
+                                            <img src="{{ asset('uploads') }}/{{$product->image}}" height="250px" alt="">
+                                        @endif
                                         <div class="sale pp-sale">Sale</div>
                                         <div class="icon">
                                             <i class="icon_heart_alt"></i>

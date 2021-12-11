@@ -7,14 +7,6 @@
         </div>
         <form action="{{route('slide.update',$slide->id)}}" method="POST" role="form" enctype="multipart/form-data">
          @csrf @method('PUT')
-         <div class="form-group">
-            <label for="danhmucne">chọn danh mục</label>
-            <select class="form-control" id="danhmucne" name="danh_muc">
-            @foreach($danhmuc as $dm)
-            <option value="{{$dm->id}}" {{($slide->id == $dm->id) ? 'selected':'' }}>{{$dm->name_nav}}</option>
-            @endforeach
-            </select>
-        </div>
         <div class="form-group">
             <label>Tên tiêu đề</label>
             <input type="text" class="form-control" name="tieu_de" value="{{$slide->tieu_de}}" placeholder="Nhập tên tiêu đề">

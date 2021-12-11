@@ -58,6 +58,7 @@
                 <div class="input-group-append">
                     <button class="btn btn-danger" data-toggle="modal" data-target=".bd-example-modal-lg" type="button"><i class="fa fa-folder"></i></button>
                 </div>
+                
             </div>
         </div>
     </div>
@@ -186,11 +187,11 @@ jQuery(document).ready(function($) {
 
 <script type="text/javascript">
     jQuery(document).ready(function($) {
-        $('#file').on('change', function(){
+        $('#file').on('click', function(){
             var error = '';
             var files = $('#file')[0].files;
 
-            if(files.length>5){
+            if(files.length>1){
                 error += '<p style="color:red;">tối đa chọn 5 hình</p>';
             }else if(files.length == ""){
                 error += '<p style="color:red;">không được bỏ trống gallery</p>';

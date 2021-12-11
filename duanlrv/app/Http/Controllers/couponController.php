@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\coupon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use App\Repositories\coupon\couponInterface;
+use Carbon\Carbon;
 
 class couponController extends Controller
 {
@@ -19,9 +21,15 @@ class couponController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $data = $this->coupon->getAll();
+        // $temm = $request->all();
+        // $ketthuc = $request->ketthuc;
+        // $now = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+        // if($ketthuc){
+        //     coupon::whereIn('id_status', 2)->update();
+        // } 
         return view('admin.coupon.index', compact('data'));
     }
 
