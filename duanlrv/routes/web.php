@@ -71,6 +71,9 @@ Route::group(['prefix' => '/', 'checkUser'=>'auth'], function(){
     Route::get('/chi-tiet-san-pham/{slug}', [HomeController::class, 'productDetail']);
     Route::post('/check-coupon', [HomeController::class, 'check_coupon'])->name('check_coupon');
     Route::get('/unset-coupon', [HomeController::class, 'unset_coupon']);
+    Route::get('/loc-gia-sp', [HomeController::class, 'locgiasp'])->name('locgia');
+    Route::post('/tim-kiem', [HomeController::class, 'search'])->name('search');
+
 
     // Route::get('/danh-muc-phu-kien', [categoryController::class, 'show_category_phukien']);   
     // Route::get('/danh-muc-san-pham/{slug_category_product}', [categoryController::class, 'show_category_home']);

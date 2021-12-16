@@ -19,7 +19,7 @@ use App\Models\coupon;
 // use Illuminate\Support\Facades\Mail;
 use App\Mail\DatHang;
 use Mail;
-
+use App\Http\Requests\thanhtoan;
 session_start();
 
 class HomeController extends Controller
@@ -71,23 +71,12 @@ class HomeController extends Controller
     public function products()
     {
         $categoryNav = DB::Table('nav_menu')->orderby('id')->get();
-       $products= $this->products->getAll();
-       $category_by_id = DB::table('categories')->get();
-       return view('Site.products',compact('products','categoryNav','category_by_id'));
+        $products= $this->products->getAll();
+        $category_by_id = DB::table('categories')->get();
+        return view('Site.products',compact('products','categoryNav','category_by_id'));
     }
 
-    // public function productDetail()
-    // {
-    //    return view('Site.productDetail');
-    // }
 
-    // public function products()
-    // {
-    //    $products= $this-> products ->getAll();
-       
-    //    return view('Site.products',compact('products'));
-
-    // }
     function addToCart($id){
         // session()->flush('carts');
         $product = $this-> products->find($id);
@@ -100,6 +89,7 @@ class HomeController extends Controller
                 'price'=>$product->price,
                 'quantity'=>1,
                 'images'=>$product->image,
+                'tonkho'=>$product->quantity,
                 
             ];
         }
@@ -123,15 +113,33 @@ class HomeController extends Controller
     }
     public function updateCart(Request $request){
         // dd($request->all());
-        if($request->id && $request ->quantity){
-            $carts =session()->get('cart');
+        $carts =session()->get('cart');
+        //kiểm tra số lượng cập nhật có hợp lệ không
+        if($request->id && $request->quantity <= $carts[$request->id]['tonkho']){   
             $carts[$request->id]['quantity']=$request->quantity;
             session()->put('cart',$carts);
             $carts =session()->get('cart');
             $cartt=View('Site.cartquick',compact('carts'))->render();
             $cart=View('Site.contentCart',compact('carts'))->render();
-            return response()->json(['contentCart'=> $cart,'cartquick'=> $cartt]);
-        } 
+            return response()->json([
+                'code'=>'200',
+                'message'=>'cập nhật thành công!',
+                'contentCart'=> $cart,
+                'cartquick'=> $cartt,
+            ],200
+            );
+        }else{
+            $carts =session()->get('cart');
+            $cartt=View('Site.cartquick',compact('carts'))->render();
+            $cart=View('Site.contentCart',compact('carts'))->render();
+            return response()->json([
+                'code'=>'404',
+                'message'=>'cập nhật thất bại!',
+                'contentCart'=> $cart,
+                'cartquick'=> $cartt,
+            ],200
+            );
+        }
     }
     public function deleteCart(Request $request){
         if($request->id){
@@ -141,8 +149,14 @@ class HomeController extends Controller
             $carts =session()->get('cart');
             $cart=View('Site.contentCart',compact('carts'))->render();
             $cartt=View('Site.cartquick',compact('carts'))->render();
-            return response()->json(['contentCart'=> $cart,'cartquick'=> $cartt]);
-            
+            // return response()->json(['contentCart'=> $cart,'cartquick'=> $cartt]);
+            return response()->json([
+                'code'=>'200',
+                'message'=>'xóa thành công!',
+                'contentCart'=> $cart,
+                'cartquick'=> $cartt,
+            ],200
+            );
         } 
     }
     public function removeCart(){
@@ -151,7 +165,14 @@ class HomeController extends Controller
         $carts =session()->get('cart');
         $cart=View('Site.contentCart',compact('carts'))->render();
         $cartt=View('Site.cartquick',compact('carts'))->render();
-        return response()->json(['contentCart'=> $cart,'cartquick'=> $cartt]);
+        // return response()->json(['contentCart'=> $cart,'cartquick'=> $cartt]);
+        return response()->json([
+            'code'=>'200',
+            'message'=>'cập nhật thành công!',
+            'contentCart'=> $cart,
+            'cartquick'=> $cartt,
+        ],200
+        );
     } 
     public function checkout(){
         $carts =session()->get('cart');
@@ -182,21 +203,14 @@ class HomeController extends Controller
             echo $output;
         }
     }
-    public function save_checkout( Request $request){
+    public function save_checkout( thanhtoan $request){
         //insert order_product
-        // $dataaaa= $request->except("_token","peyment");
         $id = Auth::user()->id;
         $email = Auth::user()->email;
         $name = Auth::user()->name;
         $phone = Auth::user()->phone;
-
-        // $dataaaa['id_user']=Auth::user()->id;
-
-        
         // session()->get(['use'=>$dataaaa]);
         if ($request->phuongthuc_thanhtoan==2) {
-            // $us=['id'=>$id];
-            
             $data= array();
             $data['id_user']= $id;
             $data['order_name']=$request->order_name;
@@ -424,5 +438,22 @@ class HomeController extends Controller
             
         } 
     } 
+    public function search(Request $request){
+        $keyword= $request->keyword;
+        $categoryNav = DB::Table('nav_menu')->orderby('id')->get();
+        $category_by_id = DB::table('categories')->get();
+        $products= DB::Table('information_post')->where('title','like','%'.$keyword.'%')->get();
+        return view('Site.products',compact('products','categoryNav','category_by_id'));
+    }
+    public function locgiasp()
+    {
+        $minprice=$_GET['minamount'];
+        $maxprice=$_GET['maxamount'];
+       $products= DB::Table('information_post')->whereBetween('discount',[$minprice,$maxprice])->orderBy('id','ASC')->get();
+       $categoryNav = DB::Table('nav_menu')->orderby('id')->get();
+       $category_by_id = DB::table('categories')->get();
+       return view('Site.products',compact('categoryNav','category_by_id','products'));
+    //    return view('Site.products',compact('products','categoryNav','category_by_id','product_loc'));
+    }
 }
 

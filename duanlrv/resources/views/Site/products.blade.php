@@ -32,21 +32,25 @@
                     </div>
                     <div class="filter-widget">
                         <h4 class="fw-title">Giá</h4>
+                        <form action="{{route('locgia')}}" method="get">
+                            @csrf
                         <div class="filter-range-wrap">
                             <div class="range-slider">
                                 <div class="price-input">
-                                    <input type="text" id="minamount">
-                                    <input type="text" id="maxamount">
+                                    <input type="text" id="minamount" name="minamount">
+                                    <input type="text" id="maxamount" name="maxamount">
                                 </div>
                             </div>
                             <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                data-min="33" data-max="98">
+                                data-min="0" data-max="2000000">
                                 <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
                                 <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                                 <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                             </div>
                         </div>
-                        <a href="#" class="filter-btn">Lọc</a>
+                        
+                        <button type="submit" class="filter-btn">Lọc</button>
+                        </form>
                     </div>
                     <div class="filter-widget">
                         <h4 class="fw-title">Thương hiệu</h4>
@@ -155,7 +159,7 @@
                     </div>
                     <div class="loading-more">
                         <!-- <i class="icon_loading"></i> -->
-                        {{$products->appends(request()->all())->links()}}
+                       
                     </div>
                 </div>
             </div>
