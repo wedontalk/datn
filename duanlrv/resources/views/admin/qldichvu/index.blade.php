@@ -71,8 +71,8 @@
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                            <li><a href="{{route('qldichvu.create')}}" active>Thêm cơ sở</a></li>
-                            <li><a href="#" active>Thêm dịch vụ</a></li>
+                            <li><a href="{{route('qldichvu.create')}}" class="btn bg-flat-color-1" style="color:#fff">Thêm cơ sở</a></li>
+                            <li><a class="btn bg-flat-color-6" style="color:#fff" id="deleteAllselected">Delete All</a></li>
                         </ol>
                     </div>
                 </div>
@@ -105,6 +105,7 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th ><input type="checkbox" id="checkAll" /></th>
                             <th class="serial">#</th>
                             <th class="serial">image</th>
                             <th class="avatar">Tên cơ sở</th>
@@ -122,7 +123,8 @@
                         $i = 1;
                         @endphp
                         @foreach($data as $dt)
-                            <tr>
+                            <tr id="sid{{$dt->id}}">
+                                <td><input type="checkbox" class="checkboxclass" name="ids" value="{{$dt->id}}"></td>
                                 <td class="serial">{{$i++}}</td>
                                 <td class="serial"><img src="{{asset('uploads')}}/{{$dt->image}}" alt="{{$dt->image}}" width="300px" height="50px"></td>
                                 <td class="avatar">
@@ -218,6 +220,43 @@
                 if(confirm('bạn muốn xóa chứ ?')){
                     $('form#form-delete').submit();
                 }
+            });
+        });
+    </script>
+        <!-- jquery xóa tất cả -->
+        <script>
+        jQuery(document).ready(function($) {
+            $('#checkAll').click(function(){
+                $(".checkboxclass").prop('checked', $(this).prop('checked'));
+            });
+            $('#deleteAllselected').click(function(e){
+                e.preventDefault();
+                var allids = [];
+                var _token = $('input[name="_token"]').val();
+                $('input:checkbox[name=ids]:checked').each(function(){
+                    allids.push($(this).val());
+                });
+                $.ajax({
+                    url:'{{route('deletecoso')}}',
+                    type:"delete",
+                    data:{
+                        _token:_token,
+                        ids:allids
+                    },
+                    success:function(data){
+                        $.each(allids,function(key,val){
+                            $("#sid"+val).remove();
+                        });
+                        if($("#sid"+val).remove()){
+                            alertify.success('xóa thành công');
+                        }
+                        else
+                        {
+                            alertify.error('gặp lỗi rồi !');
+                        }
+                        
+                    }
+                });
             });
         });
     </script>

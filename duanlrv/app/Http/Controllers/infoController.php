@@ -177,4 +177,10 @@ class infoController extends Controller
         $delete->delete();
         return redirect()->route('qlthucung.index')->with('success', 'xóa thành công');
     }
+    public function deletethucung(Request $request)
+    {
+        $ids = $request->ids;
+        information::whereIn('id', $ids)->delete();
+        return reponse()->json(['success'=>"delete all"]);
+    }
 }

@@ -54,7 +54,8 @@ class datlichController extends Controller
      */
     public function show($id)
     {
-        //
+        $chitiet = datlich::orderBy('id','ASC')->where('id', $id)->paginate(10);
+        return view('admin.datlich.show', compact('chitiet'));
     }
 
     /**

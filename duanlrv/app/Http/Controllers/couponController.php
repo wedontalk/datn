@@ -23,16 +23,30 @@ class couponController extends Controller
      */
     public function index(Request $request)
     {
+        $temm = $request->all();
+        $ketthuc = $request->ketthuc;
+        $ids = $request->ids;
+        $now = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
         $data = $this->coupon->getAll();
-        // $temm = $request->all();
-        // $ketthuc = $request->ketthuc;
-        // $now = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
-        // if($ketthuc){
-        //     coupon::whereIn('id_status', 2)->update();
-        // } 
+        foreach ($data as $test) {
+            $id = $test->id;
+            $ngayket = $test['coupon_date_end'];
+            if($now > $test['coupon_date_end'] || $test['coupon_qty'] == 0 || $test['coupon_qty'] == null){
+                $idne = $test->id;
+                $update = coupon::find($id);
+                $update->id = $idne;
+                $update->id_status = 2;
+                $update->save();
+            }else{
+                $idne = $test->id;
+                $update = coupon::find($id);
+                $update->id = $idne;
+                $update->id_status = 1;
+                $update->save();
+            }
+        }
         return view('admin.coupon.index', compact('data'));
     }
-
     /**
      * Show the form for creating a new resource.
      *

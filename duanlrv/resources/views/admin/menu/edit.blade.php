@@ -9,18 +9,25 @@
          @csrf @method('PUT')
         <div class="form-group">
             <label for="exampleInputEmail1">Tên menu</label>
-            <input type="text" class="form-control" name="name_nav" id="name" placeholder="Nhập Tên menu">
+            <input type="text" class="form-control @error('name_nav') is-invalid @enderror" value="{{$menu->name_nav}}" name="name_nav" id="name" placeholder="Nhập Tên menu">
+            @error('name_nav')
+                <small class="form-text text-muted">{{$message}}</small>
+            @enderror
         </div>
         <div class="form-group" style="display: none;">
             <label for="exampleInputEmail1">Tên slug</label>
-            <input type="text" class="form-control" name="slug" id="slug" placeholder="Nhập Tên menu">
+            <input type="text" class="form-control" name="slug" value="{{$menu->slug}}"  id="slug" placeholder="Nhập Tên menu">
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="hidden" id="radio0" value="0">
+            <input class="form-check-input" 
+            {{($menu->hidden == 0) ? 'checked':'' }}
+            type="radio" name="hidden" id="radio0" value="0">
             <label class="form-check-label" for="inlineRadio1">Ẩn</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="hidden" id="radio1" value="1">
+            <input class="form-check-input" 
+            {{($menu->hidden == 1) ? 'checked':'' }}
+            type="radio" name="hidden" id="radio1" value="1">
             <label class="form-check-label" >Hiện</label>
         </div>
         <br>

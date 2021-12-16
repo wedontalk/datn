@@ -58,15 +58,15 @@
                             <div class="media">
                                 <a href="#">
                                     <img class="align-self-center rounded-circle mr-3" style="width:85px; height:85px;" alt="" src="
-                                    @if($dt->dsuser->avatar == null) 
+                                    @if($dt->user->avatar == null) 
                                         {{asset('uploads/avatar/Anh-avatar-123123123.jpg')}} 
                                     @else 
-                                        {{asset('uploads')}}/{{$dt->dsuser->avatar}} 
+                                        {{asset('uploads')}}/{{$dt->user->avatar}} 
                                     @endif">
                                 </a>
                                 <div class="media-body">
-                                    <h2 class="text-white display-6">{{$dt->order_name}}</h2>
-                                    <p class="text-light">{{$dt->order_email}}</p>
+                                    <h2 class="text-white display-6">{{$dt->user->name}}</h2>
+                                    <p class="text-light">{{$dt->user->email}}</p>
                                 </div>
                             </div>
 
@@ -75,51 +75,32 @@
                         </div>
                         <div class="category-test">
                             <ul>
-                                <li class="active">
-                                    <h5><i class="fa fa-phone"></i> Phone: <span>{{$dt->order_phone}}</span></h5>
+                            <li class="active">
+                                    <h5><i class="fa fa-comment"></i> Name: <span>{{$dt->name}}</span></h5>
+                                </li>
+                                <li >
+                                    <h5><i class="fa fa-phone"></i> Phone: <span>{{$dt->phone}}</span></h5>
                                 </li>
                                 <li>
-                                    <h5><i class="fa fa-envelope-o"></i> Email: <span>{{$dt->order_email}}</span></h5>
+                                    <h5><i class="fa fa-envelope-o"></i> Email: <span>{{$dt->email}}</span></h5>
                                 </li>
                                 <li>
-                                    <h5><i class="fa fa-truck"></i> 
-                                        hình thức giao hàng:
-                                            @if($dt->phuongthuc_giaohang = 1)
-                                                <span>Giao hàng nhanh</span>
-                                            @elseif($dt->phuongthuc_giaohang = 2)
-                                                <span>Giao hàng tiết kiệm</span>
-                                            @elseif($dt->phuongthuc_giaohang = 3)
-                                                <span>VIETEL POST</span>
-                                            @else
-                                                <span>ninja Vận</span>
-                                            @endif
-                                    </h5>
-                                </li>
-                                <li>
-                                    <h5><i class="ti-credit-card"></i> 
-                                        Hình thức thanh toán: 
-                                            @if($dt->phuongthuc_thanhtoan = 1)
-                                                <span>chuyển khoản</span>
-                                            @else
-                                                <span>thanh toán trực tiếp</span>
-                                            @endif
-                                    </h5>
+                                    <h5><i class="fa fa-hospital-o"></i> Địa Chỉ: <span>{{$dt->address}}</span></h5>
                                 </li>
                             </ul>
                             <hr>
                         </div>
                         <div class="twt-write col-sm-12">
                             <label for="" style="font-weight: bold;">Ghi chú</label>
-                            <textarea placeholder="Không có ghi chú của khách hàng" rows="4" class="form-control t-text-area" disabled>{{$dt->order_note}}</textarea>
+                            <textarea placeholder="Không có ghi chú của khách hàng" rows="4" class="form-control t-text-area" disabled>{{$dt->ghichu}}</textarea>
                         </div>
                         <footer class="twt-footer">
-                            <p><i class="fa fa-map-marker"></i> {{$dt->thanhpho->name_thanhpho}} - {{$dt->quanhuyen->name_quanhuyen}} - {{$dt->xaphuong->name_xaphuong}} - {{$dt->order_address}}</p>
                             <hr>
-                            <h4 style="font-weight:bold;">
+                            <!-- <h4 style="font-weight:bold;">
                                 <span class="fa fa-money" style="color:#66bb6a"></span> 
                                 Tổng tiền thanh toán : 
-                                <span>{{$dt->donhang->tong_tien}} VNĐ</span>
-                            </h4>
+                                <span></span>
+                            </h4> -->
                             <br>
                         </footer>
                     </section>
@@ -135,44 +116,34 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>mã đơn hàng</th>
-                                    <th>coupon</th>
-                                    <th>Tên sản phẩm</th>
-                                    <th>giá sản phẩm</th>
-                                    <th>số lượng</th>
-                                    <th>Tổng tiền</th>
+                                    <th>Cơ sở</th>
+                                    <th>Dịch vụ</th>
+                                    <th>Ngày Khám</th>
+                                    <th>Thời gian Khám</th>
+                                    <th>Thời gian đặt hàng</th>
                                 </tr>
                             </thead>
                             <tbody>
                             @php
                             $i = 1;
                             @endphp
-                                @foreach($sanpham as $hd)
+                                @foreach($chitiet as $hd)
                                     <tr>
                                         <td>{{$i++}}</td>
                                         <td>
-                                            <span>{{$hd->order_code}}</span>
+                                            <span>{{$hd->coso->name_coso}}</span>
                                         </td>
                                         <td>
-                                            <span class="badge badge-warning">
-                                                @if($hd->product_coupon != null)
-                                                    {{$hd->product_coupon}}
-                                                @else
-                                                    không có coupon
-                                                @endif
-                                            </span>
+                                            <span>{{$hd->nhucau->name_dichvu}}</span>
                                         </td>
                                         <td>
-                                            <span>{{$hd->product_name}}</span>
+                                            <span>{{$hd->date}}</span>
                                         </td>
                                         <td>
-                                            <span>{{number_format($hd->product_price, 0, '.', '.')}} VNĐ</span>
+                                            <span>{{$hd->hour}}</span>
                                         </td>
                                         <td>
-                                            <span>{{$hd->product_quantity}}</span>
-                                        </td>
-                                        <td>
-                                            <span>{{number_format($hd->product_price * $hd->product_quantity, 0, '.', '.')}}</span>
+                                            <span>{{$hd->set_time}}</span>
                                         </td>
                                     </tr>
                                 @endforeach

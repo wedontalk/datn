@@ -57,21 +57,42 @@
  </style>
 @endsection
 @section('main')
-    <div class="content">
-    <div class="col-md-12">
-        <form action="">
-            @csrf
-        <div class="form-group">
-            <label><strong>quản lý danh sách</strong></label>
-            <select name="sort" id="sort" class="form-control">
-                <option value="{{Request::url()}}">Tất cả danh sách</option>
-            @foreach($danhmuc as $loc)
-            <option value="{{Request::url()}}?sort_by={{$loc->slug}}">{{$loc->name_nav}}</option>
-            @endforeach
-            </select>
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Danh sách quản lý dịch vụ</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li>
+                                <form action="">
+                                    @csrf
+                                    <div class="form-group">
+                                        <select  name="sort" id="sort" class="form-control btn">
+                                            <option value="{{Request::url()}}">Tất cả danh sách</option>
+                                        @foreach($danhmuc as $loc)
+                                        <option value="{{Request::url()}}?sort_by={{$loc->slug}}">{{$loc->name_nav}}</option>
+                                        @endforeach
+                                        </select>
+                                    </div>
+                                </form>
+                            </li>
+                            <li><a class="btn bg-flat-color-6" style="color:#fff" id="deleteAllselected">Delete All</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
         </div>
-        </form>
     </div>
+</div>
+    <div class="content">
         <div class="card cart-bg">
             <div class="card-header">
                 <div class="row">

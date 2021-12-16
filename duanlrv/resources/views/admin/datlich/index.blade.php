@@ -111,7 +111,8 @@
                             <th>Nhu cầu</th>
                             <th>thời gian hẹn</th>
                             <th>Trạng thái</th>
-                            <th style="width:100px;">Action</th>
+                            <th style="width:100px;">Chi Tiết</th>
+                            <!-- <th style="width:100px;">Action</th> -->
                             <!-- <th>Quantity</th> -->
                             <!-- <th>Status</th> -->
                         </tr>
@@ -145,8 +146,12 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{route('datlich.destroy',$dt->id)}}" class="btn btn-sm btn-danger btndelete"><i class="fa fa-trash"></i> Xóa</a>
+                                    <a href="{{route('datlich.destroy',$dt->id)}}"" class="badge badge-pending">chi tiết <i class="fa fa-mail-reply"></i></a>
                                 </td>
+                                <!-- <td>
+                                    <a href="{{route('datlich.destroy',$dt->id)}}" class="btn btn-sm btn-danger btndelete"><i class="fa fa-trash"></i> Xóa</a>
+                                </td> -->
+                                
                             </tr>
                         @endforeach
                     </tbody>

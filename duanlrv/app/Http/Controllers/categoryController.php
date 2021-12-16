@@ -63,6 +63,15 @@ class categoryController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'name' => 'required|unique:categories',
+            'id_nav' => 'required',
+        ],
+        [
+            'name.required' => 'Tên Danh mục không để trống',
+            'id_nav.required' => 'Thuộc menu không để trống',
+            'name.unique' => 'Tên menu này đã có trong CSDL',
+        ]);
         if($this->category->create($request->all())){
             return redirect()->route('category.index')->with('success', 'thêm danh mục thành công');
         }else{
@@ -114,6 +123,14 @@ class categoryController extends Controller
      */
     public function update($id, Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'id_nav' => 'required',
+        ],
+        [
+            'name.required' => 'Tên Danh mục không để trống',
+            'id_nav.required' => 'Thuộc menu không để trống',
+        ]);
         $data = $request->all();
         if($this->category->update($id,$data))
         {

@@ -50,6 +50,28 @@
  </style>
 @endsection
 @section('main')
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Danh sách quản lý slide website</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a class="btn bg-flat-color-6" style="color:#fff" id="deleteAllselected">Delete All</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="content">
         <div class="card">
             <div class="card-header">
@@ -76,6 +98,7 @@
                 <table class="table ">
                     <thead>
                         <tr>
+                            <th ><input type="checkbox" id="checkAll" /></th>
                             <th class="serial">#</th>
                             <th class="avatar">image</th>
                             <th>tiêu đề</th>
@@ -91,7 +114,8 @@
                     @endphp
                     <tbody>
                         @foreach($data as $dt)
-                            <tr>
+                            <tr id="sid{{$dt->id}}">
+                                <td><input type="checkbox" class="checkboxclass" name="ids" value="{{$dt->id}}"></td>
                                 <td class="serial">{{$i++}}</td>
                                 <td class="avatar">
                                     <span><img src="{{asset('uploads')}}/{{$dt->image}}" alt="{{$dt->image}}" height="50px"></span>
@@ -110,12 +134,12 @@
                                 </td>
                                 <td>
                                     @if($dt->hidden == 0)
-                                        <span class="badge badge-danger">Danh mục Ẩn</span>
+                                        <span class="badge badge-danger">slide Ẩn</span>
                                     @else
-                                        <span class="badge badge-complete">Danh mục Hiện</span>
+                                        <span class="badge badge-complete">slide Hiện</span>
                                     @endif
                                 </td>
-                                <td>
+                                <td style="width:100px">
                                     <a href="{{route('slide.edit',$dt->id)}}" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></a>
                                     <a href="{{route('slide.destroy',$dt->id)}}" class="btn btn-sm btn-danger btndelete"><i class="fa fa-trash"></i></a>
                                 </td>
@@ -144,6 +168,36 @@
                 if(confirm('bạn muốn xóa chứ ?')){
                     $('form#form-delete').submit();
                 }
+            });
+        });
+    </script>
+
+        <!-- jquery xóa tất cả -->
+        <script>
+        jQuery(document).ready(function($) {
+            $('#checkAll').click(function(){
+                $(".checkboxclass").prop('checked', $(this).prop('checked'));
+            });
+            $('#deleteAllselected').click(function(e){
+                e.preventDefault();
+                var allids = [];
+                var _token = $('input[name="_token"]').val();
+                $('input:checkbox[name=ids]:checked').each(function(){
+                    allids.push($(this).val());
+                });
+                $.ajax({
+                    url:'{{route('deleteslide')}}',
+                    type:"delete",
+                    data:{
+                        _token:_token,
+                        ids:allids
+                    },
+                    success:function(data){
+                        $.each(allids,function(key,val){
+                            $("#sid"+val).remove();
+                        });
+                    }
+                });
             });
         });
     </script>

@@ -36,7 +36,9 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::get("/updateaccount", "accountController@update_thongtin")->name('updateaccount');
     Route::delete("/delete-checked", "donhangController@deletechecked")->name('deletechecked');
     Route::delete("/delete-news", "newsController@deletenews")->name('deletenews');
-    Route::post("/load-coupon", "couponController@loadcoupon")->name('loadcoupon');
+    Route::delete("/delete-coso", "cosoController@deletecoso")->name('deletecoso');
+    Route::delete("/delete-slide", "slideController@deleteslide")->name('deleteslide');
+    Route::delete("/delete-thucung", "infoController@deletethucung")->name('deletethucung');
     Route::resources([
         'menu' => 'menuController',
         'category' => 'categoryController',
@@ -57,7 +59,6 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
 
 // Route::group(['prefix' => 'user'], function(){
 Route::group(['prefix' => '/', 'checkUser'=>'auth'], function(){
-
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/chitiet', 'HomeController@productDetail')->name('productDetail');
     Route::get('/cua-hang', 'HomeController@products')->name('products');

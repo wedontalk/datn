@@ -9,15 +9,24 @@
          @csrf @method('PUT')
         <div class="form-group">
             <label>Tên tiêu đề</label>
-            <input type="text" class="form-control" name="tieu_de" value="{{$slide->tieu_de}}" placeholder="Nhập tên tiêu đề">
+            <input type="text" class="form-control @error('tieu_de') is-invalid @enderror" name="tieu_de" value="{{$slide->tieu_de}}" placeholder="Nhập tên tiêu đề">
+            @error('tieu_de')
+                <small class="form-text text-muted">{{$message}}</small>
+            @enderror
         </div>
         <div class="form-group">
             <label>thông tin</label>
-            <input type="text" class="form-control" name="thong_tin" value="{{$slide->thong_tin}}" placeholder="Nhập thông tin">
+            <input type="text" class="form-control @error('thong_tin') is-invalid @enderror" name="thong_tin" value="{{$slide->thong_tin}}" placeholder="Nhập thông tin">
+            @error('thong_tin')
+                <small class="form-text text-muted">{{$message}}</small>
+            @enderror
         </div>
         <div class="form-group">
             <label>khuyến mãi</label>
-            <input type="text" class="form-control" name="khuyen_mai" value="{{$slide->khuyen_mai}}" placeholder="Nhập khuyến mãi">
+            <input type="text" class="form-control @error('khuyen_mai') is-invalid @enderror" name="khuyen_mai" value="{{$slide->khuyen_mai}}" placeholder="Nhập khuyến mãi">
+            @error('khuyen_mai')
+                <small class="form-text text-muted">{{$message}}</small>
+            @enderror
         </div>
         <div class="form-group">
             <label>link giảm giá</label>
@@ -26,10 +35,13 @@
         <div class="form-group">
             <label>Hình ảnh (*)</label>
             <div class="input-group mt-1">
-                <input type="text" id="image" name="image" value="{{$slide->image}}" class="form-control" placeholder="nhập hình ảnh sản phẩm">
+                <input type="text" id="image" name="image" value="{{$slide->image}}" class="form-control @error('image') is-invalid @enderror" placeholder="nhập hình ảnh sản phẩm">
                 <div class="input-group-append">
                     <button class="btn btn-danger" data-toggle="modal" data-target=".bd-example-modal-lg" type="button"><i class="fa fa-folder"></i></button>
                 </div>
+                @error('image')
+                    <small class="form-text text-muted">{{$message}}</small>
+                @enderror
             </div>
         </div>
         <div class="form-check form-check-inline">

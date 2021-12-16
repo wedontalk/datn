@@ -94,9 +94,12 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            $i =1;
+                        @endphp
                         @foreach($data as  $dt)
                             <tr>
-                                <td>{{$dt->id}}</td>
+                                <td id="ids">{{$i++}}</td>
                                 <td>
                                     <span>{{$dt->coupon_name}}</span>
                                 </td>
@@ -135,7 +138,7 @@
                                     <a href=""><span class="badge badge-danger">Hết hiệu lực</span></a>
                                     @endif
                                 </td>
-                                <td>
+                                <td style="width:100px">
                                     <a href="{{route('coupon.edit',$dt->id)}}" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></a>
                                     <a href="{{route('coupon.destroy',$dt->id)}}" class="btn btn-sm btn-danger btndelete"><i class="fa fa-trash"></i></a>
                                 </td>
@@ -169,15 +172,16 @@
             });
         });
     </script>
-    <!-- <script>
+    <script>
     jQuery(document).ready(function($) {
             var _token = $('input[name="_token"]').val();
-            var ketthuc = $('#ngayketthuc').data('ngayketthuc');
+            var ketthuc = $('#ngayketthuc').text();
+            var ids = $('#ids').text();
             $.ajax({
                 url:'{{url('/admin/coupon')}}',
                 method:"post",
                 dataType:"JSON",
-                data:{ketthuc:ketthuc , _token:_token},
+                data:{ids:ids , ketthuc:ketthuc , _token:_token},
 
                 success:function(data)
                 {
@@ -192,5 +196,5 @@
                 }
             });
     });
-    </script> -->
+    </script>
 @stop()
