@@ -124,13 +124,16 @@
                         </div>
                     </div>
                     <div class="col-lg-7 col-md-7">
+                        <form action="{{route('search')}}" method="post">
                         <div class="advanced-search">
                             <!-- <button type="button" class="category-btn">All Categories</button> -->
                             <div class="input-group">
-                                <input type="text" placeholder="Tôi có thể giúp được gì cho bạn?">
-                                <button type="button"><i class="ti-search"></i></button>
+                                    @csrf
+                                    <input type="text" name="keyword" placeholder="Tôi có thể giúp được gì cho bạn?">
+                                    <button type="submit"><i class="ti-search"></i></button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                     <div class="col-lg-3 text-right col-md-3">
                         <ul class="nav-right">

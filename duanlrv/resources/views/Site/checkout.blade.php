@@ -33,7 +33,12 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <label for="fir">Họ và Tên<span>*</span></label>
-                                <input type="text" id="fir" name="order_name">
+                                <input type="text" id="fir" name="order_name" value="{{old('order_name')}}">
+                                @error('order_name')
+                                <div class="alert alert-warning" role="alert">
+                                {{$message}}
+                                </div>
+                                @enderror
                             </div>
                            
                          
@@ -41,45 +46,76 @@
                                 <div class="form-group row">
                                     <div class="col-sm-12">
                                     <label for="fir">Tỉnh - Thành phố<span>*</span></label>
-                                        <select class="form-control choose input-sm city" name="id_thanhpho" id="city">
-                                            <option value="">-----{{__('Tỉnh - Thành phố')}}-----</option>
+                                        <select class="form-control choose input-sm city" name="id_thanhpho" id="city" >
+                                            <option value="{{old('id_thanhpho')}}">-----{{__('Tỉnh - Thành phố')}}-----</option>
                                             @foreach($thanhpho as $t)
                                             <option class="op-text" name="id_thanhpho" value="{{$t->matp}}">{{$t->name_thanhpho}}</option>
                                             @endforeach
+
                                         </select>
+                                        @error('id_thanhpho')
+                                        <div class="alert alert-warning" role="alert">
+                                        {{$message}}
+                                        </div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-12">
                                         <label class="">Quận - Huyện</label>
-                                        <select class="form-control input-sm choose province" name="id_quanhuyen" id="province">
-                                            <option class="op-text" >-----{{__('Chọn quận huyện')}}-----</option>
+                                        <select class="form-control input-sm choose province" name="id_quanhuyen" id="province" value="{{old('id_quanhuyen')}}">
+                                            <option value="{{old('id_quanhuyen')}}" class="op-text" >-----{{__('Chọn quận huyện')}}-----</option>
                                         </select>
+                                        @error('id_quanhuyen')
+                                        <div class="alert alert-warning" role="alert">
+                                        {{$message}}
+                                        </div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-12">
                                         <label class="">Xã - phường</label>
-                                        <select class="form-control input-sm wards" name="id_xaphuong" id="wards">
-                                            <option class="op-text">-----{{__('Chọn xã phường')}}-----</option>
+                                        <select class="form-control input-sm wards" name="id_xaphuong" id="wards" >
+                                            <option value="{{old('id_xaphuong')}}" class="op-text">-----{{__('Chọn xã phường')}}-----</option>
                                         </select>
+                                        @error('id_xaphuong')
+                                        <div class="alert alert-warning" role="alert">
+                                        {{$message}}
+                                        </div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-12">
                                         <label class="">Địa chỉ</label>
-                                        <input type="text" class="form-control" name="order_address"  placeholder="địa chỉ cụ thể (địa chỉ nhà)" >
+                                        <input type="text" class="form-control" name="order_address"  placeholder="địa chỉ cụ thể (địa chỉ nhà)" value="{{old('order_address')}}">
+                                        @error('order_address')
+                                        <div class="alert alert-warning" role="alert">
+                                        {{$message}}
+                                        </div> 
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="col-lg-6">
                                 <label for="email">Email <span>*</span></label>
-                                <input type="text" id="email" name="order_email">
+                                <input type="email" id="email" name="order_email" value="{{old('order_email')}}">
+                                @error('order_email')
+                                <div class="alert alert-warning" role="alert">
+                                        {{$message}}
+                                        </div>
+                                @enderror
                             </div>
                             <div class="col-lg-6">
                                 <label for="phone">Số điện thoại<span>*</span></label>
-                                <input type="text" id="phone" name="order_phone">
+                                <input type="text" id="phone" name="order_phone" value="{{old('order_phone')}}">
+                                @error('order_phone')
+                                <div class="alert alert-warning" role="alert">
+                                        {{$message}}
+                                        </div>
+                                @enderror
                             </div>
                             <div class="col-lg-12">
                                 <label for="ghichu">Phương thức thanh toán<span></span></label>
@@ -94,7 +130,7 @@
                                 </label>
                                 </div>
                                 <div class="form-check ">
-                                <input class="form-check-input radio" type="radio" name="phuongthuc_thanhtoan" id="exampleRadios1" value="2" checked>
+                                <input class="form-check-input radio" type="radio" name="phuongthuc_thanhtoan" id="exampleRadios1" value="2" check>
                                 <label class="form-check-label" for="exampleRadios1" style="margin-left:50px">
                                     Thanh toán online
                                 </label>
