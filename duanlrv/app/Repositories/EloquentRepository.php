@@ -40,6 +40,10 @@ abstract class EloquentRepository implements EloquentInterface
     {
         return $this->_model->search()->paginate(10);
     }
+    public function getshow()
+    {
+        return $this->_model->search()->paginate(9);
+    }
     public function getthucung()
     {
         return $this->_model::orderBy('id', 'ASC')->where('type_post', 2)->search()->paginate(10);

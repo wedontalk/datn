@@ -106,8 +106,17 @@ class newsController extends Controller
      * @param  \App\Models\news  $news
      * @return \Illuminate\Http\Response
      */
-    public function destroy(news $news)
+    public function destroy($id, Request $request)
     {
-        //
+        $delete = $this->news->find($id);
+        $delete->delete();
+        return redirect()->route('news.index')->with('success', 'xóa thành công');
+    }
+
+    public function deletenews(Request $request)
+    {
+        $ids = $request->ids;
+        news::whereIn('id', $ids)->delete();
+        return reponse()->json(['success'=>"delete all"]);
     }
 }

@@ -5,6 +5,54 @@
          padding: 0;
      }
  </style>
+ <style>
+     .pagination{
+         padding: 0;
+     }
+     /* You can remove these code below*/
+  :root {
+    --primary: #08aeea;
+    --secondary: #13D2B8;
+    --purple: #bd93f9;
+    --pink: #ff6bcb;
+    --blue: #8be9fd;
+    --gray: #333;
+    --font: "Poppins", sans-serif;
+    --gradient: linear-gradient(40deg, #ff6ec4, #7873f5);
+    --shadow: 0 0 15px 0 rgba(0,0,0,0.05);
+  }*{box-sizing:border-box;}input,button,textarea{border:0;outline:none;}
+  /* Main code */
+  
+          .pagination {
+            display: flex;
+            justify-content: left;
+          }
+          .page-item {
+            margin: 0 0.5rem;
+            font-size: 1.2rem;
+            color: #999;
+            cursor: pointer;
+            transition: all 0.2s linear;
+          }
+          .page-item.active .page-link{
+            background-image: linear-gradient( 135deg, #90F7EC 10%, #32CCBC 100%);
+            background-color:transparent;
+            border-radius:5px;
+            padding: 5px 10px;
+          }
+          .pagi-item.is-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+          .pagi-item:hover,
+          .pagi-item.is-active {
+            color: var(--secondary);
+          }
+          .page-link{
+            padding:5px 10px;
+            border:none;
+          }
+ </style>
 @endsection
 @section('main')
     <div class="content">
@@ -46,9 +94,12 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            $i =1;
+                        @endphp
                         @foreach($data as  $dt)
                             <tr>
-                                <td>{{$dt->id}}</td>
+                                <td id="ids">{{$i++}}</td>
                                 <td>
                                     <span>{{$dt->coupon_name}}</span>
                                 </td>
@@ -78,16 +129,16 @@
                                     <span>{{$dt->coupon_date_start}}</span>
                                 </td>
                                 <td>
-                                    <span>{{$dt->coupon_date_end}}</span>
+                                    <span id="ngayketthuc" data-ngayketthuc="{{$dt->coupon_date_end}}">{{$dt->coupon_date_end}}</span>
                                 </td>
                                 <td>
-                                    @if($dt->id_status == 0)
-                                    <a href=""><span class="badge badge-danger">Ẩn</span></a>
-                                    @else
-                                    <a href=""><span class="badge badge-complete">Hiện</span></a>
+                                    @if($dt->id_status == 1)
+                                    <a href=""><span class="badge badge-complete">Còn hiệu lực</span></a>
+                                    @elseif($dt->id_status == 2)
+                                    <a href=""><span class="badge badge-danger">Hết hiệu lực</span></a>
                                     @endif
                                 </td>
-                                <td>
+                                <td style="width:100px">
                                     <a href="{{route('coupon.edit',$dt->id)}}" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></a>
                                     <a href="{{route('coupon.destroy',$dt->id)}}" class="btn btn-sm btn-danger btndelete"><i class="fa fa-trash"></i></a>
                                 </td>
@@ -108,6 +159,7 @@
 
 @section('js')
 <script src="{{asset('adm/assets/js/danhsach.js')}}"></script>
+<script src="{{asset('adm/assets/js/alertne.js')}}"></script>
     <script>
         jQuery(document).ready(function($) {
             $('.btndelete').click(function(ev) {
@@ -119,5 +171,30 @@
                 }
             });
         });
+    </script>
+    <script>
+    jQuery(document).ready(function($) {
+            var _token = $('input[name="_token"]').val();
+            var ketthuc = $('#ngayketthuc').text();
+            var ids = $('#ids').text();
+            $.ajax({
+                url:'{{url('/admin/coupon')}}',
+                method:"post",
+                dataType:"JSON",
+                data:{ids:ids , ketthuc:ketthuc , _token:_token},
+
+                success:function(data)
+                {
+                    if(data == 'done')
+                    {
+                        alertify.success('thành công');
+                    }
+                    else
+                    {
+                        alertify.error('thất bại');
+                    }
+                }
+            });
+    });
     </script>
 @stop()

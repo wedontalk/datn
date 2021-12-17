@@ -24,12 +24,12 @@
                     <div class="blog-sidebar">
                         <div class="search-form">
                             <h4>Search</h4>
-                            <form action="#">
-                                <input type="text" placeholder="Search . . .  ">
+                            <form action="" method="GET" role="form">
+                                <input type="text" placeholder="Search . . .  " name="key">
                                 <button type="submit"><i class="fa fa-search"></i></button>
                             </form>
                         </div>
-                        <div class="blog-catagory">
+                        <!-- <div class="blog-catagory">
                             <h4>Categories</h4>
                             <ul>
                                 <li><a href="#">Fashion</a></li>
@@ -37,9 +37,9 @@
                                 <li><a href="#">Picnic</a></li>
                                 <li><a href="#">Model</a></li>
                             </ul>
-                        </div>
+                        </div> -->
                         <div class="recent-post">
-                            <h4>Recent Post</h4>
+                            <h4>Bài Đăng gần đây</h4>
                             <div class="recent-blog">
                                 <a href="#" class="rb-item">
                                     <div class="rb-pic">
@@ -79,7 +79,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="blog-tags">
+                        <!-- <div class="blog-tags">
                             <h4>Product Tags</h4>
                             <div class="tag-item">
                                 <a href="#">Towel</a>
@@ -90,89 +90,26 @@
                                 <a href="#">Men's hats</a>
                                 <a href="#">Backpack</a>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="col-lg-9 order-1 order-lg-2">
                     <div class="row">
+                        @foreach($blog as $key => $news)
                         <div class="col-lg-6 col-sm-6">
                             <div class="blog-item">
                                 <div class="bi-pic">
-                                    <img src="img/blog/blog-1.jpg" alt="">
+                                    <img src="{{asset('uploads')}}/{{$news->image}}" alt="" height="350px">
                                 </div>
                                 <div class="bi-text">
-                                    <a href="./blog-details.html">
-                                        <h4>The Personality Trait That Makes People Happier</h4>
+                                    <a href="{{URL::to('/news/'.$news->slug)}}">
+                                        <h4>{{$news->name_post}}</h4>
                                     </a>
-                                    <p>travel <span>- May 19, 2019</span></p>
+                                    <p>Tin tuc <span>{{$news->updated_at}}</span></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-sm-6">
-                            <div class="blog-item">
-                                <div class="bi-pic">
-                                    <img src="img/blog/blog-2.jpg" alt="">
-                                </div>
-                                <div class="bi-text">
-                                    <a href="./blog-details.html">
-                                        <h4>This was one of our first days in Hawaii last week.</h4>
-                                    </a>
-                                    <p>Fashion <span>- May 19, 2019</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-6">
-                            <div class="blog-item">
-                                <div class="bi-pic">
-                                    <img src="img/blog/blog-3.jpg" alt="">
-                                </div>
-                                <div class="bi-text">
-                                    <a href="./blog-details.html">
-                                        <h4>Last week I had my first work trip of the year to Sonoma Valley</h4>
-                                    </a>
-                                    <p>travel <span>- May 19, 2019</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-6">
-                            <div class="blog-item">
-                                <div class="bi-pic">
-                                    <img src="img/blog/blog-4.jpg" alt="">
-                                </div>
-                                <div class="bi-text">
-                                    <a href="./blog-details.html">
-                                        <h4>Happppppy New Year! I know I am a little late on this post</h4>
-                                    </a>
-                                    <p>Fashion <span>- May 19, 2019</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-6">
-                            <div class="blog-item">
-                                <div class="bi-pic">
-                                    <img src="img/blog/blog-5.jpg" alt="">
-                                </div>
-                                <div class="bi-text">
-                                    <a href="./blog-details.html">
-                                        <h4>Absolue collection. The Lancome team has been one…</h4>
-                                    </a>
-                                    <p>Model <span>- May 19, 2019</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-6">
-                            <div class="blog-item">
-                                <div class="bi-pic">
-                                    <img src="img/blog/blog-6.jpg" alt="">
-                                </div>
-                                <div class="bi-text">
-                                    <a href="./blog-details.html">
-                                        <h4>Writing has always been kind of therapeutic for me</h4>
-                                    </a>
-                                    <p>Fashion <span>- May 19, 2019</span></p>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                         <div class="col-lg-12">
                             <div class="loading-more">
                                 <i class="icon_loading"></i>

@@ -11,17 +11,23 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>Tên danh mục</label>
-                    <input type="text" class="form-control" name="name" id="name" placeholder="Nhập Tên danh mục">
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" placeholder="Nhập Tên danh mục">
+                    @error('name')
+                    <small class="form-text text-muted">{{$message}}</small>
+                    @enderror
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>__chọn menu__</label>
-                    <select class="form-control" name="id_nav">
+                    <select class="form-control @error('id_nav') is-invalid @enderror" name="id_nav">
                     @foreach($menu as $mn)
                     <option value="{{$mn->id}}">{{$mn->name_nav}}</option>
                     @endforeach
                     </select>
+                    @error('id_nav')
+                    <small class="form-text text-muted">{{$message}}</small>
+                    @enderror
                 </div>
             </div>
          </div>
@@ -34,7 +40,7 @@
             <label class="form-check-label" for="inlineRadio1">Ẩn</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="hidden" id="radio1" value="1">
+            <input class="form-check-input" type="radio" name="hidden" id="radio1" value="1" checked>
             <label class="form-check-label" >Hiện</label>
         </div>
         <br>

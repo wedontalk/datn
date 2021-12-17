@@ -40,8 +40,9 @@ class donhangController extends Controller
 
 
     public function update_trangthai(Request $request){
-        $id = $request->order_id;
-        $id_status = $request->id_status;
+        $data = $request->all();
+        $id = $data['order_id'];
+        $id_status = $data['id_status'];
         $update = donhang::find($id);
         $update->id_status = $id_status;
         $update->save();
@@ -122,5 +123,12 @@ class donhangController extends Controller
             $delete->delete();
         }
         return redirect()->route('donhang.index')->with('success', 'xóa thành công');
+    }
+    public function deletechecked(Request $request)
+    {
+        $ids = $request->ids;
+        donhang::whereIn('order_id', $ids)->delete();
+        echo 'thanhcong';
+        return reponse()->json(['success'=>"delete all"]);
     }
 }

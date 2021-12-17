@@ -167,7 +167,7 @@
 </body>
 <script>
 jQuery(document).ready(function($) {
-    chart30day();
+    chart7day();
   var chart = new Morris.Bar({
         element: 'myfirstchart',
         // option thống kê
@@ -187,7 +187,7 @@ jQuery(document).ready(function($) {
     });
 
 // autoload 30 ngày đơn hàng
-    function chart30day(){
+    function chart7day(){
     var _token = $('input[name="_token"]').val();
     $.ajax({
         url:'{{url('/admin/order-date')}}',

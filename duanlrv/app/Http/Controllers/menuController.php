@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\category;
 
 use Illuminate\Http\Request;
+use App\Models\navmenu;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use App\Repositories\menu\navmenuInterface;
@@ -49,6 +50,13 @@ class menuController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'name_nav' => 'required|unique:nav_menu|',
+        ],
+        [
+            'name_nav.required' => 'Tên menu không để trống',
+            'name_nav.unique' => 'Tên menu này đã có trong CSDL',
+        ]);
         if($this->menu->create($request->all())){
             return redirect()->route('menu.index')->with('success', 'thêm danh mục thành công');
         }else{
@@ -88,6 +96,13 @@ class menuController extends Controller
      */
     public function update($id, Request $request)
     {
+        $validated = $request->validate([
+            'name_nav' => 'required|unique:nav_menu,name_nav'.request()->$id,
+        ],
+        [
+            'name_nav.required' => 'Tên menu không để trống',
+            'name_nav.unique' => 'Tên menu này đã có trong CSDL',
+        ]);
         $data = $request->all();
         if($this->menu->update($id,$data))
         {
