@@ -94,7 +94,7 @@
                                 
                                 <div class="quantity">
                                     
-                                    <a href="#" class="primary-btn pd-cart">Thêm vào giỏ hàng</a>
+                                    <a data-url="{{route('addToCart', ['id'=>$val->id])}}" href="#" class="primary-btn pd-cart add_to_cart">Thêm vào giỏ hàng</a>
                                 </div>
                                 
                                 <ul class="pd-tags">
@@ -120,7 +120,7 @@
                                 <p class="card-text">Tình trạng:{{$val->status}}</p>
                                 <p class="card-text">Vận chuyển: có phí</p>
                                 
-                                <p class="card-text">Mô tả thêm: {{$val->description}}</p>
+                                <p class="card-text">Mô tả thêm: {!! $val->description !!}</p>
                                
                             </div>
                         </div>

@@ -60,7 +60,7 @@ class LoginController extends Controller
                 return redirect()->route('admin.dashboard');
             }
             elseif (auth()->user()->id_role == 2) {
-                return redirect()->route('Site.index');
+                return redirect()->route('home');
             }
         }
         else{

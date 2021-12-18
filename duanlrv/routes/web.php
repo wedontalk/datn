@@ -58,7 +58,7 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
 });
 
 // Route::group(['prefix' => 'user'], function(){
-Route::group(['prefix' => '/', 'checkUser'=>'auth'], function(){
+// Route::group(['prefix' => '/', 'checkUser'=>'auth'], function(){
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/chitiet', 'HomeController@productDetail')->name('productDetail');
     Route::get('/cua-hang', 'HomeController@products')->name('products');
@@ -106,13 +106,14 @@ Route::group(['prefix' => '/', 'checkUser'=>'auth'], function(){
     Route::view('/contact', 'Site.contact');
     Route::view('/introduce', 'Site.introduce');
     Route::view('/blog', 'Site.blog');
+    Route::view('/success', 'Site.successOrder');
     Route::get('/calendar', [HomeController::class, 'calendar'])->name('calendar');
     Route::post('/addcalendar', [HomeController::class, 'Addcalendar'])->name('addcalendar');
     Route::get('/wishlist', [HomeController::class, 'WishlistsViews'])->name('wishlist');
     Route::get('/addToWishlist/{id}', [HomeController::class, 'addtoWishlist'])->name('addtowishlist');
     Route::get('/delete-Wishlist/{id}', [HomeController::class, 'deleteWishlist'])->name('deletewishlists');
     
-});
+// });
 
 Auth::routes();
 

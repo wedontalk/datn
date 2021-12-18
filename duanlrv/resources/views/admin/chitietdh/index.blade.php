@@ -118,7 +118,7 @@
                             <h4 style="font-weight:bold;">
                                 <span class="fa fa-money" style="color:#66bb6a"></span> 
                                 Tổng tiền thanh toán : 
-                                <span>{{$dt->donhang->tong_tien}} VNĐ</span>
+                                <span>{{number_format($dt->donhang->tong_tien, 0, '.', '.')}} VNĐ</span>
                             </h4>
                             <br>
                         </footer>

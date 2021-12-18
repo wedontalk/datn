@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\View;
 use App\Models\thanhpho;
 use App\Models\quanhuyen;
 use App\Models\xaphuong;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\coupon;
 // use Illuminate\Support\Facades\Mail;
@@ -104,7 +104,8 @@ class HomeController extends Controller
     }
     public function news($slug){
         $news =news::orderBy('id','ASC')->where('hidden', 1)->where('slug',$slug)->get();
-
+        return view('Site.blogDetail',compact('news'));
+    }
     function addToCart($id){
         // session()->flush('carts');
         $product = $this-> products->find($id);
@@ -203,10 +204,12 @@ class HomeController extends Controller
     } 
     public function checkout(){
         $carts =session()->get('cart');
-        
-        return view('site.checkout');
+        $thanhpho = thanhpho::orderBy('matp', 'ASC')->get();
+        $quanhuyen = quanhuyen::orderBy('id', 'ASC')->get();
+        $xaphuong = xaphuong::orderBy('id', 'ASC')->get();
+        return view('site.checkout',compact('thanhpho','xaphuong','quanhuyen','carts'));
 
-    } 
+    }
 
     public function select_thanhpho(Request $request){
         $data = $request->all();
@@ -229,12 +232,16 @@ class HomeController extends Controller
             echo $output;
         }
     }
+
+
     public function save_checkout( thanhtoan $request){
+        
         //insert order_product
-        $id = Auth::user()->id;
-        $email = Auth::user()->email;
-        $name = Auth::user()->name;
-        $phone = Auth::user()->phone;
+        $id = \Auth::user()->id;
+        // $email = \Auth::user()->email;
+        $email = $request->order_email;
+        $name = \Auth::user()->name;
+        $phone = \Auth::user()->phone;
         // session()->get(['use'=>$dataaaa]);
         if ($request->phuongthuc_thanhtoan==2) {
             $data= array();
@@ -266,7 +273,7 @@ class HomeController extends Controller
         }
         $total= $request->tong_tien;
         // return $this->return($request,$data,$cart);
-            return view('Vnpay.index',compact('total','dataaaa'));
+            return view('Vnpay.index',compact('total','data'));
         }else{
         $data= array();
         $data['id_user']=$id;
@@ -294,7 +301,7 @@ class HomeController extends Controller
             DB::table('order_detail')->insertGetId($cart);
         }
             // Session()->forget('cart');
-        $now =Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
+$now =Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
         $title_mail="Đơn mua hàng ngày".' '.$now;
 
         //lấy cart
@@ -307,7 +314,35 @@ class HomeController extends Controller
                     'tong'=>$request->tong_tien,
                 );
             }
-    function addtoWishlist($id){
+
+           
+        }
+        Mail::send('mail.confirm',[
+            'cart_array'=>$cart_array,
+            'order_code'=>$data['order_code'],
+            'name'=>$name,
+            'email'=>$email,
+            'phone'=>$phone,
+            'address'=>$data['order_address'],
+            'order_note'=>$data['order_note'],
+            'thanhpho'=> thanhpho::where('matp', $data['id_thanhpho'])->get(),
+            'quanhuyen'=> quanhuyen::where('id', $data['id_quanhuyen'])->get(),
+            'xaphuong'=> xaphuong::where('id', $data['id_xaphuong'])->get(),
+        ],function($message)use($email,$name,$title_mail){
+            $message->to($email,$name)->subject($title_mail);
+            $message->from('hieuhaohoa201@gmail.com');
+        });
+        session::forget('cart');
+        session::forget('coupon');
+        
+
+    }
+        return Redirect::to('/success');
+    }
+
+
+
+    public function addtoWishlist($id){
         // session()->flush('carts');
         $product = $this-> products->find($id);
         $Wishlists= session()->get('Wishlists',[]);
@@ -366,8 +401,25 @@ class HomeController extends Controller
         $data->date = $req->date;
         $data->hour = $req->hour;
         $data->save();
-        return redirect('calendar');
+        return redirect('/success');
     }
+
+
+
+    public function check_coupon(Request $request){
+        $data = $request->all();
+        $coupon = Coupon::where('coupon_code',$data['coupon'])->first();
+        if($coupon){
+            $count_coupon = $coupon->count();
+            if($count_coupon>0){
+                $coupon_session = Session::get('coupon');
+                if($coupon_session==true){
+                    $is_avaiable = 0;
+                    if($is_avaiable==0){
+                        $cou[] = array(
+                            'coupon_code' => $coupon->coupon_code,
+                            'coupon_condition' => $coupon->coupon_condition,
+                            'coupon_number' => $coupon->coupon_number,
 
                         );
                         Session::put('coupon',$cou);
@@ -388,7 +440,19 @@ class HomeController extends Controller
         }else{
             return redirect()->back()->with('error','Mã giảm giá không đúng');
         }
-    }  
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     public function unset_coupon(){
         $coupon =session()->get('coupon');
         if($coupon=true){
@@ -414,5 +478,97 @@ class HomeController extends Controller
        return view('Site.products',compact('categoryNav','category_by_id','products'));
     //    return view('Site.products',compact('products','categoryNav','category_by_id','product_loc'));
     } 
+
+
+
+    public function createpayment(Request $request)
+    {
+        session(['cost_id' => $request->id]);
+        session(['url_prev' => url()->previous()]);
+        $vnp_TmnCode = "UDOPNWS1"; //Mã website tại VNPAY 
+        $vnp_HashSecret = "EBAHADUGCOEWYXCMYZRMTMLSHGKNRPBN"; //Chuỗi bí mật
+        $vnp_Url = "http://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        $vnp_Returnurl = "http://localhost:8000/return-vnpay";
+        $vnp_TxnRef = date("YmdHis"); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+        $vnp_OrderInfo = "Thanh toán hóa đơn phí dich vụ";
+        $vnp_OrderType = 'billpayment';
+        $vnp_Amount = $request->input('amount') * 100;
+        $vnp_Locale = 'vn';
+        $vnp_IpAddr = request()->ip();
+
+        $inputData = array(
+            "vnp_Version" => "2.0.0",
+            "vnp_TmnCode" => $vnp_TmnCode,
+            "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_CurrCode" => "VND",
+            "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => $vnp_OrderInfo,
+            "vnp_OrderType" => $vnp_OrderType,
+            "vnp_ReturnUrl" => $vnp_Returnurl,
+            "vnp_TxnRef" => $vnp_TxnRef,
+        );
+
+        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+            $inputData['vnp_BankCode'] = $vnp_BankCode;
+        }
+        ksort($inputData);
+        $query = "";
+        $i = 0;
+        $hashdata = "";
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashdata .= '&' . $key . "=" . $value;
+            } else {
+                $hashdata .= $key . "=" . $value;
+                $i = 1;
+            }
+            $query .= urlencode($key) . "=" . urlencode($value) . '&';
+        }
+
+        $vnp_Url = $vnp_Url . "?" . $query;
+        if (isset($vnp_HashSecret)) {
+           // $vnpSecureHash = md5($vnp_HashSecret . $hashdata);
+            $vnpSecureHash = hash('sha256', $vnp_HashSecret . $hashdata);
+            $vnp_Url .= 'vnp_SecureHashType=SHA256&vnp_SecureHash=' . $vnpSecureHash;
+        }
+        return redirect($vnp_Url);
+    }
+
+
+    public function return(Request $request){   
+        
+        if($request->vnp_ResponseCode == "00") {
+            // $this->apSer->thanhtoanonline(session('cost_id'));
+        DB::beginTransaction();      
+        $ad=$request->vnp_TxnRef;
+        $d=session()->get('use');
+
+            $url = session('url_prev','/');
+        $vnpay=$request->all();
+        $data_payment=array();
+        $data_payment['order_id']=$vnpay['vnp_TxnRef'];
+        // $data_payment['thanh_vien']= $da['id_user'];
+        $data_payment['money']=$vnpay['vnp_Amount'];
+        $data_payment['note']=$vnpay['vnp_OrderInfo'];
+        $data_payment['vnp_response_code']=$vnpay['vnp_ResponseCode'];
+        $data_payment['code_vnpay']=$vnpay['vnp_TransactionNo'];
+        $data_payment['code_bank']=$vnpay['vnp_BankCode'];
+        $data_payment['time']=date('Y-m-d H:i',strtotime($vnpay['vnp_PayDate']));
+        
+        DB::table('payments')->insertGetId($data_payment);
+
+                    return view('Vnpay.vnpay_return',compact('vnpay'));
+            // return redirect($url)->with('success' ,'Đã thanh toán phí dịch vụ');
+        
+    }
+}
+
+
+
+
+
 }
 

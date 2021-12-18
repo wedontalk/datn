@@ -1,6 +1,4 @@
-@php
-session_start();
-@endphp
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -45,7 +43,7 @@ session_start();
                     <div class="form-group">
                         <label for="amount">Số tiền</label>
                         <input class="form-control" id="amount"
-                               name="amount" type="number" value="{{ intval($total) *10000 }}"/>
+                               name="amount" type="number" value="{{ intval($total) }}"/>
                     </div>
                     <div class="form-group">
                         <label for="order_desc">Nội dung thanh toán</label>

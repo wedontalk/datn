@@ -104,7 +104,7 @@
             <i class="fa fa-bell"></i>
             <span class="count bg-danger">{{$thongtin->count()}}</span>
         </button>
-        <div class="dropdown-menu" aria-labelledby="notification">
+        <div class="dropdown-menu overflowne" aria-labelledby="notification">
             <p class="red">Thông báo đặt lịch</p>
             @if($thongtin)
             @foreach($thongtin as $mn)
