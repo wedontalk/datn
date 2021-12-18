@@ -111,7 +111,7 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::post('/addcalendar', [HomeController::class, 'Addcalendar'])->name('addcalendar');
     Route::get('/wishlist', [HomeController::class, 'WishlistsViews'])->name('wishlist');
     Route::get('/addToWishlist/{id}', [HomeController::class, 'addtoWishlist'])->name('addtowishlist');
-    Route::get('/delete-Wishlist/{id}', [HomeController::class, 'deleteWishlist'])->name('deletewishlists');
+    Route::get('/deleteWishlist', [HomeController::class, 'deleteWishlist'])->name('deletewishlist1');
     
 // });
 

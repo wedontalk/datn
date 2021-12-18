@@ -138,9 +138,18 @@
                     <div class="col-lg-3 text-right col-md-3">
                         <ul class="nav-right">
                             <li class="heart-icon">
-                                <a href="#">
+                                <a href="/wishlist">
                                     <i class="icon_heart_alt"></i>
-                                    <span>1</span>
+                                    <span>
+                                        @if (session('Wishlists'))
+                                        @php
+                                          echo count(session()->get('Wishlists'));
+                                       
+                                        @endphp
+                                        @else
+                                            0
+                                        @endif
+                                       </span>
                                 </a>
                              </li>
                                             @php 

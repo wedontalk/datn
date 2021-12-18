@@ -97,6 +97,7 @@
                         
                     }
                 })
+                location.reload();
             }
         alertify.success('Xóa Sản phẩm thành công!') 
         }, function(){ alertify.error('Hủy Xóa sản phẩm')});

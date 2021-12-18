@@ -362,6 +362,7 @@ $now =Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
         //     'message'=>'success'
 
         // ], 200);
+
         
     }
 
@@ -371,6 +372,7 @@ $now =Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
             unset($Wishlists[$request->id]);
             session()->put('Wishlists',$Wishlists);
             $Wishlists =session()->get('Wishlists');
+            
             // $Wishlist=View('site.contentWishlist',compact('wishlist'))->render();
             // return response()->json(['contentWishlist'=> $Wishlist]);
         } 

@@ -1,6 +1,8 @@
 @extends('layouts.site')
 
 @section('main')
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
 <style>
     .page-item.active .page-link {
     z-index: 3;
@@ -146,7 +148,7 @@
                                         @endif
                                         <div class="sale pp-sale">Sale</div>
                                         <div class="icon">
-                                            <i class="icon_heart_alt"></i>
+                                            <a href="{{URL::to('addToWishlist/'.$product->id)}}"><i class="far fa-heart" style="color:#fff;font-size:25px"></i></a>
                                         </div>
                                         <ul>
                                             <li class="w-icon active"><a href="#"  data-url="{{route('addToCart', ['id'=>$product->id])}}" class=" add_to_cart"  ><i class="icon_bag_alt add_to_cart"></i></a></li>
