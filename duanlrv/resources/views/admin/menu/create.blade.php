@@ -9,8 +9,10 @@
          @csrf
         <div class="form-group">
             <label>Tên menu</label>
-            <input type="text" class="form-control" name="name_nav" id="name" placeholder="Nhập Tên menu">
-
+            <input type="text" class="form-control @error('name_nav') is-invalid @enderror" name="name_nav" id="name" placeholder="Nhập Tên menu">
+            @error('name_nav')
+                <small class="form-text text-muted">{{$message}}</small>
+            @enderror
         </div>
         <div class="form-group" style="display: none;">
             <label>Tên slug</label>

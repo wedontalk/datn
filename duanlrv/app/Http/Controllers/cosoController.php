@@ -81,6 +81,29 @@ class cosoController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'name_coso' => 'required|unique:coso_thucung',
+            'time_hoatdong' => 'required',
+            'time_ketthuc' => 'required',
+            'phone_coso' => 'required',
+            'address_cuthe' => 'required',
+            'id_xaphuong' => 'required',
+            'id_quanhuyen' => 'required',
+            'id_province' => 'required',
+            'image' => 'required',
+        ],
+        [
+            'name_coso.required' => 'Tên menu không để trống',
+            'name_coso.unique' => 'Tên menu này đã có trong CSDL',
+            'time_hoatdong.required' => 'Thời gian hoạt động không được để trống',
+            'time_ketthuc.required' => 'Thời gian Kết thúc không được để trống',
+            'phone_coso.required' => 'Số điện thoại không được để trống',
+            'address_cuthe.required' => 'Địa chỉ cụ thể không được để trống',
+            'id_xaphuong.required' => 'Xã phường không được để trống',
+            'id_quanhuyen.required' => 'Quận Huyện, Thị Trấn không được để trống',
+            'id_province.required' => 'Tỉnh, Thành Phố không được để trống',
+            'image.required' => 'Hình đại diện không được để trống',
+        ]);
         if($this->qldichvu->create($request->all()))
         {
             return redirect()->route('qldichvu.index')->with('success', 'xét duyệt thành công');
@@ -128,6 +151,28 @@ class cosoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name_coso' => 'required',
+            'time_hoatdong' => 'required',
+            'time_ketthuc' => 'required',
+            'phone_coso' => 'required',
+            'address_cuthe' => 'required',
+            'id_xaphuong' => 'required',
+            'id_quanhuyen' => 'required',
+            'id_province' => 'required',
+            'image' => 'required',
+        ],
+        [
+            'name_coso.required' => 'Tên cơ sở không để trống',
+            'time_hoatdong.required' => 'Thời gian hoạt động không được để trống',
+            'time_ketthuc.required' => 'Thời gian Kết thúc không được để trống',
+            'phone_coso.required' => 'Số điện thoại không được để trống',
+            'address_cuthe.required' => 'Địa chỉ cụ thể không được để trống',
+            'id_xaphuong.required' => 'Xã phường không được để trống',
+            'id_quanhuyen.required' => 'Quận Huyện, Thị Trấn không được để trống',
+            'id_province.required' => 'Tỉnh, Thành Phố không được để trống',
+            'image.required' => 'Hình đại diện không được để trống',
+        ]);
         if($this->qldichvu->update($id,$request->all()))
         {
             return redirect()->route('qldichvu.index')->with('success', 'xét duyệt thành công');
@@ -148,5 +193,10 @@ class cosoController extends Controller
         $delete = $this->qldichvu->find($id);
         $delete->delete();
         return redirect()->route('qldichvu.index')->with('success', 'xóa thành công');
+    }
+    public function deletecoso (Request $request){
+        $ids = $request->ids;
+        coso::whereIn('id', $ids)->delete();
+        return reponse()->json(['success'=>"delete all"]);
     }
 }

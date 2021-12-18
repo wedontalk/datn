@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\coupon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use App\Repositories\coupon\couponInterface;
+use Carbon\Carbon;
 
 class couponController extends Controller
 {
@@ -19,12 +21,32 @@ class couponController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $temm = $request->all();
+        $ketthuc = $request->ketthuc;
+        $ids = $request->ids;
+        $now = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
         $data = $this->coupon->getAll();
+        foreach ($data as $test) {
+            $id = $test->id;
+            $ngayket = $test['coupon_date_end'];
+            if($now > $test['coupon_date_end'] || $test['coupon_qty'] == 0 || $test['coupon_qty'] == null){
+                $idne = $test->id;
+                $update = coupon::find($id);
+                $update->id = $idne;
+                $update->id_status = 2;
+                $update->save();
+            }else{
+                $idne = $test->id;
+                $update = coupon::find($id);
+                $update->id = $idne;
+                $update->id_status = 1;
+                $update->save();
+            }
+        }
         return view('admin.coupon.index', compact('data'));
     }
-
     /**
      * Show the form for creating a new resource.
      *

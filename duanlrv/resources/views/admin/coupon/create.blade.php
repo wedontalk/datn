@@ -17,13 +17,13 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>ngày bắt đầu</label>
-                    <input type="date" class="form-control" name="coupon_date_start" placeholder="Nhập Tên danh mục">
+                    <input type="date" class="form-control" id="start" name="coupon_date_start" placeholder="Nhập Tên danh mục">
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>ngày Kết thúc</label>
-                    <input type="date" class="form-control" name="coupon_date_end" placeholder="Nhập Tên danh mục">
+                    <input type="date" class="form-control" id="end" name="coupon_date_end" placeholder="Nhập Tên danh mục" disabled="true">
                 </div>
             </div>
             <div class="col-sm-6">
@@ -33,8 +33,9 @@
                 </div>
             </div>
             <div class="form-group col-sm-6">
-                <label for="exampleFormControlSelect1">giảm theo</label>
-                <select class="form-control" id="exampleFormControlSelect1" name="coupon_condition">
+                <label for="selecttien">giảm theo</label>
+                <select class="form-control" id="selecttien" name="coupon_condition">
+                <option value="0" selected>-- Giảm giá theo -- </option>
                 <option value="1">theo %</option>
                 <option value="2">theo giá tiền</option>
                 </select>
@@ -42,7 +43,7 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>số giảm</label>
-                    <input type="text" class="form-control" name="coupon_number" placeholder="Nhập Tên danh mục">
+                    <input type="text" class="form-control sogiam" name="coupon_number" placeholder="nhập số tiền cần giảm" disabled="true">
                 </div>
             </div>
             <div class="col-sm-6">
@@ -56,7 +57,7 @@
          <div class="form-group">
             <label for="exampleFormControlSelect1">Trạng thái xét duyệt</label>
             <select class="form-control" id="exampleFormControlSelect1" name="id_status">
-            <option value="1">xét duyệt</option>
+            <option value="1">xét duyệt Thành công</option>
             <option value="2">Đợi xét duyệt</option>
             <option value="3">hủy xét duyệt</option>
             </select>
@@ -74,4 +75,38 @@
 
 @section('js')
 <script src="{{asset('adm/assets/js/slug.js')}}"></script>
+<script>
+    jQuery(document).ready(function($){
+        $('#selecttien').on('change', function(){
+            var select = $(this).val();
+            if(select == 0){
+                var sogiam = $('.sogiam').attr('disabled', true);
+            }else if(select == 1){
+                var sogiam = $('.sogiam').attr('placeholder', 'giảm theo %');
+                var sogiam = $('.sogiam').attr('disabled', false);
+            }else{
+                var sogiam = $('.sogiam').attr('placeholder', 'giảm theo giá tiền');
+                var sogiam = $('.sogiam').attr('disabled', false);  
+            }
+        })
+    });
+</script>
+<script>
+    jQuery(document).ready(function($){
+        $(document).on('change', function(){
+            var ngaybd  = $('#start').val();
+            var ngaykt  = $('#end').val();
+            if(ngaybd > ngaykt && ngaykt != ''){
+                $('#start').css("background-color", "red");
+                $('#end').css("background-color", "red");
+            }else if(ngaybd != ''){
+                var sogiam = $('#end').attr('disabled', false);
+            }
+            else{
+                $('#start').css("background-color", "");
+                $('#end').css("background-color", " ");
+            }
+        });
+    });
+</script>
 @stop

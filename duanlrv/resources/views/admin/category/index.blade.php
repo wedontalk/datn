@@ -4,10 +4,6 @@
      .pagination{
          padding: 0;
      }
-
-
-
-
      /* You can remove these code below*/
   :root {
     --primary: #08aeea;

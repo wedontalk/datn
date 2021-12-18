@@ -4,12 +4,21 @@
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
 <!------ Include the above in your HEAD tag ---------->
+
 <style>
 .stepwizard-step p {
     margin-top: 10px;
 }
-
+.ui-datepicker-inline{
+    width: 100%;
+    background-image: linear-gradient(135deg, #FFD3A5 10%, #FD6585 100%);
+}
+.ui-datepicker-title{
+    background-image: linear-gradient(135deg, #FFD3A5 10%, #FD6585 100%);
+}
 .stepwizard-row {
     display: table-row;
 }
@@ -176,6 +185,19 @@
             margin-left: 27px;
         }
 </style>
+
+<script>
+  $( function() {
+    $( "#datepickerok" ).datepicker({
+        minDate: '0',
+        prevText:"Tháng trước",
+        nextText:"Tháng sau",
+        dateFormat:"yy-mm-dd",
+        dayNamesMin:["thứ 2", "thứ 3", "thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ Nhật"],
+    });
+  });
+  </script>
+
 <div class="breacrumb-section">
     <div class="container">
         <div class="row">
@@ -213,10 +235,6 @@
                 <div class="col-xs-12">
                     <div class="col-md-12">
                         <h3> Đăng Ký Thông Tin</h3>
-                        {{-- {{-- <div class="form-group">
-                            <label class="control-label">First Name</label>
-                            <input  maxlength="100" type="text" required="required" class="form-control" placeholder="Enter First Name"  />
-                        </div> --}}
                         <div class="form-group">
                             <label class="control-label">Họ và Tên</label>
                             <input type="text" required="required" class="form-control name" placeholder="Họ và Tên" name="name" onchange="onchange_1()"/>
@@ -247,22 +265,32 @@
                 <div class="col-xs-12" >
                     <div class="col-md-12">
                         <h3> Chọn Dịch Vụ</h3>
-                       
-                          <div class="row form-group">
-                            <div class="col-lg-6">
-                              <div class="input-group">
+                       <div class="form-group">
+                        <div class="col-lg-6">
+                                <div class="input-group">
                                 <div class="form-group">
-                                    <label for="sel1">Chọn Cơ Sở:</label>
-                                    <select class="form-control CS" id="sel1" name="CS" onchange="onchange_5()">
-                                        <option>-- Cơ Sở --</option>
-                                      @foreach ($CS as $CS)
-                                          <option value="{{ $CS['id'] }}">{{ $CS['name_coso'] }}</option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-                              </div><!-- /input-group -->
+                                    <label for="sel1">Chọn Ngày:</label>
+                                    <input type="text" id="date1" name="date" value="" style="display:none">
+                                    <div id="datepickerok" class="date" onchange="onchange_7()"></div>
+                                    </div>
+                                </div>
+                            </div>
+                       </div>
+                          <div class="row form-group">
+                            <div class="col-lg-12">
+                                <div class="input-group">
+                                    <div class="form-group">
+                                        <label for="sel1">Chọn Cơ Sở:</label>
+                                        <select class="form-control CS" id="sel1" name="CS" onchange="onchange_5()">
+                                            <option>-- Cơ Sở --</option>
+                                        @foreach ($CS as $CS)
+                                            <option value="{{ $CS['id'] }}">{{ $CS['name_coso'] }}</option>
+                                        @endforeach
+                                        </select>
+                                    </div>
+                                </div><!-- /input-group -->
                             </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6 ">
+                            <div class="col-lg-12 ">
                               <div class="input-group">
                                 <div class="form-group">
                                     <label for="sel1">Chọn Dịch Vụ:</label>
@@ -275,17 +303,7 @@
                                   </div>
                               </div><!-- /input-group -->
                             </div><!-- /.col-lg-6 -->
-                          </div><!-- /.row -->
-                          <div class="row form-group">
-                            <div class="col-lg-6">
-                              <div class="input-group">
-                                <div class="form-group">
-                                    <label for="sel1">Chọn Ngày:</label>
-                                    <input type="date" class="form-control date" name="date" onchange="onchange_7()">
-                                  </div>
-                              </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6 ">
+                            <div class="col-lg-12 ">
                               <div class="input-group">
                                 <div class="form-group">
                                     <label for="sel1">Chọn Giờ:</label>
@@ -308,9 +326,9 @@
                                     </select>
                                   </div>
                               </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
+                            </div>
                           </div><!-- /.row -->
-                          <div class="form-group">
+                          <div class="form-group col-sm-12">
                               <label for="">Ghi Chú</label>
                             <textarea class="form-control ghichu" name="ghichu" rows="5" onchange="onchange_9()"></textarea>
                         </div>       
@@ -374,7 +392,7 @@
                             <p><strong>Ghi Chú: </strong><span id="ghichu" style="width: 100%;"> </span></p> 
                         </div> 
                     <br>
-                    
+                    <input type="hidden" name="id_user" value="{{Auth::user()->id}}"/>
                 </div>
                 <button class="btn btn-success btn-lg d-flex justify-content-center" style="margin:auto;width:200px" type="submit">Finish!</button>
             </div>
@@ -410,6 +428,7 @@
     function onchange_7(){
         var name = document.querySelector('.date').value;
         document.querySelector('#date').innerText = name;
+        document.querySelector('#date1').value = name;
     }
     function onchange_8(){
         var name = document.querySelector('.hour').value;

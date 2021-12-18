@@ -52,9 +52,9 @@
             <input type="text" class="form-text" name="status" value="{{$qlsanpham->status}}" placeholder="còn hàng | hết hàng...">
         </div>
         <div class="form-group col-md-6">
-            <label>Hình ảnh (*)</label>
+            <label>Hình ảnh (*) </label>
             <div class="input-group mt-1">
-                <input type="text" name="image" id="image" value="{{$qlsanpham->image}}" class="form-control" placeholder="nhập hình ảnh phim" disabled>
+                <input type="text" name="image" id="image" value="{{$qlsanpham->image}}" class="form-control" placeholder="nhập hình ảnh phim">
                 <div class="input-group-append">
                     <button class="btn btn-danger" data-toggle="modal" data-target=".bd-example-modal-lg" type="button"><i class="fa fa-folder"></i></button>
                 </div>

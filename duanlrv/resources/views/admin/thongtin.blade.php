@@ -104,11 +104,11 @@
             <i class="fa fa-bell"></i>
             <span class="count bg-danger">{{$thongtin->count()}}</span>
         </button>
-        <div class="dropdown-menu" aria-labelledby="notification">
+        <div class="dropdown-menu overflowne" aria-labelledby="notification">
             <p class="red">Thông báo đặt lịch</p>
             @if($thongtin)
             @foreach($thongtin as $mn)
-            <a class="dropdown-item media" href="#">
+            <a class="dropdown-item media" href="{{url('/admin/datlich/'.$mn->id)}}">
                 @if($mn->id_status == 1)
                     <i class="fa fa-check" style="color:green"></i>
                 @else
@@ -136,7 +136,7 @@
             @if($donhangcount)
                 @foreach($donhangcount as $dh)
                 <a class="dropdown-item media" href="{{url('/admin/chi-tiet-don-hang/'.$dh->order_id)}}">
-                    <span class="photo media-left"><img src="{{asset('uploads')}}/{{$dh->avatar}}" alt="{{$dh->avatar}}"></span>
+                    <span class="photo media-left"><img src="{{asset('uploads')}}/{{$dh->avatar}}"></span>
                     <div class="message media-body">
                         <span class="name float-left">{{$dh->order_name}}</span>
                         <span class="time float-right">Ngày đặt hàng: {{$dh->order_date}}</span>
@@ -153,7 +153,12 @@
 @if(Auth::user()->id_role == 1)
 <div class="user-area dropdown float-right">
     <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <img class="user-avatar rounded-circle" src="{{asset('uploads')}}/{{Auth::user()->avatar}}" height="40px" alt="User Avatar">
+        <img class="user-avatar rounded-circle" src="
+        @if(Auth::user()->avatar == null) 
+            {{asset('uploads/avatar/Anh-avatar-123123123.jpg')}} 
+        @else 
+            {{asset('uploads')}}/{{Auth::user()->avatar}}
+        @endif" height="40px">
     </a>
     <div class="user-menu dropdown-menu">
         <a class="nav-link" href="{{route('thongtin')}}"><i class="fa fa- user"></i>Thông tin</a>

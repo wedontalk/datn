@@ -10,10 +10,10 @@
         <meta name="author" content="">
         <title>Thông tin thanh toán</title>
         <!-- Bootstrap core CSS -->
-        <link href="/vnpay_php/assets/bootstrap.min.css" rel="stylesheet"/>
+        <link href="{{asset('Site/vnpay/bootstrap.min.css')}}" rel="stylesheet"/>
         <!-- Custom styles for this template -->
-        <link href="/vnpay_php/assets/jumbotron-narrow.css" rel="stylesheet">         
-        <script src="/vnpay_php/assets/jquery-1.11.3.min.js"></script>
+        <link href="{{asset('Site/vnpay/jumbotron-narrow.css')}}" rel="stylesheet">         
+        <script src="{{asset('Site/vnpay/jquery-1.11.3.min.js')}}"></script>
     </head>
     <body>
         
@@ -59,7 +59,7 @@
                         
                     </label>
                     <br>
-                    <a href="../code/hocvien_thanhtoan.php">
+                    <a href="{{route('home')}}">
                         <button>Quay lại</button>
                     </a>
                 </div> 

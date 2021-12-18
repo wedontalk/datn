@@ -16,10 +16,10 @@ class checkUser
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::check() && Auth::user()->id_role ==2){
+        if(Auth::check() && Auth::user()->id_role == 2){
             return $next($request);
         }else{
-            return redirect()->route('Site.home');
+            return redirect()->route('home');
         }
     }
 }

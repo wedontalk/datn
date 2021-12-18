@@ -6,6 +6,9 @@
 
 <style>
 /* You can remove these code below*/
+.content{
+    background:#fff;
+}
 :root {
     --primary: #08aeea;
     --secondary: #13D2B8;
@@ -51,46 +54,62 @@
 </style>
 @stop()
 @section('main')
+<div class="content">
 <div class="card-header">
-            <center><strong class="card-title"><h3>FORM THÊM CƠ SỞ</h3></strong></center>
+    <center><strong class="card-title"><h3>FORM THÊM CƠ SỞ</h3></strong></center>
 </div>
 <form action="{{route('qldichvu.update',$qldichvu->id)}}" method="POST" enctype="multipart/form-data">
 @csrf @method('PUT')
 <div class="row">
-<div class="content col-md-7" style="background:#fff;">
+<div class=" col-7" >
     <div class="col-sm-12 " style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; border-radius:5px; padding:20px 10px">
         <div class="form-group row">
             <label for="staticEmail" class="col-sm-3 col-form-label">Tên cơ sở</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" name="name_coso" value="{{$qldichvu->name_coso}}" placeholder="Nhập Tên cơ sở">
+                <input type="text" class="form-control @error('name_coso') is-invalid @enderror" name="name_coso" value="{{$qldichvu->name_coso}}" placeholder="Nhập Tên cơ sở">
+                @error('name_coso')
+                    <small class="form-text text-muted">{{$message}}</small>
+                @enderror
             </div>
         </div>
         <div class="form-group row">
             <label for="thoigianhoatdong" class="col-sm-3 col-form-label">Thời gian hoạt động</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" name="time_hoatdong" value="{{$qldichvu->time_hoatdong}}"  placeholder="nhập thời gian hoạt động">
+                <input type="time" step="3600" min="00:00" max="24:00" class="form-control @error('time_hoatdong') is-invalid @enderror" name="time_hoatdong" value="{{$qldichvu->time_hoatdong}}"  placeholder="nhập thời gian hoạt động">
+                @error('time_hoatdong')
+                    <small class="form-text text-muted">{{$message}}</small>
+                @enderror
             </div>
         </div>
 
         <div class="form-group row">
             <label for="thoigianketthuc" class="col-sm-3 col-form-label">Thời gian kết thúc</label>
             <div class="col-sm-9">
-                <input type="text"  class="form-control" name="time_ketthuc" value="{{$qldichvu->time_ketthuc}}"  placeholder="nhập thời gian kết thúc">
+                <input type="time" step="3600" min="00:00" max="24:00"  class="form-control @error('time_ketthuc') is-invalid @enderror" name="time_ketthuc" value="{{$qldichvu->time_ketthuc}}"  placeholder="nhập thời gian kết thúc">
+                @error('time_ketthuc')
+                    <small class="form-text text-muted">{{$message}}</small>
+                @enderror
             </div>
         </div>
         <div class="form-group row">
             <label for="thoigianketthuc" class="col-sm-3 col-form-label">Số điện thoại</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" name="phone_coso" value="{{$qldichvu->phone_coso}}"  placeholder="nhập số điện thoại" >
+                <input type="text" class="form-control @error('phone_coso') is-invalid @enderror" name="phone_coso" value="{{$qldichvu->phone_coso}}"  placeholder="nhập số điện thoại" >
+                @error('phone_coso')
+                    <small class="form-text text-muted">{{$message}}</small>
+                @enderror
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Hình ảnh(*)</label>
             <div class="col-sm-9 input-group">
-                <input type="text" id="image" name="image" value="{{$qldichvu->image}}" class="form-control" placeholder="thêm hình ảnh">
+                <input type="text" id="image" name="image" value="{{$qldichvu->image}}" class="form-control @error('image') is-invalid @enderror" placeholder="thêm hình ảnh">
                 <div class="input-group-append">
                     <button class="btn btn-danger" data-toggle="modal" data-target=".bd-example-modal-lg" type="button"><i class="fa fa-folder"></i></button>
                 </div>
+                @error('image')
+                    <small class="form-text text-muted">{{$message}}</small>
+                @enderror
             </div>
         </div>
         <div class="form-group row">
@@ -106,43 +125,57 @@
             </div>
         </div>
         <br>
+        <div class="" style="padding:0.2rem 0;">
+            <button class="button-effect btn-text-ne ">Sửa thông tin <i class="fa fa-long-arrow-right"></i></button>
+        </div>
     </div>
 </div>
 <!-- nhập thông tin địa chỉ -->
-<div class="content col-md-5" style="background-color:#fff;">
+<div class=" col-5">
     <div class="col-sm-12" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; border-radius:5px; padding:5px 10px">
         <div class="form-group row">
             <label class="col-sm-5 col-form-label">Tỉnh - Thành Phố</label>
             <div class="col-sm-7">
-                <select class="form-control choose input-sm city" name="id_province" id="city">
+                <select class="form-control choose input-sm city @error('id_province') is-invalid @enderror" name="id_province" id="city">
                     <option value="">-----{{__('Tỉnh - Thành phố')}}-----</option>
                     @foreach($thanhpho as $t)
                     <option class="op-text" value="{{$t->matp}}" {{($t->matp == $qldichvu->id_province) ? 'selected':'' }}>{{$t->name_thanhpho}}</option>
                     @endforeach
                 </select>
+                @error('id_province')
+                    <small class="form-text text-muted">{{$message}}</small>
+                @enderror
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-5 col-form-label">Quận - Huyện</label>
             <div class="col-sm-7">
-                <select class="form-control input-sm choose province" name="id_quanhuyen" id="province">
-
+                <select class="form-control input-sm choose province @error('id_quanhuyen') is-invalid @enderror" name="id_quanhuyen" id="province">
                     <option class="op-text" value='{{$qldichvu->id_quanhuyen}}'>{{$qldichvu->quanhuyen->name_quanhuyen}}</option>
                 </select>
+                @error('id_quanhuyen')
+                    <small class="form-text text-muted">{{$message}}</small>
+                @enderror
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-5 col-form-label">Xã - phường</label>
             <div class="col-sm-7">
-                <select class="form-control input-sm wards" name="id_xaphuong" id="wards">
+                <select class="form-control input-sm wards @error('id_xaphuong') is-invalid @enderror" name="id_xaphuong" id="wards">
                     <option class="op-text" value='{{$qldichvu->id_xaphuong}}'>{{$qldichvu->xaphuong->name_xaphuong}}</option>
                 </select>
+                @error('id_xaphuong')
+                    <small class="form-text text-muted">{{$message}}</small>
+                @enderror
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-5 col-form-label">địa chỉ cụ thể</label>
             <div class="col-sm-7">
-                <input type="text" class="form-control" name="address_cuthe" value="{{$qldichvu->address_cuthe}}" placeholder="địa chỉ cụ thể (địa chỉ nhà)" >
+                <input type="text" class="form-control @error('address_cuthe') is-invalid @enderror" name="address_cuthe" value="{{$qldichvu->address_cuthe}}" placeholder="địa chỉ cụ thể (địa chỉ nhà)" >
+                @error('address_cuthe')
+                    <small class="form-text text-muted">{{$message}}</small>
+                @enderror
             </div>
         </div>
     </div>
@@ -157,14 +190,8 @@
     </div>
 </div>
 </div>
-
-<div class="content" style="padding:0.2rem 0; background:white">
-    <button class="button-effect btn-text-ne ">Sửa thông tin <i class="fa fa-long-arrow-right"></i></button>
-</div>
-
-
-
 </form>
+</div>
 
 <!-- modal thêm hình -->
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -197,7 +224,7 @@
         // Summernote
         $('#content').summernote({
             placeholder:'nhập mô tả...',
-            height:70,
+            height:85,
             codemirror: { // codemirror options
                 theme: 'monokai'
             }

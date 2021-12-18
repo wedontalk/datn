@@ -35,7 +35,7 @@ class LoginController extends Controller
         if(Auth()->user()->id_role == 1){
             return route('admin.dashboard');
         }elseif(Auth()->user()->id_role == 2){
-            return route('Site.index');
+            return route('home');
         }
     }
     /**
@@ -60,7 +60,7 @@ class LoginController extends Controller
                 return redirect()->route('admin.dashboard');
             }
             elseif (auth()->user()->id_role == 2) {
-                return redirect()->route('Site.index');
+                return redirect()->route('home');
             }
         }
         else{

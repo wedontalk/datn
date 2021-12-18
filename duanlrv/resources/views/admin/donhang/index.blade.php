@@ -8,8 +8,79 @@
          box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
      }
  </style>
+  <style>
+     .pagination{
+         padding: 0;
+     }
+     /* You can remove these code below*/
+  :root {
+    --primary: #08aeea;
+    --secondary: #13D2B8;
+    --purple: #bd93f9;
+    --pink: #ff6bcb;
+    --blue: #8be9fd;
+    --gray: #333;
+    --font: "Poppins", sans-serif;
+    --gradient: linear-gradient(40deg, #ff6ec4, #7873f5);
+    --shadow: 0 0 15px 0 rgba(0,0,0,0.05);
+  }*{box-sizing:border-box;}input,button,textarea{border:0;outline:none;}
+  /* Main code */
+  
+          .pagination {
+            display: flex;
+            justify-content: left;
+          }
+          .page-item {
+            margin: 0 0.5rem;
+            font-size: 1.2rem;
+            color: #999;
+            cursor: pointer;
+            transition: all 0.2s linear;
+          }
+          .page-item.active .page-link{
+            background-image: linear-gradient( 135deg, #90F7EC 10%, #32CCBC 100%);
+            background-color:transparent;
+            border-radius:5px;
+            padding: 5px 10px;
+          }
+          .pagi-item.is-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+          .pagi-item:hover,
+          .pagi-item.is-active {
+            color: var(--secondary);
+          }
+          .page-link{
+            padding:5px 10px;
+            border:none;
+          }
+ </style>
 @endsection
 @section('main')
+    <div class="breadcrumbs">
+        <div class="breadcrumbs-inner">
+            <div class="row m-0">
+                <div class="col-sm-4">
+                    <div class="page-header float-left">
+                        <div class="page-title">
+                            <h1>Danh sách quản lý dịch vụ</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="page-header float-right">
+                        <div class="page-title">
+                            <ol class="breadcrumb text-right">
+                                <li><a class="btn bg-flat-color-6" style="color:#fff" id="deleteAllselected">Delete All</a></li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- danh sách  -->
     <div class="content">
         <div class="card cart-bg">
             <div class="card-header">
@@ -36,39 +107,48 @@
                 <table class="table ">
                     <thead>
                         <tr>
-                            <th class="serial">#</th>
+                            <th ><input type="checkbox" id="checkAll" /></th>
+                            <th class="serial">id</th>
                             <th class="avatar">mã đơn hàng</th>
                             <th>Thời gian đặt hàng</th>
                             <th>Trạng thái</th>
                             <th>xem chi tiết</th>
-                            <th>Action</th>
+                            <!-- <th>Action</th> -->
                             <!-- <th>Quantity</th> -->
                             <!-- <th>Status</th> -->
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($data as $dt)
-                            <tr>
+                            <tr id="sid{{$dt->order_id}}">
+                                <td><input type="checkbox" class="checkboxclass" name="ids" value="{{$dt->order_id}}"></td>
                                 <td>{{$dt->order_id}}</td>
                                 <td>
                                     <span>{{$dt->order_code}}</span>
                                 </td>
                                 <td>
-                                    <span>{{$dt->created_at}}</span>
+                                    <span>{{$dt->order_date}}</span>
                                 </td>
                                 <td>
-                                    <select class="trangthai badge" style="background-color:#50C7C7">
+                                    <select class="trangthai badge" data-order_id="{{$dt->order_id}}" 
+                                    @if($dt->id_status == 1)
+                                        style="background-image: linear-gradient( 135deg, #81FBB8 10%, #28C76F 100%);"
+                                    @elseif($dt->id_status == 2)
+                                        style="background-image: linear-gradient( 135deg, #97ABFF 10%, #123597 100%);"
+                                    @else
+                                        style="background-image: linear-gradient( 135deg, #F05F57 10%, #360940 100%);"
+                                    @endif>
                                         @foreach($xetduyet as $xd)
-                                            <option name="id_status" {{($xd->id == $dt->id_status) ? 'selected':'' }} id="item" data-order_id="{{$dt->order_id}}" value="{{$xd->id}}">{{$xd->name_type}}</option>
+                                            <option name="id_status" style="background: #000;" {{($xd->id == $dt->id_status) ? 'selected':'' }} id="item" value="{{$xd->id}}">{{$xd->name_type}}</option>
                                         @endforeach
                                     </select>
                                 </td>
                                 <td>
                                     <a href="{{url('/admin/chi-tiet-don-hang/'.$dt->order_id)}}" class="badge badge-pending">chi tiết <i class="fa fa-mail-reply"></i></a>
                                 </td>
-                                <td>
+                                <!-- <td>
                                     <a href="{{route('donhang.destroy',$dt->order_id)}}" class="btn btn-sm btn-danger btndelete"><i class="fa fa-trash"></i> Xóa</a>
-                                </td>
+                                </td> -->
                             </tr>
                         @endforeach
                     </tbody>
@@ -111,28 +191,67 @@
         });
     </script>
     <script>
-    jQuery(document).ready(function($) {
-        $(document).on('change', '.trangthai', function(){
-            var id_status = $(this).val();
-            var order_id =$('#item').data('order_id');
-            var _token = $('input[name="_token"]').val();
-            $.ajax({
-                url:'{{url('/admin/update-trangthai')}}', 
-                method:'post',
-                data:{order_id:order_id, id_status:id_status, _token: _token},
-                success: function(data) 
-                {
-                    if(data == 'done')
+        jQuery(document).ready(function($) {
+            $(document).on('change', '.trangthai', function(){
+                var order_id =$(this).data('order_id');
+                var id_status = $(this).val();
+                var _token = $('input[name="_token"]').val();
+                $.ajax({
+                    url:'{{route('updatedh')}}', 
+                    method:'post',
+                    data:{order_id:order_id, id_status:id_status, _token: _token},
+                    success: function(data) 
                     {
-                        alertify.success('bạn đã thay đổi trạng thái');
+                        if(data == 'done')
+                        {
+                            alertify.success('bạn đã thay đổi trạng thái');
+                        }
+                        else
+                        {
+                            alertify.error('gặp lỗi rồi !');
+                        }
                     }
-                    else
-                    {
-                        alertify.error('gặp lỗi rồi !');
-                    }
-                }
+                });
             });
         });
-    });
+    </script>
+    <!-- jquery thông báo lỗi -->
+    <script>
+        jQuery(document).ready(function($) {
+            var test = function(){
+            var name = $('#testalert').addClass('hide');
+            };
+            setTimeout(test, 3000);
+        });
+    </script>
+    <!-- jquery xóa tất cả -->
+    <script>
+        jQuery(document).ready(function($) {
+            $('#checkAll').click(function(){
+                $(".checkboxclass").prop('checked', $(this).prop('checked'));
+            });
+            $('#deleteAllselected').click(function(e){
+                e.preventDefault();
+                var allids = [];
+                var _token = $('input[name="_token"]').val();
+                $('input:checkbox[name=ids]:checked').each(function(){
+                    allids.push($(this).val());
+                });
+                $.ajax({
+                    url:'{{route('deletechecked')}}',
+                    type:"delete",
+                    data:{
+                        _token:_token,
+                        ids:allids
+                    },
+                    success:function(data){
+                        $.each(allids,function(key,val){
+                            $("#sid"+val).remove();
+                            $(".content").load('{{url('/admin/donhang')}}');
+                        });
+                    }
+                });
+            });
+        });
     </script>
 @stop()

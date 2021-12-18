@@ -35,6 +35,18 @@ class donhang extends Model
     {
        return $this->hasOne(orderDetail::class,'order_id','order_id');
     }
+    public function thanhpho()
+    {
+       return $this->hasOne(thanhpho::class,'matp','id_thanhpho');
+    }
+    public function quanhuyen()
+    {
+       return $this->hasOne(quanhuyen::class,'id','id_quanhuyen');
+    }
+    public function xaphuong()
+    {
+       return $this->hasOne(xaphuong::class,'id','id_xaphuong');
+    }
     public function scopeSearch($query)
     {
         if($key = request()->key){

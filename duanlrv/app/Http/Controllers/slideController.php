@@ -47,6 +47,18 @@ class slideController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'image' => 'required',
+            'tieu_de' => 'required',
+            'thong_tin' => 'required',
+            'khuyen_mai' => 'required',
+        ],
+        [
+            'image.required' => 'Hình slide không để trống',
+            'tieu_de.required' => 'Tiêu đề không để trống',
+            'thong_tin.required' => 'thông tin không để trống',
+            'khuyen_mai.required' => 'tin khuyến mãi không để trống',
+        ]);
         if($this->slide->create($request->all()))
         {
             return redirect()->route('slide.index')->with('success', 'xét duyệt thành công');
@@ -89,6 +101,18 @@ class slideController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'image' => 'required',
+            'tieu_de' => 'required',
+            'thong_tin' => 'required',
+            'khuyen_mai' => 'required',
+        ],
+        [
+            'image.required' => 'Hình slide không để trống',
+            'tieu_de.required' => 'Tiêu đề không để trống',
+            'thong_tin.required' => 'thông tin không để trống',
+            'khuyen_mai.required' => 'tin khuyến mãi không để trống',
+        ]);
         if($this->slide->update($id,$request->all()))
         {
             return redirect()->route('slide.index')->with('success', 'xét duyệt thành công');
@@ -104,8 +128,17 @@ class slideController extends Controller
      * @param  \App\Models\slide  $slide
      * @return \Illuminate\Http\Response
      */
-    public function destroy(slide $slide)
+    public function destroy($id, Request $request)
     {
-        //
+        $delete = $this->slide->find($id);
+        $delete->delete();
+        return redirect()->route('slide.index')->with('success', 'xóa thành công');
+    }
+    public function deleteslide(Request $request)
+    {
+        $ids = $request->ids;
+        slide::whereIn('id', $ids)->delete();
+        echo 'thanhcong';
+        return reponse()->json(['success'=>"delete all"]);
     }
 }

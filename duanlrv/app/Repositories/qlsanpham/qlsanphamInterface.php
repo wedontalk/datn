@@ -9,4 +9,6 @@ interface qlsanphamInterface
      */
     public function getAll();
     public function getsanpham();
+    public function getshow();
+
 }

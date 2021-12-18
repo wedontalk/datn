@@ -5,36 +5,22 @@
     <!-- Hero Section Begin -->
     <section class="hero-section">
         <div class="hero-items owl-carousel">
-            <div class="single-hero-items set-bg" data-setbg="{{ asset('site/img/hero-1.png') }}">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-5">
-                            <span>Chó,Mèo</span>
-                            <h1>Black friday</h1>
-                            <p>Khuyến mãi đến 50%, hãy mua ngay</p>
-                            <a href="#" class="primary-btn">Xem ngay</a>
-                        </div>
-                    </div>
-                    <div class="off-card">
-                        <h2>Sale <span>50%</span></h2>
-                    </div>
-                </div>
-            </div>
-            <div class="single-hero-items set-bg" data-setbg="{{ asset('site/img/hero-2.png') }}">
-                <div class="container">
-                    <div class="row">
-                            <div class="col-lg-5">
-                                <span>Chó,Mèo</span>
-                                <h1>Black friday</h1>
-                                <p>Khuyến mãi đến 50%, hãy mua ngay</p>
-                                <a href="#" class="primary-btn">Xem ngay</a>
+            @foreach($slidene as $slide)
+                <div class="single-hero-items set-bg" data-setbg="{{ asset('uploads')}}/{{$slide->image}}">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-5" style="margin-top:-50px">
+                                <h1>{{$slide->tieu_de}}</h1>
+                                <p>{{$slide->thong_tin}}</p>
+                                <a href="{{$slide->link}}" class="primary-btn">Xem ngay</a>
                             </div>
                         </div>
-                        <div class="off-card">
-                            <h2>Sale <span>50%</span></h2>
+                        <div class="off-card" style="margin-top:10px">
+                            <h2>{{$slide->khuyen_mai}}</h2>
                         </div>
                     </div>
-            </div>
+                </div>
+            @endforeach
         </div>
     </section>
     <!-- Hero Section End -->
@@ -98,14 +84,18 @@
                                 @foreach($products as $items)
                             <div class="product-item" >
                                 <div class="pi-pic" >
-                                    <img src="{{ asset('uploads') }}/{{$items->image}}" alt=""style="height: 350px">
+                                    @if(json_decode($items->image))
+                                        <img src="{{ asset('uploads') }}/{{json_decode($items->image)[0]}}" alt=""style="height: 350px">
+                                    @else
+                                        <img src="{{ asset('uploads') }}/{{$items->image}}" alt=""style="height: 350px">
+                                    @endif
                                     <div class="sale">Sale</div>
                                     <div class="icon">
                                         <i class="icon_heart_alt"></i>
                                     </div>
                                     <ul>
                                         <li class="w-icon active"><a href="#" data-url="{{route('addToCart', ['id'=>$items->id])}}" class=" add_to_cart"  ><i class="icon_bag_alt add_to_cart"></i></a></li>
-                                        <li class="quick-view"><a href="#">+ Xem chi tiết</a></li>
+                                        <li class="quick-view"><a href="{{URL::to('chi-tiet-san-pham/'.$items->slug_product)}}">+ Xem chi tiết</a></li>
                                         <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
                                     </ul>
                                 </div>
@@ -282,14 +272,18 @@
                         @foreach($products as $items)
                             <div class="product-item" >
                                 <div class="pi-pic" >
-                                    <img src="{{ asset('uploads') }}/{{$items->image}}" alt=""style="height: 350px">
+                                    @if(json_decode($items->image))
+                                        <img src="{{ asset('uploads') }}/{{json_decode($items->image)[0]}}" alt=""style="height: 350px">
+                                    @else
+                                        <img src="{{ asset('uploads') }}/{{$items->image}}" alt=""style="height: 350px">
+                                    @endif
                                     <div class="sale">Sale</div>
                                     <div class="icon">
                                         <i class="icon_heart_alt"></i>
                                     </div>
                                     <ul>
                                         <li class="w-icon active"><a href="#" data-url="{{route('addToCart', ['id'=>$items->id])}}" class=" add_to_cart"  ><i class="icon_bag_alt add_to_cart"></i></a></li>
-                                        <li class="quick-view"><a href="#">+ Xem chi tiết</a></li>
+                                        <li class="quick-view"><a href="{{URL::to('chi-tiet-san-pham/'.$items->slug_product)}}">+ Xem chi tiết</a></li>
                                         <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
                                     </ul>
                                 </div>

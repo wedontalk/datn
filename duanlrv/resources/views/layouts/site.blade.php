@@ -118,19 +118,22 @@
                 <div class="row">
                     <div class="col-lg-2 col-md-2">
                         <div class="logo">
-                            <a href="./index.html">
+                            <a href="{{route('home')}}">
                                 <img src="{{ asset('site/img/logo1.png') }}" width="100px" alt="">
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-7 col-md-7">
+                        <form action="{{route('search')}}" method="post">
                         <div class="advanced-search">
                             <!-- <button type="button" class="category-btn">All Categories</button> -->
                             <div class="input-group">
-                                <input type="text" placeholder="Tôi có thể giúp được gì cho bạn?">
-                                <button type="button"><i class="ti-search"></i></button>
+                                    @csrf
+                                    <input type="text" name="keyword" placeholder="Tôi có thể giúp được gì cho bạn?">
+                                    <button type="submit"><i class="ti-search"></i></button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                     <div class="col-lg-3 text-right col-md-3">
                         <ul class="nav-right">
@@ -173,6 +176,9 @@
                                 <a href="#base">lịch sử mua hàng</a>
                                 <!-- đăng xuất -->
                                 <a href="{{ route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a>
+                                <form action="{{ route('logout')}}" method="post" id="logout-form" style="display:none">
+                                    @csrf
+                                </form>
                             </div>
                         @endif
                         @else
@@ -205,14 +211,12 @@
                 <nav class="nav-menu mobile-menu">
                     <ul>
                         <li class="active"><a href="{{route('home')}}">Trang chủ</a></li>
-                        <li><a href="introduce">Giới thiệu</a></li>
                         <li><a href="{{route('products')}}">Cửa hàng</a>
-
-                        <li><a href="./blog.html">Tin Tức</a></li>
+                        <li><a href="introduce">Giới thiệu</a></li>
+                        <li><a href="{{route('blog')}}">Tin Tức</a></li>
                         <li><a href="contact">Liên Hệ</a></li>
                         <!-- <li><a href="#">Cửa hàng</a></li>-->
-                        <li><a href="calendar">Dịch vụ</a></li> 
-                        
+                        <li><a href="{{route('calendar')}}">Dịch vụ</a></li> 
                     </ul>
                 </nav>
                 <div id="mobile-menu-wrap"></div>
@@ -296,7 +300,7 @@
     <script src="{{ asset('Site/js/main.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.slim.js" ></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <!-- JavaScript -->
     <!-- <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script> -->
     <script src="{{ asset('Site/js/alert.min.js') }}"></script>

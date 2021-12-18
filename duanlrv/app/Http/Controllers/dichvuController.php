@@ -55,7 +55,7 @@ class dichvuController extends Controller
     }
     public function loadajax(){
         $data = $this->chitietdichvu->getAll();
-        return view('admin.chitietdichvu.loadajax', compact('data'));
+        return View('admin.chitietdichvu.loadajax',compact('data'));
     }
 
     /**

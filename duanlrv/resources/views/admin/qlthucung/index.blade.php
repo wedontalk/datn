@@ -1,8 +1,56 @@
 @extends('layouts.admin')
 @section('css')
  <style>
+     .pagination{
+         padding: 0;
+     }
+     /* You can remove these code below*/
+  :root {
+    --primary: #08aeea;
+    --secondary: #13D2B8;
+    --purple: #bd93f9;
+    --pink: #ff6bcb;
+    --blue: #8be9fd;
+    --gray: #333;
+    --font: "Poppins", sans-serif;
+    --gradient: linear-gradient(40deg, #ff6ec4, #7873f5);
+    --shadow: 0 0 15px 0 rgba(0,0,0,0.05);
+  }*{box-sizing:border-box;}input,button,textarea{border:0;outline:none;}
+  /* Main code */
+  
+          .pagination {
+            display: flex;
+            justify-content: left;
+          }
+          .page-item {
+            margin: 0 0.5rem;
+            font-size: 1.2rem;
+            color: #999;
+            cursor: pointer;
+            transition: all 0.2s linear;
+          }
+          .page-item.active .page-link{
+            background-image: linear-gradient( 135deg, #90F7EC 10%, #32CCBC 100%);
+            background-color:transparent;
+            border-radius:5px;
+            padding: 5px 10px;
+          }
+          .pagi-item.is-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+          .pagi-item:hover,
+          .pagi-item.is-active {
+            color: var(--secondary);
+          }
+          .page-link{
+            padding:5px 10px;
+            border:none;
+          }
+ </style>
+ <style>
      .form-trum{
-        background-image: linear-gradient( 135deg, #CE9FFC 10%, #7367F0 100%);
+        background-image: #fff;
          padding:10px 0px;
          border-radius:10px;
          box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
@@ -10,21 +58,42 @@
  </style>
 @endsection
 @section('main')
-    <div class="content">
-    <div class="col-md-12">
-        <form action="">
-            @csrf
-        <div class="form-group">
-            <label><strong>quản lý danh sách</strong></label>
-            <select name="sort" id="sort" class="form-control">
-                <option value="{{Request::url()}}">Tất cả danh sách</option>
-            @foreach($danhmuc as $loc)
-            <option value="{{Request::url()}}?sort_by={{$loc->slug}}">{{$loc->name_nav}}</option>
-            @endforeach
-            </select>
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Danh sách quản lý Thú Cưng</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li>
+                            <form action="">
+                                    @csrf
+                                <div class="form-group">
+                                    <select name="sort" id="sort" class="form-control btn">
+                                        <option value="{{Request::url()}}">Tất cả danh sách</option>
+                                    @foreach($danhmuc as $loc)
+                                    <option value="{{Request::url()}}?sort_by={{$loc->slug}}">{{$loc->name_nav}}</option>
+                                    @endforeach
+                                    </select>
+                                </div>
+                            </form>
+                            </li>
+                            <li><a class="btn bg-flat-color-6" style="color:#fff" id="deleteAllselected">Delete All</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
         </div>
-        </form>
     </div>
+</div>
+    <div class="content">
         <div class="card cart-bg">
             <div class="card-header">
                 <div class="row">
@@ -50,6 +119,7 @@
                 <table class="table ">
                     <thead>
                         <tr>
+                            <th ><input type="checkbox" id="checkAll" /></th>
                             <th class="serial">#</th>
                             <th class="avatar">Tên bài đăng</th>
                             <th>slug</th>
@@ -65,7 +135,8 @@
                         $i = 1;
                         @endphp
                         @foreach($data as $dt)
-                            <tr>
+                            <tr id="sid{{$dt->id}}">
+                            <td><input type="checkbox" class="checkboxclass" name="ids" value="{{$dt->id}}"></td>
                                 <td class="serial">{{$i++}}</td>
                                 <td class="avatar">
                                     <span>{{$dt->title}}</span>
@@ -91,7 +162,7 @@
                                 </td>
                                 <div class="modal fade bd-example-modal-lg{{$dt->id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
-                                    <div class="modal-content model-ct">
+                                    <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">chi tiết : {{$dt->id}} - {{$dt->title}}</h5>
                                         </div>
@@ -99,10 +170,16 @@
                                             <div class="row">
                                                 <div class="col-6">
                                                     <div class="form-group form-gr-img">
-                                                        <img src="{{asset('uploads/'.$dt->image)}}" alt="" width="100%" height="200px">
+                                                        @if(json_decode($dt->image))
+                                                            @foreach(json_decode($dt->image) as $anhsp)
+                                                            <img src="{{asset('uploads')}}/{{$anhsp}}" alt="" width="100%" height="200px">  
+                                                            @endforeach
+                                                        @else
+                                                            <img src="{{asset('uploads')}}/{{$dt->image}}" alt="" width="100%" height="200px">  
+                                                        @endif
                                                     </div>
                                                     <div class="form-group">
-                                                    <textarea class="description_t" name="" cols="43" rows="9" disabled>{{$dt->description}}</textarea>
+                                                    <textarea class="description_t" name="" cols="43" rows="9" disabled>{!! $dt->description !!}</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -162,6 +239,35 @@
                 if(confirm('bạn muốn xóa chứ ?')){
                     $('form#form-delete').submit();
                 }
+            });
+        });
+    </script>
+    <!-- jquery xóa tất cả -->
+    <script>
+        jQuery(document).ready(function($) {
+            $('#checkAll').click(function(){
+                $(".checkboxclass").prop('checked', $(this).prop('checked'));
+            });
+            $('#deleteAllselected').click(function(e){
+                e.preventDefault();
+                var allids = [];
+                var _token = $('input[name="_token"]').val();
+                $('input:checkbox[name=ids]:checked').each(function(){
+                    allids.push($(this).val());
+                });
+                $.ajax({
+                    url:'{{route('deletethucung')}}',
+                    type:"delete",
+                    data:{
+                        _token:_token,
+                        ids:allids
+                    },
+                    success:function(data){
+                        $.each(allids,function(key,val){
+                            $("#sid"+val).remove();
+                        });
+                    }
+                });
             });
         });
     </script>

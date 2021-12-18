@@ -1,7 +1,18 @@
 @extends('layouts.site')
 
 @section('main')
-
+<style>
+    .page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    font-size: 18px;
+}
+.pagination .disabled{
+    font-size:18px;
+}
+</style>
     <!-- Breadcrumb Section Begin -->
     <div class="breacrumb-section">
         <div class="container">
@@ -32,21 +43,25 @@
                     </div>
                     <div class="filter-widget">
                         <h4 class="fw-title">Giá</h4>
+                        <form action="{{route('locgia')}}" method="get">
+                            @csrf
                         <div class="filter-range-wrap">
                             <div class="range-slider">
                                 <div class="price-input">
-                                    <input type="text" id="minamount">
-                                    <input type="text" id="maxamount">
+                                    <input type="text" id="minamount" name="minamount">
+                                    <input type="text" id="maxamount" name="maxamount">
                                 </div>
                             </div>
                             <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                data-min="33" data-max="98">
+                                data-min="0" data-max="2000000">
                                 <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
                                 <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                                 <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                             </div>
                         </div>
-                        <a href="#" class="filter-btn">Lọc</a>
+                        
+                        <button type="submit" class="filter-btn">Lọc</button>
+                        </form>
                     </div>
                     <div class="filter-widget">
                         <h4 class="fw-title">Thương hiệu</h4>
@@ -124,7 +139,11 @@
                             <div class="col-lg-4 col-sm-6">
                                 <div class="product-item">
                                     <div class="pi-pic">
-                                        <img src="{{ asset('uploads') }}/{{$product->image}}" height="300px" alt="">
+                                        @if(json_decode($product->image))
+                                            <img src="{{ asset('uploads') }}/{{json_decode($product->image)[0]}}" height="250px" alt="">
+                                        @else
+                                            <img src="{{ asset('uploads') }}/{{$product->image}}" height="250px" alt="">
+                                        @endif
                                         <div class="sale pp-sale">Sale</div>
                                         <div class="icon">
                                             <i class="icon_heart_alt"></i>
@@ -155,7 +174,7 @@
                     </div>
                     <div class="loading-more">
                         <!-- <i class="icon_loading"></i> -->
-                        {{$products->appends(request()->all())->links()}}
+                       
                     </div>
                 </div>
             </div>

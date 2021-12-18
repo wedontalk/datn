@@ -40,14 +40,25 @@
             type:"GET",
             url: urlUpdateCart,
             data: {id: id, quantity: quantity},
-            success: function (data) {
-                $('.content').html(data.contentCart); 
-                $('#ajax_cart').html(data.cartquick);   
-                alertify.success('Cập nhật thành công!')
-                console.log(data);
+            success: function (response) {
+                if(response.code==200){
+                $('.content').html(response.contentCart); 
+                $('#ajax_cart').html(response.cartquick);   
+                alertify.success('Cập nhật thành công!');
+                console.log(response);
+                };
+                if(response.code==404){
+                $('.content').html(response.contentCart); 
+                $('#ajax_cart').html(response.cartquick);   
+                alertify.error('Cập nhật thất bại!');
+                console.log(response);
+                }
             },
-            error: function () {
-                    
+            error: function (response) {
+                   
+                alertify.error('Cập nhật thất bại!');
+                // console.log(data);
+                // }
                 }
                 
             });
@@ -63,10 +74,13 @@
                     type:"GET",
                     url: urldeleteCart,
                     data: {id: id},
-                    success: function (data) {
-                            $('.content').html(data.contentCart);
-                            $('#ajax_cart').html(data.cartquick);   
-                            console.log(data);
+                    success: function (response) {
+                        if(response.code==200){
+                            $('.content').html(response.contentCart);
+                            $('#ajax_cart').html(response.cartquick);   
+                            console.log(response);
+                        }
+                            
                     },
                     error: function () {
                         
@@ -86,9 +100,11 @@
                     type:"GET",
                     url: '/remove-cart',
                     success: function (data) {
+                        if(data.code==200){
                             $('.content').html(data.contentCart);
                             $('#ajax_cart').html(data.cartquick);   
                             console.log(data);
+                        }
                     },
                     error: function () {
                         
