@@ -22,6 +22,7 @@ class dichvuController extends Controller
      */
     public function index()
     {
+
         $data = $this->chitietdichvu->getAll();
         return view('admin.chitietdichvu.index', compact('data'));
     }
@@ -45,6 +46,13 @@ class dichvuController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name_dichvu' => 'required|unique:nhiemvu_coso|',
+        ],
+        [
+            'name_dichvu.required' => 'Tên dịch vụ không để trống',
+            'name_dichvu.unique' => 'Tên dịch vụ này đã có trong CSDL',
+        ]);
         if($request){
             $them = new dichvucoso();
             $them->name_dichvu = $request['name'];
@@ -93,6 +101,13 @@ class dichvuController extends Controller
     }
 
     public function update_ajax(Request $request){
+        $request->validate([
+            'name_dichvu' => 'required|unique:nhiemvu_coso,name_dichvu'.request()->$id,
+        ],
+        [
+            'name_dichvu.required' => 'Tên dịch vụ không để trống',
+            'name_dichvu.unique' => 'Tên dịch vụ này đã có trong CSDL',
+        ]);
         $id = $request->id;
         $text_dichvu = $request->text_dichvu;
         $update = dichvucoso::find($id);

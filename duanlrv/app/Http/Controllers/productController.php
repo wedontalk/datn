@@ -71,7 +71,7 @@ class productController extends Controller
             $output = '';
             if($data['action']=="city"){
                 $select_province = category::where('id_nav', $data['ma_id'])->orderBy('id', 'ASC')->select('id','name')->get();
-                    $output.='<option class="op-text">---chọn danh mục ---</option>';
+                    $output.='<option class="op-text" value="">---chọn danh mục ---</option>';
                 foreach($select_province as $province){
                     $output.='<option class="op-text" value="'.$province->id.'">'.$province->name.'</option>';
                 }
@@ -148,6 +148,9 @@ class productController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $images = $request->image;
+        $request->merge(['image' => implode(", ",$images)]);
+        $uploadfile = $request->merge(['id_product' => $request->id]);
         $dataslug = \Str::slug($request->title).'-'.\Carbon\Carbon::now()->timestamp;
         $request->merge(['slug_product' => $dataslug]);
         $request->merge(['type_post' => 1]);

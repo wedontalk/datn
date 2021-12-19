@@ -90,15 +90,9 @@ class infoController extends Controller
      */
     public function store(Request $request)
     {
-
-        if($request->has('file_upload'))
-        {
-            $file= $request->file_upload;
-            $ext = $request->file_upload->extension();
-            $file_name = time().'-'.'thucung.'.$ext;
-            $file->move(public_path('uploads'), $file_name);
-        }
-        $request->merge(['image'=>$file_name]);
+        $images = $request->image;
+        $request->merge(['image' => implode(", ",$images)]);
+        $uploadfile = $request->merge(['id_product' => $request->id]);
         $request->merge(['slug_product' => \Str::slug($request->title).'-'. \Carbon\Carbon::now()->timestamp]);
         $request->merge(['type_post' => 1]);
         if($this->qlthucung->create($request->all()))

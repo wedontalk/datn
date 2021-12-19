@@ -176,7 +176,7 @@
                                                         @endif
                                                     </div>
                                                     <div class="form-group">
-                                                        <textarea class="description_t" cols="43" rows="9" disabled>{!! $dt->description !!}</textarea>
+                                                        <textarea class="description_t" cols="43" rows="8" disabled>{!! $dt->description !!}</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -184,7 +184,13 @@
                                                     <div class="col-12">
                                                         <p><span class="text-info">Danh mục đăng :</span> {{$dt->typepost->name_type}}</p>
                                                         <p><span class="text-info">Thuộc menu :</span> {{$dt->navmenu->name_nav}}</p>
-                                                        <p><span class="text-info">loại :</span> {{$dt->category->name}}</p>
+                                                        <p><span class="text-info">loại :</span>
+                                                        @if($dt->id_category || $dt->id_category  == null)
+                                                            không có danh mục
+                                                        @else
+                                                            {{$dt->category->name}}
+                                                        @endif
+                                                        </p>
                                                     </div>
                                                     <div class="col-12">
                                                         <p><span class="text-info">Giá :</span>{{number_format($dt->price, 0, '.', '.')}} VNĐ</p>
@@ -192,7 +198,6 @@
                                                         <p><span class="text-info">trạng thái :</span> {{$dt->typepost->name_type}}</p>
                                                     </div>
                                                     <div class="col-12">
-                                                        <p><span class="text-info">Tình trạng :</span> {{$dt->status}}</p>
                                                         <p><span class="text-info">Thương hiệu :</span> {{$dt->brand}}</p>
                                                         <p><span class="text-info">số lượng:</span> {{$dt->quantity}} sản phẩm</p>
                                                         <p><span class="text-info">lượt xem :</span> {{$dt->view}}</p>

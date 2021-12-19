@@ -116,13 +116,13 @@
                         <div class="row">
                             <div class="col-lg-7 col-md-7">
                                 <div class="select-option">
-                                    <select class="sorting">
+                                    <select class="" name="sort" id="sort">
                                         @foreach($category_by_id as $key =>$cate_id)
                                             <a href="{{URL::to('/show-category/'.$cate_id->slug)}}">
-                                            <option  value="">{{$cate_id->name}}</option>
+                                            <option value="{{Request::url()}}?locsp={{$cate_id->slug}}">{{$cate_id->name}}</option>
                                             </a>
                                         @endforeach
-                                        <option value="" selected>-- phân loại --</option>
+                                        <option value="{{Request::url()}}" selected>-- phân loại --</option>
                                     </select>
                                     <select class="p-show">
                                         <option value="">Show:</option>
@@ -185,3 +185,23 @@
     <!-- Product Shop Section End -->
 
 @endsection
+@section('js')
+    <script>
+        jQuery(document).ready(function($) {
+        $('#sort').on('change', function() {
+            var url = $(this).val();
+            // alert(url);
+            if(url){
+                window.location = url;
+            }
+            return false;
+        });
+        locdanhsach();
+        function locdanhsach() {
+            var url = window.location.href;
+
+            $('select[name="sort"]').find('option[value="'+url+'"]').attr("selected",true);
+        }
+    });
+</script>
+@stop()

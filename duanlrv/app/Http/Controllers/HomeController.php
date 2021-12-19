@@ -86,6 +86,20 @@ class HomeController extends Controller
         $categoryNav = DB::Table('nav_menu')->orderby('id')->get();
         $products= $this->products->getAll();
         $category_by_id = DB::table('categories')->get();
+        foreach($category_by_id as $key => $cate) {
+            $cate_id = $cate->id;
+        
+
+            if(isset($_GET['locsp'])){
+                $sort_by = $_GET['locsp'];
+
+
+                if($sort_by == $cate->slug){
+                    $products = information::with('phansanpham')->where('id_category', $cate_id)->orderBy('id', 'ASC')->search()->paginate(10);
+                    $products->render();
+                }
+            }
+        }
         return view('Site.products',compact('products','categoryNav','category_by_id'));
        
     }
