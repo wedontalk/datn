@@ -181,7 +181,7 @@
                         @else
                             <li class=""><a onclick="myFunction()" class="login-panel abc"><i class="fa fa-user"></i>{{Auth::user()->name}}</a></li>
                             <div id="myDropdown" class="dropdown-content">
-                                <a href="#about">Thông tin tài khoản</a>
+                                <a href="{{URL::to('/show-profile')}}">Thông tin tài khoản</a>
                                 <a href="#base">lịch sử mua hàng</a>
                                 <!-- đăng xuất -->
                                 <a href="{{ route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a>
