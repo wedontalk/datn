@@ -237,9 +237,12 @@
                 ev.preventDefault();
                 var _href = $(this).attr('href');
                 $('form#form-delete').attr('action',_href);
-                if(confirm('bạn muốn xóa chứ ?')){
+                alertify.confirm('Thông báo', 'Bạn có muốn xóa', function(confirm_xoa){ 
+                if(confirm_xoa){
                     $('form#form-delete').submit();
                 }
+                alertify.success('Bạn đã xóa') }
+                , function(){ alertify.error('Bạn đã không xóa')});
             });
         });
     </script>

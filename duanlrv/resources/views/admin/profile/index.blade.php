@@ -72,30 +72,30 @@
                             </nav>
                             <div class="tab-content pl-3 pt-2" id="nav-tabContent">
                                 <div class="tab-pane fade active show" id="custom-nav-home" role="tabpanel" aria-labelledby="custom-nav-home-tab">
-                                    <form action="" id="formne" method="POST" enctype="multipart/form-data">
+                                    <form id="formne" enctype="multipart/form-data">
                                         <input type="hidden" id="iduser" value="{{Auth::user()->id}}">
                                         <div class="form-group row">
                                             <label for="inputEmail3" class="col-sm-2 col-form-label">Họ và Tên</label>
                                             <div class="col-sm-10">
-                                            <input type="text" class="form-control" value="{{Auth::user()->name}}" placeholder="Họ và tên">
+                                            <input type="text" id="nameuser" class="form-control" value="{{Auth::user()->name}}" placeholder="Họ và tên">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="inputPassword3" class="col-sm-2 col-form-label">Email</label>
                                             <div class="col-sm-10">
-                                            <input type="email" class="form-control" value="{{Auth::user()->email}}" placeholder="email">
+                                            <input type="email" id="emailuser" class="form-control" value="{{Auth::user()->email}}" placeholder="email">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="inputPassword3" class="col-sm-2 col-form-label">Phone</label>
                                             <div class="col-sm-10">
-                                            <input type="text" class="form-control" value="{{Auth::user()->phone}}" placeholder="phone">
+                                            <input type="text" id="phone" class="form-control" value="{{Auth::user()->phone}}" placeholder="phone">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="inputPassword3" class="col-sm-2 col-form-label">Địa chỉ</label>
                                             <div class="col-sm-10">
-                                            <input type="text" class="form-control" value="{{Auth::user()->address}}" placeholder="địa chỉ">
+                                            <input type="text" id="address" class="form-control" value="{{Auth::user()->address}}" placeholder="địa chỉ">
                                             </div>
                                         </div>
                                         <div class="form-group" style="padding:0.2rem 0; background:white">
@@ -104,22 +104,22 @@
                                     </form>
                                 </div>
                                 <div class="tab-pane fade" id="custom-nav-profile" role="tabpanel" aria-labelledby="custom-nav-profile-tab">
-                                    <form action="" method="post">
-                                        <input type="hidden" value="{{Auth::user()->id}}">
+                                    <form action="">
+                                        <input type="hidden" id="iduser1" value="{{Auth::user()->id}}">
                                         <div class="form-group row">
                                             <label for="inputpass" class="col-sm-2 col-form-label">Mật khẩu cũ</label>
                                             <div class="col-sm-10">
-                                            <input type="password" class="form-control" id="inputpass" placeholder="nhập mật khẩu cũ">
+                                            <input type="password" class="form-control" id="passold" placeholder="nhập mật khẩu cũ">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="inputPassword3" class="col-sm-2 col-form-label">Mật khẩu mới</label>
                                             <div class="col-sm-10">
-                                            <input type="password" class="form-control" id="inputPassword3" placeholder="Nhập mật khẩu mới">
+                                            <input type="password" class="form-control" id="passnew" placeholder="Nhập mật khẩu mới">
                                             </div>
                                         </div>
                                         <div class="form-group" style="padding:0.2rem 0; background:white">
-                                            <button class="button-effect btn-text-ne ">Đổi mật khẩu <i class="fa fa-long-arrow-right"></i></button>
+                                            <button class="button-effect btn-text-ne" id="submitpass">Đổi mật khẩu <i class="fa fa-long-arrow-right"></i></button>
                                         </div>
                                     </form>
                                 </div>
@@ -160,7 +160,8 @@
         </div>
     </div>
 @stop()
-@section('js')    <script>
+@section('js')    
+<script>
     jQuery(document).ready(function($) {
         $(document).on('click','#submitajax', function(){
             var id = $('#iduser').val();
@@ -181,7 +182,7 @@
                 alertify.warning('address không được rỗng !!!');
             }
             $.ajax({
-                url:'{{url('/admin/updateaccount')}}', 
+                url:'{{route('updateaccount')}}', 
                 method:'post',
                 data:{
                     id: id,name: name,email: email,phone: phone,address: address,_token:_token,
@@ -190,7 +191,6 @@
                 {
                     if(data == 'done')
                     {
-                        $(".content").load();
                         alertify.success('cập nhật thành công !');
                     }
                     else
@@ -202,5 +202,42 @@
             });
         });
     });
-    </script>
+</script>
+<!-- đổi mật khẩu -->
+<script>
+    jQuery(document).ready(function($) {
+        $(document).on('click','#submitpass', function(){
+            var id = $('#iduser1').val();
+            var passold = $('#passold').val();
+            var passnew = $('#passnew').val();
+            var _token = $('input[name="_token"]').val();
+            if(id == ''){
+                alertify.warning('id không được rỗng !!!');
+            }else if(passold == ''){
+                alertify.warning('mật khẩu cũ không được rỗng !!!');
+            }else if(passnew == ''){
+                alertify.warning('mật khẩu mới không được rỗng !!!');
+            }
+            $.ajax({
+                url:'{{route('updatepass')}}', 
+                method:'post',
+                data:{
+                    id: id,passold: passold,passnew: passnew,_token:_token,
+                },
+                success: function(data) 
+                {
+                    if(data == 'done')
+                    {
+                        alertify.success('cập nhật thành công !');
+                    }
+                    else
+                    {
+                        alertify.error('gặp lỗi rồi !');
+
+                    }
+                }
+            });
+        });
+    });
+</script>
 @stop

@@ -163,4 +163,11 @@ class couponController extends Controller
         $oke->delete();
             return redirect()->route('coupon.index')->with('success', 'xóa thành công !!!');
     }
+
+    public function deletecoupon(Request $request)
+    {
+        $ids = $request->ids;
+        coupon::whereIn('id', $ids)->delete();
+        return reponse()->json(['success'=>"delete all"]);
+    }
 }

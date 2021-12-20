@@ -63,16 +63,16 @@
                     <div class="col-sm-4">
                         <div class="page-header float-left">
                             <div class="page-title">
-                                <h1>Danh sách quản lý dịch vụ</h1>
+                                <h1>Danh sách quản lý Đặt lịch</h1>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-8">
                         <div class="page-header float-right">
                             <div class="page-title">
-                                <ol class="breadcrumb text-right">
+                                <!-- <ol class="breadcrumb text-right">
                                     <li><a data-toggle="modal" class="btn bg-flat-color-1" style="color:#fff" data-target="#exampleModal" active>Thêm dịch vụ</a></li>
-                                </ol>
+                                </ol> -->
                             </div>
                         </div>
                     </div>
@@ -109,7 +109,7 @@
                             <th class="serial">Tên người đặt</th>
                             <th class="serial">Tên cơ sở</th>
                             <th>Nhu cầu</th>
-                            <th>thời gian hẹn</th>
+                            <th>thời gian đặt lịch</th>
                             <th>Trạng thái</th>
                             <th style="width:100px;">Chi Tiết</th>
                             <!-- <th style="width:100px;">Action</th> -->
@@ -137,16 +137,21 @@
                                     <span>{{$dt->set_time}}</span>
                                 </td>
                                 <td>
-                                    @if($dt->id_status == 1)
-                                        <span class="badge badge-complete">thành công</span>
-                                    @elseif ($dt->id_status == 2)
-                                        <span class="badge badge-warning">đợi xét duyệt</span>
-                                    @else
-                                        <span class="badge badge-danger">đã hủy</span>
-                                    @endif
+                                    <select class="trangthai badge" data-id="{{$dt->id}}" 
+                                        @if($dt->id_status == 1)
+                                            style="background-image: linear-gradient( 135deg, #81FBB8 10%, #28C76F 100%);"
+                                        @elseif($dt->id_status == 2)
+                                            style="background-image: linear-gradient( 135deg, #97ABFF 10%, #123597 100%);"
+                                        @else
+                                            style="background-image: linear-gradient( 135deg, #F05F57 10%, #360940 100%);"
+                                        @endif>
+                                        @foreach($xetduyet as $xd)
+                                            <option name="id_status" style="background: #000;" {{($xd->id == $dt->id_status) ? 'selected':'' }} id="item" value="{{$xd->id}}">{{$xd->name_type}}</option>
+                                        @endforeach
+                                    </select>
                                 </td>
                                 <td>
-                                    <a href="{{route('datlich.destroy',$dt->id)}}"" class="badge badge-pending">chi tiết <i class="fa fa-mail-reply"></i></a>
+                                    <a href="{{route('datlich.destroy',$dt->id)}}" class="badge badge-pending">chi tiết <i class="fa fa-mail-reply"></i></a>
                                 </td>
                                 <!-- <td>
                                     <a href="{{route('datlich.destroy',$dt->id)}}" class="btn btn-sm btn-danger btndelete"><i class="fa fa-trash"></i> Xóa</a>
@@ -166,44 +171,6 @@
     </div>
 
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <center><strong class="modal-title" id="exampleModalLabel">form thêm dịch vụ cơ sở</strong></center>
-        <form action="{{route('chitietdichvu.store')}}" id="formne" method="POST" enctype="multipart/form-data">
-            @csrf
-      </div>
-      <div class="modal-body">
-            <div class="form-group">
-                <label>nhập tên dịch vụ</label>
-                <input type="text"  name="name_dichvu" id="name_dichvu" class="form-control" placeholder="tên dịch vụ">
-            </div>
-            <div class="form-group">
-                <label>trạng thái</label>
-                <select class="form-control" name="id_status" id="id_status">
-                    <option value='1'>Thành công</option>
-                    <option value='2'>Đợi xét duyệt</option>
-                    <option value='3'>Đã Hủy</option>
-                </select>
-            </div>
-      </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-            <button type="button" class="btn btn-primary" id="submitajax">Lưu</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-
 @stop()
 
 
@@ -220,90 +187,45 @@
 <!-- Bootstrap theme -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
 
-    <script>
-        jQuery(document).ready(function($) {
-            $('.btndelete').click(function(ev) {
-                ev.preventDefault();
-                var _href = $(this).attr('href');
-                $('form#form-delete').attr('action',_href);
-                if(confirm('bạn muốn xóa chứ ?')){
-                    $('form#form-delete').submit();
-                }
-            });
-        });
-    </script>
-
-
 <script>
     jQuery(document).ready(function($) {
-        $(document).on('click', '#submitajax', function(){
-            var name = $('#name_dichvu').val();
-            var trangthai = $('#id_status').val();
-            var dis = $(this).data('dismiss');
-            var _token = $('input[name="_token"]').val();  
-            $.ajax({
-                url:'{{url('/admin/chitietdichvu')}}', 
-                method:'post',
-                data:{
-                    name: name,trangthai: trangthai,dis:dis,_token:_token,
-                },
-                success: function(data) 
-                {
-                    if(data == 'done')
-                    {
-                        $(".content").load("{{url('/admin/chitietdichvu')}}");
-                        alertify.success('thành công !');
-                    }
-                    else
-                    {
-                        alertify.error('gặp lỗi rồi !');
-
-                    }
-                }
-            });
-        });
-    });
-    </script>
-    
-    <script>
-    jQuery(document).ready(function($) {
-        // $('.edit_name').dblclick(function(){
-        //    var test = $(this).attr('contenteditable');
-        //    if (test == 'false') {
-        //         $(this).attr('contenteditable','true');
-        //     }
-        //     else {
-        //         $(this).attr('contenteditable','false');
-        //     }
-        // });
-        $(document).on('blur','.edit_name', function(){
-            var id = $(this).data('id');
-            var text_dichvu = $(this).text();
-            var _token = $('input[name="_token"]').val();
-            if(text_dichvu == ''){
-                alertify.warning('không được rỗng !!!');
+        $('.btndelete').click(function(ev) {
+            ev.preventDefault();
+            var _href = $(this).attr('href');
+            $('form#form-delete').attr('action',_href);
+            alertify.confirm('Thông báo', 'Bạn có muốn xóa', function(confirm_xoa){ 
+            if(confirm_xoa){
+                $('form#form-delete').submit();
             }
-            $.ajax({
-                url:'{{url('/admin/updateajax')}}', 
-                method:'post',
-                data:{
-                    id: id,text_dichvu: text_dichvu,_token:_token,
-                },
-                success: function(data) 
-                {
-                    if(data == 'done')
-                    {
-                        $(".content").load();
-                        alertify.success('cập nhật thành công !');
-                    }
-                    else
-                    {
-                        alertify.error('gặp lỗi rồi !');
-
-                    }
-                }
-            });
+            alertify.success('Bạn đã xóa') }
+            , function(){ alertify.error('Bạn đã không xóa')});
         });
     });
+</script>
+
+<script>
+        jQuery(document).ready(function($) {
+            $(document).on('change', '.trangthai', function(){
+                var id =$(this).data('id');
+                var id_status = $(this).val();
+                var _token = $('input[name="_token"]').val();
+                $.ajax({
+                    url:'{{route('updatedatlich')}}',
+                    method:'post',
+                    data:{id:id, id_status:id_status, _token: _token},
+                    success: function(data) 
+                    {
+                        if(data == 'done')
+                        {
+                            alertify.success('bạn đã thay đổi trạng thái');
+                        }
+                        else
+                        {
+                            alertify.error('gặp lỗi rồi !');
+                        }
+                    }
+                });
+            });
+        });
     </script>
 @stop()

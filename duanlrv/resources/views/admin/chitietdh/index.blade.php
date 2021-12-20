@@ -151,7 +151,7 @@
                                     <tr>
                                         <td>{{$i++}}</td>
                                         <td>
-                                            <span>{{$hd->order_code}}</span>
+                                            <span>{{$hd->donhang->order_code}}</span>
                                         </td>
                                         <td>
                                             <span class="badge badge-warning">

@@ -177,7 +177,7 @@
             <label class="col-sm-5 col-form-label">Danh mục thú cưng</label>
             <div class="col-sm-7">
                 <select class="form-control input-sm choose province @error('id_category') is-invalid @enderror" name="id_category" id="province">
-                    <option class="op-text">-----{{__('Danh mục thú cưng')}}-----</option>
+                    <option class="op-text" value="">-----{{__('Danh mục thú cưng')}}-----</option>
                 </select>
                 @error('id_category')
                     <small class="form-text text-muted">{{$message}}</small>

@@ -75,9 +75,9 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="thoigianhoatdong" class="col-sm-3 col-form-label">Giá sản phẩm</label>
+            <label for="giasanpham" class="col-sm-3 col-form-label">Giá sản phẩm</label>
             <div class="col-sm-9">
-                <input type="text" value="{{$qlsanpham->price}}" class="form-control @error('price') is-invalid @enderror" name="price"  placeholder="nhập giá sản phẩm">
+                <input type="number" value="{{$qlsanpham->price}}" class="form-control @error('price') is-invalid @enderror" name="price"  placeholder="nhập giá sản phẩm">
                 @error('price')
                     <small class="form-text text-muted">{{$message}}</small>
                 @enderror
@@ -85,9 +85,9 @@
         </div>
 
         <div class="form-group row">
-            <label for="thoigianketthuc" class="col-sm-3 col-form-label">Giá khuyến mãi</label>
+            <label for="discountsp" class="col-sm-3 col-form-label">Giá khuyến mãi</label>
             <div class="col-sm-9">
-                <input type="text" value="{{$qlsanpham->discount}}" class="form-control @error('discount') is-invalid @enderror" name="discount"  placeholder="nhập giá khuyến mãi">
+                <input type="number" value="{{$qlsanpham->discount}}" class="form-control @error('discount') is-invalid @enderror" name="discount"  placeholder="nhập giá khuyến mãi">
                 @error('discount')
                     <small class="form-text text-muted">{{$message}}</small>
                 @enderror
@@ -160,7 +160,10 @@
             <label class="col-sm-5 col-form-label">Danh mục sản phẩm</label>
             <div class="col-sm-7">
                 <select class="form-control input-sm choose province @error('id_category') is-invalid @enderror" name="id_category" id="province">
-                    <option class="op-text">-----{{__('Danh mục sản phẩm')}}-----</option>
+                    <option class="op-text" value="">-----{{__('Danh mục sản phẩm')}}-----</option>
+                    @foreach($danhmucedit as $dmedit)
+                        <option class="op-text" {{($dmedit->id == $qlsanpham->id_category) ? 'selected':''}}  value="{{$dmedit->id}}">{{$dmedit->name}}</option>
+                    @endforeach
                 </select>
                 @error('id_category')
                     <small class="form-text text-muted">{{$message}}</small>

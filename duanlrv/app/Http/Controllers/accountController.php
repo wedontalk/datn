@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use App\Repositories\account\accountInterface;
+use Illuminate\Support\Facades\Hash;
 
 class accountController extends Controller
 {
@@ -97,7 +98,7 @@ class accountController extends Controller
         //
     }
 
-    public function update_thongtin(Request $request)
+    public function updateaccount(Request $request)
     {
         $id = $request->id;
         $data = $request->all();
@@ -108,6 +109,19 @@ class accountController extends Controller
         $update->address = $data['address'];
         $update->save();
         echo 'done';
+    }
+
+    public function updatepass(Request $request)
+    {
+        $id = $request->id;
+        $data = $request->all();
+        $passold = $data['passold'];
+        if (Hash::check($passold , \Auth::user()->password)) { 
+            $update = account::find($id);
+            $update->password = Hash::make($data['passnew']);
+            $update->save();
+            echo 'done';
+        }
     }
 
     /**

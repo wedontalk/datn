@@ -90,6 +90,35 @@ class infoController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required|unique:information',
+            'price' => 'required|min:4',
+            'discount' => 'required|min:4',
+            'quantity' => 'required',
+            'age' => 'required',
+            'status' => 'required',
+            'render' => 'required',
+            'image' => 'required',
+            'id_menu' => 'required',
+            'id_category' => 'required',
+            'description' => 'required',
+        ],
+        [
+            'title.required' => 'Tên sản phẩm không để trống',
+            'price.required' => 'giá sản phẩm không để trống',
+            'price.min' => 'giá sản phẩm phải trên 4 số',
+            'discount.required' => 'discount không để trống',
+            'discount.min' => 'discount sản phẩm phải trên 4 số',
+            'quantity.required' => 'Số lượng không để trống',
+            'age.required' => 'độ tuổi không để trống',
+            'status.required' => 'tình trạng sức khỏe không để trống',
+            'render.required' => 'giới tính không để trống',
+            'image.required' => 'hình ảnh không để trống',
+            'id_menu.required' => 'menu không để trống',
+            'id_category.required' => 'danh mục không để trống',
+            'description.required' => 'mô tả không để trống',
+            'title.unique' => 'Tên sản phẩm này đã có trong CSDL',
+        ]);
         $images = $request->image;
         $request->merge(['image' => implode(", ",$images)]);
         $uploadfile = $request->merge(['id_product' => $request->id]);
@@ -127,7 +156,9 @@ class infoController extends Controller
         $xetduyet = trangthai::orderBy('id', 'ASC')->select('id','name_type')->get();
         $text = navmenu::orderBy('id', 'ASC')->select('id','name_nav')->get();
         $danhmuc = category::orderBy('id', 'ASC')->select('id','name')->get();
-        return view('admin.qlthucung.edit', compact('qlthucung','xetduyet','danhmuc','text'));
+        $danhmucid = information::where('id', $id)->first();
+        $danhmucedit = category::orderBy('id')->where('id_nav',$danhmucid->id_menu)->get();
+        return view('admin.qlthucung.edit', compact('qlthucung','xetduyet','danhmuc','text','danhmucid','danhmucedit'));
     }
 
     /**
@@ -139,6 +170,34 @@ class infoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'title' => 'required',
+            'price' => 'required|min:4',
+            'discount' => 'required|min:4',
+            'quantity' => 'required',
+            'age' => 'required',
+            'status' => 'required',
+            'render' => 'required',
+            'image' => 'required',
+            'id_menu' => 'required',
+            'id_category' => 'required',
+            'description' => 'required',
+        ],
+        [
+            'title.required' => 'Tên sản phẩm không để trống',
+            'price.required' => 'giá sản phẩm không để trống',
+            'price.min' => 'giá sản phẩm phải trên 4 số',
+            'discount.required' => 'discount không để trống',
+            'discount.min' => 'discount sản phẩm phải trên 4 số',
+            'quantity.required' => 'Số lượng không để trống',
+            'age.required' => 'độ tuổi không để trống',
+            'status.required' => 'tình trạng sức khỏe không để trống',
+            'render.required' => 'giới tính không để trống',
+            'image.required' => 'hình ảnh không để trống',
+            'id_menu.required' => 'menu không để trống',
+            'id_category.required' => 'danh mục không để trống',
+            'description.required' => 'mô tả không để trống',
+        ]);
         $images = $request->image;
         $request->merge(['image' => implode(", ",$images)]);
         $uploadfile = $request->merge(['id_product' => $request->id]);
