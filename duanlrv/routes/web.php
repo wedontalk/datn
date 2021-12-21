@@ -95,6 +95,7 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::get('/show-profile', [accountController::class, 'show_profile']);
     Route::post('/update-profile', [accountController::class, 'update_profile']);
     Route::post('/account-rating', [accountController::class, 'account_rating']);
+    Route::get('/404', [HomeController::class, 'loi']);
 
     Route::get('/register', [accountController::class, 'register']);
     Route::post('/check-register', [accountController::class, 'check_register']);

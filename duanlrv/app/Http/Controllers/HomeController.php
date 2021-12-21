@@ -581,7 +581,9 @@ $now =Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
         
     }
 }
-
+public function loi(){
+    return view('layouts.404');
+}
 
 
 
