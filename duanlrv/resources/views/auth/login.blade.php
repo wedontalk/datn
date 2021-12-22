@@ -1,54 +1,66 @@
 @extends('layouts.site')
 
 @section('main')
-<div class="" id="wrapper">
-        <form method="POST" action="{{ route('login') }}" class="form-login">
-        @csrf
-            <h1 class="form-heading">Form đăng nhập</h1>
-            <div class="form-group">
-                <i class="far fa-user"></i>
-                <input id="email" type="email" class="form-input @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                @error('email')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-            <div class="form-group">
-                <i class="far fa-key"></i>
-                <input id="password" type="password" class="form-input @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-                <div id="eye">
-                    <i class="far fa-eye"></i>
+<div class="breacrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <a href="#"><i class="fa fa-home"></i> Home</a>
+                        <span>Login</span>
+                    </div>
                 </div>
-                @error('password')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
             </div>
-            <span>
-               
-                        <label for="">
-                            <input type="checkbox" value="1" name="remember">
-                            Ghi nho dang nhap
-                        </label>
-            </span>
+        </div>
+    </div>
+    <!-- Breadcrumb Form Section Begin -->
 
-            <input type="submit" name="dang-nhap" value="Đăng nhập" class="form-submit">
-            @if (Route::has('password.request'))
-                <a class="btn btn-link" href="{{ route('password.request') }}">
-                    {{ __('Forgot Your Password?') }}
-                </a>
-            @endif
-            <a   href="{{URL::to('/')}}"><-Trang chu</a>
-            <div class="register">
-            
-                <p class="form-footer">Bạn chưa có tài khoản</h1>
-                <a  class="btn btn-warning " href="{{URL::to('/register')}}">Đăng kí ngay!</a>
+    <!-- Register Section Begin -->
+    <div class="register-login-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3">
+                    <div class="login-form">
+                        <h2>Login</h2>
+                        <form method="POST" action="{{ route('login') }}" class="form-login">
+                            @csrf
+                            <div class="group-input">
+                                <label for="username">Email address *</label>
+                                <input type="email" id="username" class="@error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus style="font-size:18px">
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="group-input">
+                                <label for="pass">Password *</label>
+                                <input type="password" id="pass" class="@error('password') is-invalid @enderror" name="password" required autocomplete="current-password" style="font-size:18px">
+                            </div>
+                            <div class="group-input gi-check">
+                                <div class="gi-more">
+                                    <label for="save-pass">
+                                        Save Password
+                                        <input type="checkbox" id="save-pass">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <a href="#" class="forget-pass">Forget your Password</a>
+                                </div>
+                            </div>
+                            <button type="submit" class="site-btn login-btn">Sign In</button>
+                        </form>
+                        <div class="switch-login">
+                            <a href="{{route('register')}}" class="or-login">Or Create An Account</a>
+                        </div>
+                        @if (Route::has('password.request'))
+                            <a class="btn btn-link" href="{{ route('password.request') }}">
+                                {{ __('Quên Password?') }}
+                            </a>
+                        @endif
+                    </div>
+                </div>
             </div>
-                
-            </p>
-        </form>
+        </div>
     </div>
 @endsection
 

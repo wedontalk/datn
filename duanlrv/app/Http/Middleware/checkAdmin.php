@@ -21,6 +21,8 @@ class checkAdmin
     {
         if(Auth::check() && Auth::user()->id_role == 1){
             return $next($request);
+        }elseif(Auth::check() && Auth::user()->id_role == 3){
+            return $next($request);
         }else{
             return redirect()->route('admin.dashboard');
         }
