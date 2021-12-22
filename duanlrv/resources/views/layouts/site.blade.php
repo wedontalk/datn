@@ -74,6 +74,20 @@
         }
     }
 </style>
+<style>
+    .select-items{
+        height:200px;
+        overflow-y: auto;
+    }
+    .select-items::-webkit-scrollbar {
+        width: 3px;
+        background-color: #F5F5F5;
+    }
+    .select-items::-webkit-scrollbar-thumb {
+        border-radius:5px;
+        background-color: #6c757d;
+    }
+</style>
 <body>
     <!-- Page Preloder -->
     <div id="preloder">
@@ -138,9 +152,18 @@
                     <div class="col-lg-3 text-right col-md-3">
                         <ul class="nav-right">
                             <li class="heart-icon">
-                                <a href="#">
+                                <a href="/wishlist">
                                     <i class="icon_heart_alt"></i>
-                                    <span>1</span>
+                                    <span>
+                                        @if (session('Wishlists'))
+                                        @php
+                                          echo count(session()->get('Wishlists'));
+                                       
+                                        @endphp
+                                        @else
+                                            0
+                                        @endif
+                                       </span>
                                 </a>
                              </li>
                                             @php 
@@ -163,7 +186,7 @@
                             <li class=""><a onclick="myFunction()" class="login-panel abc"><i class="fa fa-user"></i>{{Auth::user()->name}}</a></li>
                             <div id="myDropdown" class="dropdown-content">
                                 <a href="{{route('admin.dashboard')}}">chuyển trang admin</a>
-                                <a href="#base">lịch sử mua hàng</a>
+                                <a href="{{URL::to('/show-profile')}}">Thông tin cá nhân</a>
                                 <a href="{{ route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a>
                                 <form action="{{ route('logout')}}" method="post" id="logout-form" style="display:none">
                                     @csrf
@@ -172,8 +195,8 @@
                         @else
                             <li class=""><a onclick="myFunction()" class="login-panel abc"><i class="fa fa-user"></i>{{Auth::user()->name}}</a></li>
                             <div id="myDropdown" class="dropdown-content">
-                                <a href="#about">Thông tin tài khoản</a>
-                                <a href="#base">lịch sử mua hàng</a>
+                                <a href="{{URL::to('/show-profile')}}">Thông tin cá nhân</a>
+                                <!-- <a href="#base">lịch sử mua hàng</a> -->
                                 <!-- đăng xuất -->
                                 <a href="{{ route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a>
                                 <form action="{{ route('logout')}}" method="post" id="logout-form" style="display:none">

@@ -151,7 +151,10 @@
             <label class="col-sm-5 col-form-label">Quận - Huyện</label>
             <div class="col-sm-7">
                 <select class="form-control input-sm choose province @error('id_quanhuyen') is-invalid @enderror" name="id_quanhuyen" id="province">
-                    <option class="op-text" value='{{$qldichvu->id_quanhuyen}}'>{{$qldichvu->quanhuyen->name_quanhuyen}}</option>
+                    <option class="op-text" value=''>chọn quận huyện</option>
+                    @foreach($quanhuyenedit as $qh)
+                        <option class="op-text" {{($qh->id == $qldichvu->id_quanhuyen) ? 'selected':'' }} value='{{$qh->id}}'>{{$qh->name_quanhuyen}}</option>
+                    @endforeach
                 </select>
                 @error('id_quanhuyen')
                     <small class="form-text text-muted">{{$message}}</small>
@@ -162,7 +165,10 @@
             <label class="col-sm-5 col-form-label">Xã - phường</label>
             <div class="col-sm-7">
                 <select class="form-control input-sm wards @error('id_xaphuong') is-invalid @enderror" name="id_xaphuong" id="wards">
-                    <option class="op-text" value='{{$qldichvu->id_xaphuong}}'>{{$qldichvu->xaphuong->name_xaphuong}}</option>
+                    <option class="op-text" value=''>Chọn xã phường, Thị trấn</option>
+                    @foreach($xaphuongedit as $xp)
+                        <option class="op-text" {{($xp->id == $qldichvu->id_xaphuong) ? 'selected':'' }} value='{{$xp->id}}'>{{$xp->name_xaphuong}}</option>
+                    @endforeach
                 </select>
                 @error('id_xaphuong')
                     <small class="form-text text-muted">{{$message}}</small>
@@ -235,7 +241,7 @@
 <script type="">
 jQuery(document).ready(function($) {
 
-    $('.choose').on('click', function() {
+    $('.choose').on('change', function() {
         var action = $(this).attr('id');
         var ma_id = $(this).val();
         var _token = $('input[name="_token"]').val();

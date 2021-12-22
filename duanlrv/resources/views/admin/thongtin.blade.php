@@ -104,7 +104,7 @@
             <i class="fa fa-bell"></i>
             <span class="count bg-danger">{{$thongtin->count()}}</span>
         </button>
-        <div class="dropdown-menu" aria-labelledby="notification">
+        <div class="dropdown-menu overflowne" aria-labelledby="notification">
             <p class="red">Thông báo đặt lịch</p>
             @if($thongtin)
             @foreach($thongtin as $mn)
@@ -151,6 +151,31 @@
 @if(Route::has('login'))
 @auth
 @if(Auth::user()->id_role == 1)
+<div class="user-area dropdown float-right">
+    <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <img class="user-avatar rounded-circle" src="
+        @if(Auth::user()->avatar == null) 
+            {{asset('uploads/avatar/Anh-avatar-123123123.jpg')}} 
+        @else 
+            {{asset('uploads')}}/{{Auth::user()->avatar}}
+        @endif" height="40px">
+    </a>
+    <div class="user-menu dropdown-menu">
+        <a class="nav-link" href="{{route('thongtin')}}"><i class="fa fa- user"></i>Thông tin</a>
+
+        <!-- <a class="nav-link" href="#"><i class="fa fa- user"></i>Notifications <span class="count">13</span></a> -->
+
+        <a class="nav-link" href="{{route('home')}}"><i class="fa fa -cog"></i>Về Trang user</a>
+
+        <a class="nav-link" href="{{ route('logout')}}"
+        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+        ><i class="fa fa-power -off"></i>Đăng xuất</a>
+        <form action="{{ route('logout')}}" method="post" id="logout-form">
+            @csrf
+        </form>
+    </div>
+</div>
+@else
 <div class="user-area dropdown float-right">
     <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <img class="user-avatar rounded-circle" src="

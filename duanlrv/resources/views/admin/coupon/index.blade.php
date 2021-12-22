@@ -55,6 +55,29 @@
  </style>
 @endsection
 @section('main')
+    <div class="breadcrumbs">
+        <div class="breadcrumbs-inner">
+            <div class="row m-0">
+                <div class="col-sm-4">
+                    <div class="page-header float-left">
+                        <div class="page-title">
+                            <h1>Danh sách quản lý mã giảm giá</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="page-header float-right">
+                        <div class="page-title">
+                            <ol class="breadcrumb text-right">
+                                <li><a class="btn bg-flat-color-6" style="color:#fff" id="deleteAllselected">Delete All</a></li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- danh sách  -->
     <div class="content">
         <div class="card cart-bg">
             <div class="card-header">
@@ -81,6 +104,7 @@
                 <table class="table ">
                     <thead>
                         <tr>
+                            <th ><input type="checkbox" id="checkAll" /></th>
                             <th class="serial">#</th>
                             <th class="avatar">mã giảm giá</th>
                             <th>code mã giảm giá</th>
@@ -98,8 +122,9 @@
                             $i =1;
                         @endphp
                         @foreach($data as  $dt)
-                            <tr>
-                                <td id="ids">{{$i++}}</td>
+                            <tr id="sid{{$dt->id}}">
+                            <td><input type="checkbox" class="checkboxclass" name="ids" value="{{$dt->id}}"></td>
+                                <td id="idsne">{{$i++}}</td>
                                 <td>
                                     <span>{{$dt->coupon_name}}</span>
                                 </td>
@@ -160,15 +185,18 @@
 @section('js')
 <script src="{{asset('adm/assets/js/danhsach.js')}}"></script>
 <script src="{{asset('adm/assets/js/alertne.js')}}"></script>
-    <script>
+<script>
         jQuery(document).ready(function($) {
             $('.btndelete').click(function(ev) {
                 ev.preventDefault();
                 var _href = $(this).attr('href');
                 $('form#form-delete').attr('action',_href);
-                if(confirm('bạn muốn xóa chứ ?')){
+                alertify.confirm('Thông báo', 'Bạn có muốn xóa', function(confirm_xoa){ 
+                if(confirm_xoa){
                     $('form#form-delete').submit();
                 }
+                alertify.success('Bạn đã xóa') }
+                , function(){ alertify.error('Bạn đã không xóa')});
             });
         });
     </script>
@@ -176,7 +204,7 @@
     jQuery(document).ready(function($) {
             var _token = $('input[name="_token"]').val();
             var ketthuc = $('#ngayketthuc').text();
-            var ids = $('#ids').text();
+            var ids = $('#idsne').text();
             $.ajax({
                 url:'{{url('/admin/coupon')}}',
                 method:"post",
@@ -196,5 +224,44 @@
                 }
             });
     });
+    </script>
+        <!-- jquery thông báo lỗi -->
+        <script>
+        jQuery(document).ready(function($) {
+            var test = function(){
+            var name = $('#testalert').addClass('hide');
+            };
+            setTimeout(test, 3000);
+        });
+    </script>
+    <!-- jquery xóa tất cả -->
+    <script>
+        jQuery(document).ready(function($) {
+            $('#checkAll').click(function(){
+                $(".checkboxclass").prop('checked', $(this).prop('checked'));
+            });
+            $('#deleteAllselected').click(function(e){
+                e.preventDefault();
+                var allids = [];
+                var _token = $('input[name="_token"]').val();
+                $('input:checkbox[name=ids]:checked').each(function(){
+                    allids.push($(this).val());
+                });
+                $.ajax({
+                    url:'{{route('deletecoupon')}}',
+                    type:"delete",
+                    data:{
+                        _token:_token,
+                        ids:allids
+                    },
+                    success:function(data){
+                        $.each(allids,function(key,val){
+                            $("#sid"+val).remove();
+                            
+                        });
+                    }
+                });
+            });
+        });
     </script>
 @stop()

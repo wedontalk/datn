@@ -102,8 +102,42 @@
             </div>
             <x-alert></x-alert>
             <div class="table-stats order-table ov-h">
-                <table id="loadjs" class="table" data-load_id="{{route('loadajax')}}">
-                    @include('admin.chitietdichvu.loadajax')
+                <table id="loadjs" class="table">
+                    <thead>
+                        <tr>
+                            <th class="serial">#</th>
+                            <th class="serial">Tên dịch vụ</th>
+                            <th>Trạng thái</th>
+                            <th style="width:100px;">Action</th>
+                            <!-- <th>Quantity</th> -->
+                            <!-- <th>Status</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                        $i = 1;
+                        @endphp
+                        @foreach($data as $dt)
+                            <tr>
+                                <td class="serial">{{$i++}}</td>
+                                <td class="edit_name" contenteditable data-id='{{$dt['id']}}' style="width:800px">
+                                    <span>{{$dt['name_dichvu']}}</span>
+                                </td>
+                                <td>
+                                    @if($dt['id_status'] == 1)
+                                        <span class="badge badge-complete">thành công</span>
+                                    @elseif ($dt['id_status'] == 2)
+                                        <span class="badge badge-warning">đợi xét duyệt</span>
+                                    @else
+                                        <span class="badge badge-danger">đã hủy</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{route('chitietdichvu.destroy',$dt['id'])}}" class="btn btn-sm btn-danger btndelete"><i class="fa fa-trash"></i> Xóa</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                 </table>
                 <form method="POST" action="" id="form-delete">
                 @method('DELETE')
@@ -121,13 +155,15 @@
     <div class="modal-content">
       <div class="modal-header">
         <center><strong class="modal-title" id="exampleModalLabel">form thêm dịch vụ cơ sở</strong></center>
-        <form action="{{route('chitietdichvu.store')}}" id="formne" method="POST" enctype="multipart/form-data">
-            @csrf
+        <form id="formne" method="POST" enctype="multipart/form-data">
       </div>
       <div class="modal-body">
             <div class="form-group">
                 <label>nhập tên dịch vụ</label>
                 <input type="text"  name="name_dichvu" id="name_dichvu" class="form-control" placeholder="tên dịch vụ">
+                @error('name_dichvu')
+                    <small class="form-text text-muted">{{$message}}</small>
+                @enderror
             </div>
             <div class="form-group">
                 <label>trạng thái</label>
@@ -189,13 +225,12 @@
 <script>
     jQuery(document).ready(function($) {
         $(document).on('click', '#submitajax', function(){
-            var load = $('#loadjs').data('load_id');
             var name = $('#name_dichvu').val();
             var trangthai = $('#id_status').val();
             var dis = $(this).data('dismiss');
             var _token = $('input[name="_token"]').val();  
             $.ajax({
-                url:'{{url('/admin/chitietdichvu')}}', 
+                url:'{{route('chitietdichvu.store')}}', 
                 method:'post',
                 data:{
                     name: name,trangthai: trangthai,dis:dis,_token:_token,
@@ -204,9 +239,8 @@
                 {
                     if(data == 'done')
                     {
-                        $("#loadjs").load(load);
                         alertify.success('thành công !');
-                        console.log('đã load');
+                        window.location.reload(true);
                     }
                     else
                     {

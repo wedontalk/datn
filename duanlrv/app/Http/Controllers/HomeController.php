@@ -7,13 +7,24 @@ use Session;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use App\Models\coso;
+use App\Models\navmenu;
+use App\Models\rating;
+use App\Models\datlich;
+use App\Models\donhang;
+use App\Models\dichvucoso;
+use App\Models\information;
+use App\Models\category;
+use App\Models\news;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Redirect;
 use App\Repositories\qlsanpham\qlsanphamInterface;
 use Illuminate\Support\Facades\View;
 use App\Models\thanhpho;
 use App\Models\quanhuyen;
 use App\Models\xaphuong;
-use Illuminate\Support\Facades\Auth;
+use App\Models\nhanvien;
+// use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\coupon;
 // use Illuminate\Support\Facades\Mail;
@@ -60,12 +71,13 @@ class HomeController extends Controller
 
     public function productDetail($slug)
     {   
-        $categoryNav = DB::Table('categories')->orderby('id')->get();
-         $detail_product = DB::table('information_post')
-         ->join('categories','id_category','information_post.id_category')
-         ->where('slug_product',$slug)->get();
-       return view('Site.productDetail',compact('detail_product','categoryNav'));
-        
+
+        $categoryNav = information::where('slug_product', $slug)->first();
+        $detail_product = information::orderBy('id')->where('id',$categoryNav->id)->where('id_status', 1)->get();
+        $danhmuc = navmenu::orderBy('id','ASC')->where('hidden', 1)->get();
+        $ratingAVG = rating::where('product_id',$categoryNav->slug_product)->avg('rating_star');
+        $comment = Comment::get();
+       return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc','ratingAVG','comment'));
 
     }
     public function products()
@@ -73,9 +85,47 @@ class HomeController extends Controller
         $categoryNav = DB::Table('nav_menu')->orderby('id')->get();
         $products= $this->products->getAll();
         $category_by_id = DB::table('categories')->get();
+        foreach($category_by_id as $key => $cate) {
+            $cate_id = $cate->id;
+        
+
+            if(isset($_GET['locsp'])){
+                $sort_by = $_GET['locsp'];
+
+
+                if($sort_by == $cate->slug){
+                    $products = information::with('phansanpham')->where('id_category', $cate_id)->orderBy('id', 'ASC')->search()->paginate(10);
+                    $products->render();
+                }
+            }
+        }
         return view('Site.products',compact('products','categoryNav','category_by_id'));
+
+       
+    }
+    public function binh_luan(Request $request ,$slug){
+        $data = array();
+        $data['comment'] = $request->content;
+        $data['comment_product_id'] =$slug;
+        $data['comment_name'] =Auth::user()->name;
+        $data['comment_iduser'] =Auth::user()->id;
+        DB::table('comment')->insert($data);
+        return redirect()->back();
+    }
+    public function delete_comment($id){
+        DB::table('comment')->where('comment_id',$id)->delete();
+        return redirect()->back();
     }
 
+    public function blog(){
+        $blog =news::orderBy('id','ASC')->where('hidden', 1)->search()->paginate(10);
+
+        return view('Site.blog',compact('blog'));
+    }
+    public function news($slug){
+        $news =news::orderBy('id','ASC')->where('hidden', 1)->where('slug',$slug)->get();
+        return view('Site.blogDetail',compact('news'));
+    }
 
     function addToCart($id){
         // session()->flush('carts');
@@ -181,7 +231,9 @@ class HomeController extends Controller
         $xaphuong = xaphuong::orderBy('id', 'ASC')->get();
         return view('site.checkout',compact('thanhpho','xaphuong','quanhuyen','carts'));
 
-    } 
+    }
+
+
     public function select_thanhpho(Request $request){
         $data = $request->all();
         if ($data['action']) {
@@ -203,12 +255,18 @@ class HomeController extends Controller
             echo $output;
         }
     }
+
+
     public function save_checkout( thanhtoan $request){
+        
         //insert order_product
-        $id = Auth::user()->id;
-        $email = Auth::user()->email;
-        $name = Auth::user()->name;
-        $phone = Auth::user()->phone;
+
+        $id = \Auth::user()->id;
+
+        $email = $request->order_email;
+        $name = \Auth::user()->name;
+        $phone = \Auth::user()->phone;
+
 
         if ($request->phuongthuc_thanhtoan==2) {
             $data= array();
@@ -240,7 +298,9 @@ class HomeController extends Controller
            
         }
         $total= $request->tong_tien;
-            return view('Vnpay.index',compact('total','dataaaa'));
+
+            return view('Vnpay.index',compact('total','data'));
+
         }else{
             //nếu có mã coupon -> giảm số lượng coupon
             $coupon=Session::get('coupon',[]);
@@ -269,19 +329,21 @@ class HomeController extends Controller
             $data['order_code']=\Carbon\Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
             $data_id=DB::table('order_product')->insertGetId($data);
 
-            //insert order_detail
-            $carts= session()->get('cart');
-            foreach( $carts as $item){
-                $cart['order_id']=$data_id;
-                $cart['product_name']=$item['name'];
-                $cart['product_price']=$item['price'];
-                $cart['product_quantity']=$item['quantity'];
-                $cart['tong_tien']=$request->tong_tien;
-                DB::table('order_detail')->insertGetId($cart);
-            }
-                // Session()->forget('cart');
-            $now =Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
-            $title_mail="Đơn mua hàng ngày".' '.$now;
+
+        //insert order_detail
+        $carts= session()->get('cart');
+        foreach( $carts as $item){
+            $cart['order_id']=$data_id;
+            $cart['product_name']=$item['name'];
+            $cart['product_price']=$item['price'];
+            $cart['product_quantity']=$item['quantity'];
+            $cart['tong_tien']=$request->tong_tien;
+            DB::table('order_detail')->insertGetId($cart);
+        }
+            
+    $now =Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
+        $title_mail="Đơn mua hàng ngày".' '.$now;
+
 
         //lấy cart
         if(Session::get('cart')==true){
@@ -294,8 +356,13 @@ class HomeController extends Controller
                 );
             }
 
+
            
-        }
+  
+
+
+           
+
         Mail::send('mail.confirm',[
             'cart_array'=>$cart_array,
             'order_code'=>$data['order_code'],
@@ -307,7 +374,6 @@ class HomeController extends Controller
             'thanhpho'=> thanhpho::where('matp', $data['id_thanhpho'])->get(),
             'quanhuyen'=> quanhuyen::where('id', $data['id_quanhuyen'])->get(),
             'xaphuong'=> xaphuong::where('id', $data['id_xaphuong'])->get(),
-            'email'=>$email,
         ],function($message)use($email,$name,$title_mail){
             $message->to($email,$name)->subject($title_mail);
             $message->from('hieuhaohoa201@gmail.com');
@@ -315,12 +381,56 @@ class HomeController extends Controller
         session::forget('cart');
         session::forget('coupon');
         
+
+    }
+        return view('site.successOrder');
+    }
+
+
+
+    public function addtoWishlist($id){
+        // session()->flush('carts');
+        $product = $this-> products->find($id);
+        $Wishlists= session()->get('Wishlists',[]);
+            $Wishlists[$id]=[
+                'name'=>$product->title,
+                'price'=>$product->price,
+                'images'=>$product->image,
+            ];
+        session()->put('Wishlists', $Wishlists);
+        $Wishlists =session()->get('Wishlists');
+        return redirect()->back();
+        // echo "<pre>";
+        // print_r(session()->get('Wishlists'));
+        // print_r(count(session()->get('Wishlists')));
+        // return response()->json([
+        //     'code'=>200,
+        //     'message'=>'success'
+
+        // ], 200);
+
+        
+    }
+
+    public function deleteWishlist(Request $request){
+        if($request->id){
+            $Wishlists =session()->get('Wishlists');
+            unset($Wishlists[$request->id]);
+            session()->put('Wishlists',$Wishlists);
+            $Wishlists =session()->get('Wishlists');
+            
+            // $Wishlist=View('site.contentWishlist',compact('wishlist'))->render();
+            // return response()->json(['contentWishlist'=> $Wishlist]);
+        } 
+
+        
             //end
 
             
     }
         return Redirect::to('/');
     }
+
         
     public function createpayment(Request $request)
     {
@@ -378,37 +488,54 @@ class HomeController extends Controller
         return redirect($vnp_Url);
     }
 
-    public function return(Request $request){   
-        
-        if($request->vnp_ResponseCode == "00") {
-            // $this->apSer->thanhtoanonline(session('cost_id'));
-        DB::beginTransaction();      
-        $ad=$request->vnp_TxnRef;
-        $d=session()->get('use');
+    
+    
+    public function calendar(){
+        $CS = coso::all();
+        $DV = dichvucoso::all();
+        $NV = nhanvien::all();
+        return view("site.calendar",['CS'=>$CS],['DV'=>$DV,'NV'=>$NV]);
+    }
 
-            $url = session('url_prev','/');
-        $vnpay=$request->all();
-            dd($d);
-        $data_payment=array();
-        $data_payment['order_id']=$vnpay['vnp_TxnRef'];
-        $data_payment['thanh_vien']= $da['id_user'];
-        $data_payment['money']=$vnpay['vnp_Amount'];
-        $data_payment['note']=$vnpay['vnp_OrderInfo'];
-        $data_payment['vnp_response_code']=$vnpay['vnp_ResponseCode'];
-        $data_payment['code_vnpay']=$vnpay['vnp_TransactionNo'];
-        $data_payment['code_bank']=$vnpay['vnp_BankCode'];
-        $data_payment['time']=date('Y-m-d H:i',strtotime($vnpay['vnp_PayDate']));
+    public function select_DV(Request $request){
+        $data = $request->all();
         
-        DB::table('payments')->insertGetId($data_payment);
+        if ($data['action']) {
+            $output = '';
+            if ($data['action'] == "CS") {
+                $select_DV = dichvucoso::all();
+                $output .= '<option>-----Chọn Dịch Vụ-----</option>';
+                foreach ($select_DV as $key => $DV) {
+                    $output .= '<option value="' . $DV->id . '">' . $DV->name_dichvu . '</option>';
+                }
+            } else {
+            }
+            echo $output;
+        }
+        
+    }
+    
+    public function Addcalendar(Request $req){
+        $data = new datlich();
+        $data->name = $req->name;
+        $data->phone = $req->phone;
+        $data->email = $req->email;
+        $data->id_user = $req->id_user;
+        $data->address = $req->address;
+        $data->ghichu = $req->ghichu;
+        $data->id_coso = $req->CS;
+        $data->id_nhucau = $req->DV;
+        $data->date = $req->date;
+        $data->hour = $req->hour;
+        $data->id_KHDL = $req->id_KHDL;
+        $data->save();
+        return view('site.successOrder');
 
-                    return view('Vnpay.vnpay_return',compact('vnpay'));
-            // return redirect($url)->with('success' ,'Đã thanh toán phí dịch vụ');
-        
     }
     // session()->forget('url_prev');
     // return redirect($url)->with('errors' ,'Lỗi trong quá trình thanh toán phí dịch vụ');
 
-    }
+
     public function check_coupon(Request $request){
         $data = $request->all();
         $now =Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
@@ -416,6 +543,10 @@ class HomeController extends Controller
         if($coupon){
             $count_coupon = $coupon['coupon_qty'];
             if($count_coupon > 0 && strtotime($coupon['coupon_date_end']) > strtotime($now)){
+
+
+
+   
                 $coupon_session = Session::get('coupon');
                 if($coupon_session==true){
                     $is_avaiable = 0;
@@ -424,8 +555,10 @@ class HomeController extends Controller
                             'coupon_code' => $coupon->coupon_code,
                             'coupon_condition' => $coupon->coupon_condition,
                             'coupon_number' => $coupon->coupon_number,
+
                             'coupon_qty'=>$coupon->coupon_qty,
                             'id_coupon'=>$coupon->id,
+
                         );
                         Session::put('coupon',$cou);
                     }
@@ -449,7 +582,19 @@ class HomeController extends Controller
         }else {
             return redirect()->back()->with('error','Mã giảm giá không đúng');
         }
-    }  
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     public function unset_coupon(){
         $coupon =session()->get('coupon');
         if($coupon=true){
@@ -474,6 +619,54 @@ class HomeController extends Controller
        $category_by_id = DB::table('categories')->get();
        return view('Site.products',compact('categoryNav','category_by_id','products'));
     //    return view('Site.products',compact('products','categoryNav','category_by_id','product_loc'));
+
+    } 
+
+
+
+ 
+
+    public function return(Request $request){   
+            
+            if($request->vnp_ResponseCode == "00") {
+                // $this->apSer->thanhtoanonline(session('cost_id'));
+            DB::beginTransaction();      
+            $ad=$request->vnp_TxnRef;
+            $d=session()->get('use');
+
+                $url = session('url_prev','/');
+            $vnpay=$request->all();
+            $data_payment=array();
+            $data_payment['order_id']=$vnpay['vnp_TxnRef'];
+            // $data_payment['thanh_vien']= $da['id_user'];
+            $data_payment['money']=$vnpay['vnp_Amount'];
+            $data_payment['note']=$vnpay['vnp_OrderInfo'];
+            $data_payment['vnp_response_code']=$vnpay['vnp_ResponseCode'];
+            $data_payment['code_vnpay']=$vnpay['vnp_TransactionNo'];
+            $data_payment['code_bank']=$vnpay['vnp_BankCode'];
+            $data_payment['time']=date('Y-m-d H:i',strtotime($vnpay['vnp_PayDate']));
+            
+            DB::table('payments')->insertGetId($data_payment);
+
+                        return view('Vnpay.vnpay_return',compact('vnpay'));
+                // return redirect($url)->with('success' ,'Đã thanh toán phí dịch vụ');
+            
+        }
     }
+
+public function loi()
+{
+    return view('layouts.404');
+}
+
+
+public function donhangdatlich(Request $request){
+    $data = datlich::orderBy('id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
+    $donhang = donhang::orderBy('order_id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
+    return view('site.profile', compact('data','donhang'));
+}
+
+
+
 }
 

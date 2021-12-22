@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\datlich;
+use App\Models\trangthai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -22,7 +23,17 @@ class datlichController extends Controller
     public function index()
     {
         $data = $this->datlich->getAll();
-        return view('admin.datlich.index', compact('data'));
+        $xetduyet = trangthai::orderBy('id', 'ASC')->select('id','name_type')->get();
+        return view('admin.datlich.index', compact('data','xetduyet'));
+    }
+    public function updatedatlich(Request $request){
+        $data = $request->all();
+        $id = $data['id'];
+        $id_status = $data['id_status'];
+        $update = datlich::find($id);
+        $update->id_status = $id_status;
+        $update->save();
+        echo 'done';
     }
 
     /**

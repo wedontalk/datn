@@ -11,45 +11,66 @@
             <div class="col-sm-12">
                 <div class="form-group">
                     <label>Tên mã giảm giá</label>
-                    <input type="text" class="form-control" name="coupon_name" placeholder="Nhập Tên danh mục">
+                    <input type="text" class="form-control @error('coupon_name') is-invalid @enderror" name="coupon_name" placeholder="Nhập Tên danh mục">
+                    @error('coupon_name')
+                        <small class="form-text text-muted">{{$message}}</small>
+                    @enderror
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>ngày bắt đầu</label>
-                    <input type="date" class="form-control" id="start" name="coupon_date_start" placeholder="Nhập Tên danh mục">
+                    <input type="date" class="form-control @error('coupon_date_start') is-invalid @enderror" id="start" name="coupon_date_start" placeholder="Nhập Tên danh mục">
+                    @error('coupon_date_start')
+                        <small class="form-text text-muted">{{$message}}</small>
+                    @enderror
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>ngày Kết thúc</label>
-                    <input type="date" class="form-control" id="end" name="coupon_date_end" placeholder="Nhập Tên danh mục" disabled="true">
+                    <input type="date" class="form-control @error('coupon_date_end') is-invalid @enderror" id="end" name="coupon_date_end" placeholder="Nhập Tên danh mục" disabled="true">
+                    @error('coupon_date_end')
+                        <small class="form-text text-muted">{{$message}}</small>
+                    @enderror
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>số lượng</label>
-                    <input type="text" class="form-control" name="coupon_qty" placeholder="Nhập Tên danh mục">
+                    <input type="text" class="form-control @error('coupon_qty') is-invalid @enderror" name="coupon_qty" placeholder="Nhập Tên danh mục">
+                    @error('coupon_qty')
+                        <small class="form-text text-muted">{{$message}}</small>
+                    @enderror
                 </div>
             </div>
             <div class="form-group col-sm-6">
                 <label for="selecttien">giảm theo</label>
-                <select class="form-control" id="selecttien" name="coupon_condition">
+                <select class="form-control @error('coupon_condition') is-invalid @enderror" id="selecttien" name="coupon_condition">
                 <option value="0" selected>-- Giảm giá theo -- </option>
                 <option value="1">theo %</option>
                 <option value="2">theo giá tiền</option>
                 </select>
+                @error('coupon_condition')
+                    <small class="form-text text-muted">{{$message}}</small>
+                @enderror
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>số giảm</label>
-                    <input type="text" class="form-control sogiam" name="coupon_number" placeholder="nhập số tiền cần giảm" disabled="true">
+                    <input type="text" class="form-control sogiam @error('coupon_number') is-invalid @enderror" name="coupon_number" placeholder="nhập số tiền cần giảm" disabled="true">
+                    @error('coupon_number')
+                        <small class="form-text text-muted">{{$message}}</small>
+                    @enderror
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>code coupon</label>
-                    <input type="text" class="form-control" name="coupon_code" placeholder="Nhập Tên danh mục">
+                    <input type="text" class="form-control @error('coupon_code') is-invalid @enderror" name="coupon_code" placeholder="Nhập Tên danh mục">
+                    @error('coupon_code')
+                        <small class="form-text text-muted">{{$message}}</small>
+                    @enderror
                 </div>
             </div>
 
@@ -57,9 +78,9 @@
          <div class="form-group">
             <label for="exampleFormControlSelect1">Trạng thái xét duyệt</label>
             <select class="form-control" id="exampleFormControlSelect1" name="id_status">
-            <option value="1">xét duyệt Thành công</option>
-            <option value="2">Đợi xét duyệt</option>
-            <option value="3">hủy xét duyệt</option>
+                <option value="1">xét duyệt Thành công</option>
+                <option value="2">Đợi xét duyệt</option>
+                <option value="3">hủy xét duyệt</option>
             </select>
         </div>
         <br>
