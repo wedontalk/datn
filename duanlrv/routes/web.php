@@ -112,8 +112,8 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::post("/payment/online", "HomeController@createpayment")->name('payment.online');
     Route::get("/return-vnpay", "HomeController@return")->name('payment.return');
 
-    Route::view('/contact', 'Site.contact');
-    Route::view('/introduce', 'Site.introduce');
+    Route::view('/contact', 'Site.contact')->name('contact');
+    Route::view('/introduce', 'Site.introduce')->name('introduce');
     Route::view('/blog', 'Site.blog');
     Route::get('/calendar', [HomeController::class, 'calendar'])->name('calendar');
     Route::post('/addcalendar', [HomeController::class, 'Addcalendar'])->name('addcalendar');

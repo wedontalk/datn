@@ -30,6 +30,7 @@ use App\Models\coupon;
 // use Illuminate\Support\Facades\Mail;
 use App\Mail\DatHang;
 use Mail;
+use Auth;
 use App\Http\Requests\thanhtoan;
 session_start();
 
@@ -355,14 +356,7 @@ class HomeController extends Controller
                     'tong'=>$request->tong_tien,
                 );
             }
-
-
-           
-  
-
-
-           
-
+        }
         Mail::send('mail.confirm',[
             'cart_array'=>$cart_array,
             'order_code'=>$data['order_code'],
@@ -380,8 +374,6 @@ class HomeController extends Controller
         });
         session::forget('cart');
         session::forget('coupon');
-        
-
     }
         return view('site.successOrder');
     }
@@ -422,13 +414,7 @@ class HomeController extends Controller
             // $Wishlist=View('site.contentWishlist',compact('wishlist'))->render();
             // return response()->json(['contentWishlist'=> $Wishlist]);
         } 
-
-        
-            //end
-
-            
-    }
-        return Redirect::to('/');
+     
     }
 
         
@@ -493,8 +479,7 @@ class HomeController extends Controller
     public function calendar(){
         $CS = coso::all();
         $DV = dichvucoso::all();
-        $NV = nhanvien::all();
-        return view("site.calendar",['CS'=>$CS],['DV'=>$DV,'NV'=>$NV]);
+        return view("site.calendar",['CS'=>$CS],['DV'=>$DV]);
     }
 
     public function select_DV(Request $request){
