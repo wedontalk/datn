@@ -78,7 +78,7 @@ class HomeController extends Controller
         $detail_product = information::orderBy('id')->where('id',$categoryNav->id)->where('id_status', 1)->get();
         $danhmuc = navmenu::orderBy('id','ASC')->where('hidden', 1)->get();
         $ratingAVG = rating::where('product_id',$slug)->avg('rating_star');
-        $comment = Comment::get();
+        $comment = Comment::where('comment_product_id',$slug)->get();
        return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc','ratingAVG','comment'));
     }
     public function products()
@@ -103,14 +103,19 @@ class HomeController extends Controller
         return view('Site.products',compact('products','categoryNav','category_by_id'));
        
     }
-    public function binh_luan(Request $request ,$id){
+    public function binh_luan(Request $request ,$slug){
         $data = array();
         $data['comment'] = $request->content;
-        $data['comment_product_id'] = Auth::user()->id;
-        $data['comment_name'] = Auth::user()->name;
+        $data['comment_product_id'] =$slug;
+        $data['comment_name'] =Auth::user()->name;
         DB::table('comment')->insert($data);
         return redirect()->back();
     }
+    public function delete_comment($id){
+        DB::table('comment')->where('comment_id',$id)->delete();
+        return redirect()->back();
+    }
+
     public function blog(){
         $blog =news::orderBy('id','ASC')->where('hidden', 1)->search()->paginate(10);
 
