@@ -124,7 +124,7 @@ class couponController extends Controller
     public function update($id, Request $request)
     {
         $request->validate([
-            'coupon_name' => 'required|unique:coupon,coupon_name'.request()->$id,
+            'coupon_name' => 'required',
             'coupon_date_start' => 'required',
             'coupon_date_end' => 'required',
             'coupon_qty' => 'required',
@@ -140,7 +140,6 @@ class couponController extends Controller
             'coupon_condition.required' => 'chọn giảm theo % | giảm theo giá tiền',
             'coupon_code.required' => 'name code mã giảm giá không để trống',
             'coupon_number.required' => 'số tiền giảm không để trống',
-            'coupon_name.unique' => 'Tên mã giảm giá này đã có trong CSDL',
         ]);
         if($this->coupon->update($id,$request->all()))
         {

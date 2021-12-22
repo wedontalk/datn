@@ -12,6 +12,7 @@ use App\Models\coso;
 use App\Models\navmenu;
 use App\Models\rating;
 use App\Models\datlich;
+use App\Models\donhang;
 use App\Models\dichvucoso;
 use App\Models\information;
 use App\Models\category;
@@ -24,6 +25,7 @@ use Illuminate\Support\Facades\View;
 use App\Models\thanhpho;
 use App\Models\quanhuyen;
 use App\Models\xaphuong;
+use App\Models\nhanvien;
 // use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\coupon;
@@ -77,8 +79,8 @@ class HomeController extends Controller
         $categoryNav = information::where('slug_product', $slug)->first();
         $detail_product = information::orderBy('id')->where('id',$categoryNav->id)->where('id_status', 1)->get();
         $danhmuc = navmenu::orderBy('id','ASC')->where('hidden', 1)->get();
-        $ratingAVG = rating::where('product_id',$slug)->avg('rating_star');
-        $comment = Comment::where('comment_product_id',$slug)->get();
+        $ratingAVG = rating::where('product_id',$categoryNav->slug_product)->avg('rating_star');
+        $comment = Comment::get();
        return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc','ratingAVG','comment'));
     }
     public function products()
@@ -321,7 +323,7 @@ class HomeController extends Controller
             DB::table('order_detail')->insertGetId($cart);
         }
             // Session()->forget('cart');
-$now =Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
+    $now =Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
         $title_mail="Đơn mua hàng ngày".' '.$now;
 
         //lấy cart
@@ -357,7 +359,7 @@ $now =Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
         
 
     }
-        return Redirect::to('/success');
+        return view('site.successOrder');
     }
 
 
@@ -408,8 +410,28 @@ $now =Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
     public function calendar(){
         $CS = coso::all();
         $DV = dichvucoso::all();
-        return view("site.calendar",['CS'=>$CS],['DV'=>$DV]);
+        $NV = nhanvien::all();
+        return view("site.calendar",['CS'=>$CS],['DV'=>$DV,'NV'=>$NV]);
     }
+
+    public function select_DV(Request $request){
+        $data = $request->all();
+        
+        if ($data['action']) {
+            $output = '';
+            if ($data['action'] == "CS") {
+                $select_DV = dichvucoso::all();
+                $output .= '<option>-----Chọn Dịch Vụ-----</option>';
+                foreach ($select_DV as $key => $DV) {
+                    $output .= '<option value="' . $DV->id . '">' . $DV->name_dichvu . '</option>';
+                }
+            } else {
+            }
+            echo $output;
+        }
+        
+    }
+    
     public function Addcalendar(Request $req){
         $data = new datlich();
         $data->name = $req->name;
@@ -422,8 +444,9 @@ $now =Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
         $data->id_nhucau = $req->DV;
         $data->date = $req->date;
         $data->hour = $req->hour;
+        $data->id_KHDL = $req->id_KHDL;
         $data->save();
-        return redirect('/success');
+        return view('site.successOrder');
     }
 
 
@@ -561,37 +584,44 @@ $now =Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
 
 
     public function return(Request $request){   
-        
-        if($request->vnp_ResponseCode == "00") {
-            // $this->apSer->thanhtoanonline(session('cost_id'));
-        DB::beginTransaction();      
-        $ad=$request->vnp_TxnRef;
-        $d=session()->get('use');
+            
+            if($request->vnp_ResponseCode == "00") {
+                // $this->apSer->thanhtoanonline(session('cost_id'));
+            DB::beginTransaction();      
+            $ad=$request->vnp_TxnRef;
+            $d=session()->get('use');
 
-            $url = session('url_prev','/');
-        $vnpay=$request->all();
-        $data_payment=array();
-        $data_payment['order_id']=$vnpay['vnp_TxnRef'];
-        // $data_payment['thanh_vien']= $da['id_user'];
-        $data_payment['money']=$vnpay['vnp_Amount'];
-        $data_payment['note']=$vnpay['vnp_OrderInfo'];
-        $data_payment['vnp_response_code']=$vnpay['vnp_ResponseCode'];
-        $data_payment['code_vnpay']=$vnpay['vnp_TransactionNo'];
-        $data_payment['code_bank']=$vnpay['vnp_BankCode'];
-        $data_payment['time']=date('Y-m-d H:i',strtotime($vnpay['vnp_PayDate']));
-        
-        DB::table('payments')->insertGetId($data_payment);
+                $url = session('url_prev','/');
+            $vnpay=$request->all();
+            $data_payment=array();
+            $data_payment['order_id']=$vnpay['vnp_TxnRef'];
+            // $data_payment['thanh_vien']= $da['id_user'];
+            $data_payment['money']=$vnpay['vnp_Amount'];
+            $data_payment['note']=$vnpay['vnp_OrderInfo'];
+            $data_payment['vnp_response_code']=$vnpay['vnp_ResponseCode'];
+            $data_payment['code_vnpay']=$vnpay['vnp_TransactionNo'];
+            $data_payment['code_bank']=$vnpay['vnp_BankCode'];
+            $data_payment['time']=date('Y-m-d H:i',strtotime($vnpay['vnp_PayDate']));
+            
+            DB::table('payments')->insertGetId($data_payment);
 
-                    return view('Vnpay.vnpay_return',compact('vnpay'));
-            // return redirect($url)->with('success' ,'Đã thanh toán phí dịch vụ');
-        
+                        return view('Vnpay.vnpay_return',compact('vnpay'));
+                // return redirect($url)->with('success' ,'Đã thanh toán phí dịch vụ');
+            
+        }
     }
-}
-public function loi(){
+
+public function loi()
+{
     return view('layouts.404');
 }
 
 
+public function donhangdatlich(Request $request){
+    $data = datlich::orderBy('id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
+    $donhang = donhang::orderBy('order_id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
+    return view('site.profile', compact('data','donhang'));
+}
 
 
 }

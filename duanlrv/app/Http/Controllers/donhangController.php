@@ -128,7 +128,6 @@ class donhangController extends Controller
     {
         $ids = $request->ids;
         donhang::whereIn('order_id', $ids)->delete();
-        echo 'thanhcong';
-        return reponse()->json(['success'=>"delete all"]);
+        return Redirect::back()->with('message','Operation Successful !');
     }
 }

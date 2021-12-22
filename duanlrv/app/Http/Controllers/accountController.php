@@ -117,7 +117,7 @@ class accountController extends Controller
         $id = $request->id;
         $data = $request->all();
         $passold = $data['passold'];
-        if (Hash::check($passold , \Auth::user()->password)) { 
+        if (Hash::check($passold , Auth::user()->password)) { 
             $update = account::find($id);
             $update->password = Hash::make($data['passnew']);
             $update->save();
@@ -167,35 +167,35 @@ class accountController extends Controller
         Auth::guard('cus')->logout();
         return Redirect::to('/login-customer');
     }
-    public function show_profile(){
-        $cus =  Auth::user();
-        return view('Site.profile')->with(compact('cus'));
-    }
-    public function update_profile(Request $request){
-        $cus = Auth::user();
-        if($request->password){
-            $request->validate([
-                'password' => 'required',
-                'confirm_password'=> 'required|same:password'
-            ]);
-            $pass_hashed = bcrypt($request->password);
-            $request->merge(['password'=>$pass_hashed]);
-        }else{
-            $request->merge(['password'=>$cus->password]);
-        }
-        $data = $request->only('name','email','password','address',);
-        if($cus->update($data)){
-            return redirect()->back();
-        }
-        return redirect()->back();
+    // public function show_profile(){
+    //     $cus =  Auth::user();
+    //     return view('Site.profile')->with(compact('cus'));
+    // }
+    // public function update_profile(Request $request){
+    //     $cus = Auth::user();
+    //     if($request->password){
+    //         $request->validate([
+    //             'password' => 'required',
+    //             'confirm_password'=> 'required|same:password'
+    //         ]);
+    //         $pass_hashed = bcrypt($request->password);
+    //         $request->merge(['password'=>$pass_hashed]);
+    //     }else{
+    //         $request->merge(['password'=>$cus->password]);
+    //     }
+    //     $data = $request->only('name','email','password','address',);
+    //     if($cus->update($data)){
+    //         return redirect()->back();
+    //     }
+    //     return redirect()->back();
         
-    }
+    // }
     public function account_rating(Request $request){
         $model = rating::where($request->only('product_id','account_id'))->first();
         if($model){
             rating::where($request->only('product_id','account_id'))->update($request->only('rating_star'));
         }else{
-            rating::create($request->only('account_id','product_id','rating_star',));
+            rating::create($request->only('account_id','product_id','rating_star'));
         }
         
         return redirect()->back();
