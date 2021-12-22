@@ -108,6 +108,7 @@ class HomeController extends Controller
         $data['comment'] = $request->content;
         $data['comment_product_id'] =$slug;
         $data['comment_name'] =Auth::user()->name;
+        $data['comment_iduser'] =Auth::user()->id;
         DB::table('comment')->insert($data);
         return redirect()->back();
     }

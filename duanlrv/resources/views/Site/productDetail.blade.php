@@ -238,8 +238,8 @@
 
                                                     <h5>{{$commentt->comment_name}} <span>{{$commentt->comment_date}}</span></h5>
                                                     <div class="at-reply">{{$commentt->comment}}</div>
-                                                    @if(Auth::user()->name == $commentt->comment_name)
-                                                        <div><a  class="btn btn-warning" href="{{URL::to('/delete-comment/'.$commentt->comment_id)}}">Xóa</a></div>
+                                                    @if(Auth::user()->id == $commentt->comment_iduser)
+                                                        <div><a  class="btn btn-warning " href="{{URL::to('/delete-comment/'.$commentt->comment_id)}}">Xóa</a></div>
                                                     @endif
                                                 </div>
                                                 
