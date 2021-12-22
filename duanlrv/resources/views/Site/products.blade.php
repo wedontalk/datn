@@ -1,6 +1,8 @@
 @extends('layouts.site')
 
 @section('main')
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
 <style>
     .page-item.active .page-link {
     z-index: 3;
@@ -114,13 +116,13 @@
                         <div class="row">
                             <div class="col-lg-7 col-md-7">
                                 <div class="select-option">
-                                    <select class="sorting">
+                                    <select class="" name="sort" id="sort">
                                         @foreach($category_by_id as $key =>$cate_id)
                                             <a href="{{URL::to('/show-category/'.$cate_id->slug)}}">
-                                            <option  value="">{{$cate_id->name}}</option>
+                                            <option value="{{Request::url()}}?locsp={{$cate_id->slug}}">{{$cate_id->name}}</option>
                                             </a>
                                         @endforeach
-                                        <option value="" selected>-- phân loại --</option>
+                                        <option value="{{Request::url()}}" selected>-- phân loại --</option>
                                     </select>
                                     <select class="p-show">
                                         <option value="">Show:</option>
@@ -146,7 +148,7 @@
                                         @endif
                                         <div class="sale pp-sale">Sale</div>
                                         <div class="icon">
-                                            <i class="icon_heart_alt"></i>
+                                            <a href="{{URL::to('addToWishlist/'.$product->id)}}"><i class="far fa-heart" style="color:#fff;font-size:25px"></i></a>
                                         </div>
                                         <ul>
                                             <li class="w-icon active"><a href="#"  data-url="{{route('addToCart', ['id'=>$product->id])}}" class=" add_to_cart"  ><i class="icon_bag_alt add_to_cart"></i></a></li>
@@ -183,3 +185,23 @@
     <!-- Product Shop Section End -->
 
 @endsection
+@section('js')
+    <script>
+        jQuery(document).ready(function($) {
+        $('#sort').on('change', function() {
+            var url = $(this).val();
+            // alert(url);
+            if(url){
+                window.location = url;
+            }
+            return false;
+        });
+        locdanhsach();
+        function locdanhsach() {
+            var url = window.location.href;
+
+            $('select[name="sort"]').find('option[value="'+url+'"]').attr("selected",true);
+        }
+    });
+</script>
+@stop()

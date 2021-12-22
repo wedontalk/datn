@@ -139,7 +139,12 @@ class cosoController extends Controller
         $thanhpho = thanhpho::orderBy('matp', 'ASC')->get();
         $quanhuyen = quanhuyen::orderBy('id', 'ASC')->get();
         $xaphuong = xaphuong::orderBy('id', 'ASC')->get();
-        return view('admin.qldichvu.edit', compact('qldichvu','dichvu','thanhpho','quanhuyen','xaphuong','xetduyet'));
+        // select edit quận huyện theo thành phố
+        $selectid = coso::where('id', $id)->first();
+        $quanhuyenedit = quanhuyen::orderBy('id')->where('matp',$selectid->id_province)->get();
+        // select xã phường theo quận huyện
+        $xaphuongedit = xaphuong::orderBy('id')->where('maqh',$selectid->id_quanhuyen)->get();
+        return view('admin.qldichvu.edit', compact('qldichvu','dichvu','thanhpho','quanhuyen','xaphuong','xetduyet','selectid','quanhuyenedit','xaphuongedit'));
     }
 
     /**

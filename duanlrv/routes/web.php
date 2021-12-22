@@ -28,17 +28,19 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::get('/chi-tiet-don-hang/{slug}', 'donhangController@chitietdh');
     Route::post('/updateajax', 'dichvuController@update_ajax');
     Route::post("/update-trangthai", "donhangController@update_trangthai")->name('updatedh');
+    Route::post("/update-datlich", "datlichController@updatedatlich")->name('updatedatlich');
     Route::post("/filter-by-date", "AdminController@filter_by_date");
     Route::post("/order-date", "AdminController@order_date");
     Route::post("/dashboard-filter", "AdminController@dashboard_filter");
-    Route::get("/loadajax", "dichvuController@loadajax")->name('loadajax');
     Route::get("/thongtin", "accountController@showaccount")->name('thongtin');
-    Route::get("/updateaccount", "accountController@update_thongtin")->name('updateaccount');
+    Route::post("/update-account", "accountController@updateaccount")->name('updateaccount');
+    Route::post("/update-pass", "accountController@updatepass")->name('updatepass');
     Route::delete("/delete-checked", "donhangController@deletechecked")->name('deletechecked');
     Route::delete("/delete-news", "newsController@deletenews")->name('deletenews');
     Route::delete("/delete-coso", "cosoController@deletecoso")->name('deletecoso');
     Route::delete("/delete-slide", "slideController@deleteslide")->name('deleteslide');
     Route::delete("/delete-thucung", "infoController@deletethucung")->name('deletethucung');
+    Route::delete("/delete-coupon", "infoController@deletecoupon")->name('deletecoupon');
     Route::resources([
         'menu' => 'menuController',
         'category' => 'categoryController',
@@ -93,6 +95,7 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::get('/show-profile', [accountController::class, 'show_profile']);
     Route::post('/update-profile', [accountController::class, 'update_profile']);
     Route::post('/account-rating', [accountController::class, 'account_rating']);
+    Route::get('/404', [HomeController::class, 'loi']);
 
     Route::get('/register', [accountController::class, 'register']);
     Route::post('/check-register', [accountController::class, 'check_register']);
@@ -111,7 +114,7 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::post('/addcalendar', [HomeController::class, 'Addcalendar'])->name('addcalendar');
     Route::get('/wishlist', [HomeController::class, 'WishlistsViews'])->name('wishlist');
     Route::get('/addToWishlist/{id}', [HomeController::class, 'addtoWishlist'])->name('addtowishlist');
-    Route::get('/delete-Wishlist/{id}', [HomeController::class, 'deleteWishlist'])->name('deletewishlists');
+    Route::get('/deleteWishlist', [HomeController::class, 'deleteWishlist'])->name('deletewishlist1');
     
 // });
 

@@ -22,6 +22,7 @@ class dichvuController extends Controller
      */
     public function index()
     {
+
         $data = $this->chitietdichvu->getAll();
         return view('admin.chitietdichvu.index', compact('data'));
     }
@@ -52,10 +53,6 @@ class dichvuController extends Controller
             $them->save();
             echo 'done';
         }
-    }
-    public function loadajax(){
-        $data = $this->chitietdichvu->getAll();
-        return View('admin.chitietdichvu.loadajax',compact('data'));
     }
 
     /**

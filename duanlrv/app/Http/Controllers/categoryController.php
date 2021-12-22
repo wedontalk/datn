@@ -167,6 +167,20 @@ class categoryController extends Controller
         $category = navmenu::where('id', $category_id->id)->get();
         $products = information::where('id_menu',$category_id->id)->where('type_post',2)->search()->paginate(9);
         $category_by_id = DB::table('categories')->where('id_nav',$category_id->id)->get();
+        foreach($category_by_id as $key => $cate) {
+            $cate_id = $cate->id;
+        
+
+            if(isset($_GET['locsp'])){
+                $sort_by = $_GET['locsp'];
+
+
+                if($sort_by == $cate->slug){
+                    $products = information::with('phansanpham')->where('id_category', $cate_id)->orderBy('id', 'ASC')->search()->paginate(10);
+                    $products->render();
+                }
+            }
+        }
         return view('Site.products')->with(compact('products','category','category_by_id'));
     }
     // public function show_category_phukien(){

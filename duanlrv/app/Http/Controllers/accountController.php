@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use App\Repositories\account\accountInterface;
+use Illuminate\Support\Facades\Hash;
+use Auth;
 
 class accountController extends Controller
 {
@@ -97,7 +99,7 @@ class accountController extends Controller
         //
     }
 
-    public function update_thongtin(Request $request)
+    public function updateaccount(Request $request)
     {
         $id = $request->id;
         $data = $request->all();
@@ -108,6 +110,19 @@ class accountController extends Controller
         $update->address = $data['address'];
         $update->save();
         echo 'done';
+    }
+
+    public function updatepass(Request $request)
+    {
+        $id = $request->id;
+        $data = $request->all();
+        $passold = $data['passold'];
+        if (Hash::check($passold , \Auth::user()->password)) { 
+            $update = account::find($id);
+            $update->password = Hash::make($data['passnew']);
+            $update->save();
+            echo 'done';
+        }
     }
 
     /**
@@ -153,16 +168,11 @@ class accountController extends Controller
         return Redirect::to('/login-customer');
     }
     public function show_profile(){
-        $category = DB::table('categories')->where('hidden','1')->where('id_nav','1')->orderby('id','desc')->get();
-        $category_meo= DB::table('categories')->where('hidden','1')->where('id_nav','6')->orderby('id','desc')->get();
-        $category_ca= DB::table('categories')->where('hidden','1')->where('id_nav','3')->orderby('id','desc')->get();
-        $category_chim= DB::table('categories')->where('hidden','1')->where('id_nav','4')->orderby('id','desc')->get();
-        $category_khac= DB::table('categories')->where('hidden','1')->where('id_nav','5')->orderby('id','desc')->get();
-        $cus = Auth::guard('cus')->user();
-        return view('pages.account.profile')->with(compact('category','category_meo','category_ca','category_chim','category_khac','cus'));
+        $cus =  Auth::user();
+        return view('Site.profile')->with(compact('cus'));
     }
     public function update_profile(Request $request){
-        $cus = Auth::guard('cus')->user();
+        $cus = Auth::user();
         if($request->password){
             $request->validate([
                 'password' => 'required',
