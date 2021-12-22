@@ -211,196 +211,202 @@
     </div>
 </div>
 <div>
-        <h2 style="text-align: center">Đăng Ký Dịch Vụ</h2>
-    <div class="container" style="margin-top:50px;margin-bottom:50px">
-        <div class="stepwizard">
-            <div class="stepwizard-row setup-panel">
-                <div class="stepwizard-step">
-                    <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
-                    <p>Bước 1</p>
-                </div>
-                <div class="stepwizard-step">
-                    <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
-                    <p>Bước 2</p>
-                </div>
-                <div class="stepwizard-step">
-                    <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
-                    <p>Bước 3</p>
-                </div>
-            </div>
-        </div>
-        <form role="form" method="POST" action="addcalendar">
-            @csrf
-            <div class="row setup-content" id="step-1">
-                <div class="col-xs-12">
-                    <div class="col-md-12">
-                        <h3> Đăng Ký Thông Tin</h3>
-                        <div class="form-group">
-                            <label class="control-label">Họ và Tên</label>
-                            <input type="text" required="required" class="form-control name" placeholder="Họ và Tên" name="name" onchange="onchange_1()"/>
-                        </div> 
-                        <div class="row form-group">
-                            <div class="col-lg-6">
-                              <div class="input-group">
-                                  <label for="">Email</label>
-                                <input type="text" required="required" class="form-control email" placeholder="Email" name="email" onchange="onchange_2()">
-                              </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6 ">
-                              <div class="input-group">
-                                <label for="">Số Điện Thoại</label>
-                                <input type="text" required="required" class="form-control phone" placeholder="Số Điện Thoại" name="phone" onchange="onchange_3()">
-                              </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                          </div><!-- /.row -->
-                          <div class="form-group">
-                            <label class="control-label">Địa Chỉ</label>
-                            <input type="text" required="required" class="form-control address" placeholder="Địa Chỉ" name="address" onchange="onchange_4()"/>
-                        </div> 
-                        <button class="btn btn-primary nextBtn btn-lg d-flex justify-content-center" style="margin:auto;width:200px"  type="button" >Next</button>
+        <h2 style="text-align: center">Dịch Vụ</h2>
+        
+<div class="container">
+   <ul class="nav nav-pills">
+      <li style="    width: 49%;
+      text-align: center;
+      font-size: 18px;" class="active"><a data-toggle="pill" href="#home">Tra cứu thông tin</a></li>
+      <li style="    width: 49%;
+      text-align: center;
+      font-size: 18px;"><a data-toggle="pill" href="#menu1">Đăng ký dịch vụ</a></li>
+    </ul>
+    <div class="tab-content">
+      <div id="home" class="tab-pane fade in active">
+        <h3>HOME</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      </div>
+      <div id="menu1" class="tab-pane fade">
+        <div class="container" style="margin-top:50px;margin-bottom:50px">
+            <div class="stepwizard">
+                <div class="stepwizard-row setup-panel">
+                    <div class="stepwizard-step">
+                        <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
+                        <p>Bước 1</p>
+                    </div>
+                    <div class="stepwizard-step">
+                        <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                        <p>Bước 2</p>
+                    </div>
+                    <div class="stepwizard-step">
+                        <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                        <p>Bước 3</p>
                     </div>
                 </div>
             </div>
-            <div class="row setup-content" id="step-2">
-                <div class="col-xs-12" >
-                    <div class="col-md-12">
-                        <h3> Chọn Dịch Vụ</h3>
-                       <div class="form-group">
-                        <div class="col-lg-6">
-                                <div class="input-group">
-                                <div class="form-group">
-                                    <label for="sel1">Chọn Ngày:</label>
-                                    <input type="text" id="date1" name="date" value="" style="display:none">
-                                    <div id="datepickerok" class="date" onchange="onchange_7()"></div>
+            <form role="form" method="POST" action="addcalendar" class="stt-1">
+                @csrf
+                
+                <div class="row setup-content" id="step-1">
+                    <div class="col-xs-12">
+                        <div class="col-md-12">
+                            <h3> Đăng Ký Thông Tin</h3>
+                            <div class="form-group">
+                                <label class="control-label">Họ và Tên</label>
+                                <input type="text" required="required" class="form-control name" placeholder="Họ và Tên" name="name" onchange="onchange_1()"/>
+                            </div> 
+                            <div class="row form-group">
+                                <div class="col-lg-6">
+                                  <div class="input-group">
+                                      <label for="">Email</label>
+                                    <input type="text" required="required" class="form-control email" placeholder="Email" name="email" onchange="onchange_2()">
+                                  </div><!-- /input-group -->
+                                </div><!-- /.col-lg-6 -->
+                                <div class="col-lg-6 ">
+                                  <div class="input-group">
+                                    <label for="">Số Điện Thoại</label>
+                                    <input type="text" required="required" class="form-control phone" placeholder="Số Điện Thoại" name="phone" onchange="onchange_3()">
+                                  </div><!-- /input-group -->
+                                </div><!-- /.col-lg-6 -->
+                              </div><!-- /.row -->
+                              <div class="form-group">
+                                <label class="control-label">Địa Chỉ</label>
+                                <input type="text" required="required" class="form-control address" placeholder="Địa Chỉ" name="address" onchange="onchange_4()"/>
+                            </div> 
+                            <button class="btn btn-primary nextBtn btn-lg d-flex justify-content-center" style="margin:auto;width:200px"  type="button" >Next</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row setup-content" id="step-2">
+                    <div class="col-xs-12" >
+                        <div class="col-md-12">
+                            <h3> Chọn Dịch Vụ</h3>
+                           <div class="form-group">
+                            <div class="col-lg-6">
+                                    <div class="input-group">
+                                    <div class="form-group">
+                                        <label for="sel1">Chọn Ngày:</label>
+                                        <input type="text" id="date1" name="date" value=""  style="display:none">
+                                        <div id="datepickerok" class="date" onchange="onchange_7()"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                       </div>
-                          <div class="row form-group">
-                            <div class="col-lg-12">
-                                <div class="input-group">
+                           </div>
+                              <div class="row form-group">
+                                <div class="col-lg-12">
+                                    <div class="input-group">
+                                        <div class="form-group">
+                                            <label for="sel1">Chọn Cơ Sở:</label>
+                                            <select class="form-control CS choose" id="sel1" name="CS" onchange="onchange_5()">
+                                                <option>-----Cơ Sở-----</option>
+                                            @foreach ($CS as $CS)
+                                                <option value="{{ $CS->id }}">{{ $CS->name_coso }}</option>
+                                            @endforeach
+                                            </select>
+                                        </div>
+                                    </div><!-- /input-group -->
+                                </div><!-- /.col-lg-6 -->
+                                <div class="col-lg-12 ">
+                                  <div class="input-group">
                                     <div class="form-group">
-                                        <label for="sel1">Chọn Cơ Sở:</label>
-                                        <select class="form-control CS" id="sel1" name="CS" onchange="onchange_5()">
-                                            <option>-- Cơ Sở --</option>
-                                        @foreach ($CS as $CS)
-                                            <option value="{{ $CS['id'] }}">{{ $CS['name_coso'] }}</option>
-                                        @endforeach
+                                        <label for="sel1">Chọn Dịch Vụ:</label>
+                                        <select class="form-control DV choose" id="sel1" name="DV" onchange="onchange_6()">
+                                            <option value="">-----{{__('Dịch Vụ')}}-----</option>
                                         </select>
-                                    </div>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-12 ">
-                              <div class="input-group">
-                                <div class="form-group">
-                                    <label for="sel1">Chọn Dịch Vụ:</label>
-                                    <select class="form-control DV" id="sel1" name="DV" onchange="onchange_6()">
-                                        <option>-- Dịch Vụ --</option>
-                                        @foreach ($DV as $DV)
-                                        <option value="{{ $DV['id'] }}">{{ $DV['name_dichvu'] }}</option>
-                                    @endforeach
-                                    </select>
-                                  </div>
-                              </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-12 ">
-                              <div class="input-group">
-                                <div class="form-group">
-                                    <label for="sel1">Chọn Giờ:</label>
-                                    <select class="form-control hour" id="sel1" name="hour" onchange="onchange_8()">
-                                      <option>-- Giờ --</option>
-                                      <option value="8:00 - 8:30">8:00 - 8:30</option>
-                                      <option value="8:30 - 9:00">8:30 - 9:00</option>
-                                      <option value="9:00 - 9:30">9:00 - 9:30</option>
-                                      <option value="9:30 - 10:00">9:30 - 10:00</option>
-                                      <option value="0:00 - 10:30">10:00 - 10:30</option>
-                                      <option value="10:30 - 11:00">10:30 - 11:00</option>
-                                      <option value="13:00 - 13:30">13:00 - 13:30</option>
-                                      <option value="13:30 - 14:00">13:30 - 14:00</option>
-                                      <option value="14:00 - 14:30">14:00 - 14:30</option>
-                                      <option value="14:30 - 15:00">14:30 - 15:00</option>
-                                      <option value="15:00 - 15:30">15:00 - 15:30</option>
-                                      <option value="15:30 - 16:00">15:30 - 16:00</option>
-                                      <option value="16:00 - 16:30">16:00 - 16:30</option>
-                                      <option value="16:30 - 17:00">16:30 - 17:00</option>
-                                    </select>
-                                  </div>
-                              </div><!-- /input-group -->
-                            </div>
-                          </div><!-- /.row -->
-                          <div class="form-group col-sm-12">
-                              <label for="">Ghi Chú</label>
-                            <textarea class="form-control ghichu" name="ghichu" rows="5" onchange="onchange_9()"></textarea>
-                        </div>       
+                                      </div>
+                                  </div><!-- /input-group -->
+                                </div><!-- /.col-lg-6 -->
+                                <div class="col-lg-12 ">
+                                  <div class="input-group">
+                                    <div class="form-group">
+                                        <label for="hour">Chọn Giờ:</label>
+                                        <input type="time"  class="form-control hour"  placeholder="" name="hour" onchange="onchange_8()">
+                                      </div>
+                                  </div><!-- /input-group -->
+                                </div>
+                              </div><!-- /.row -->
+                              <div class="form-group col-sm-12">
+                                  <label for="">Ghi Chú</label>
+                                <textarea class="form-control ghichu" name="ghichu" rows="5" onchange="onchange_9()"></textarea>
+                            </div>       
+                        </div>
                     </div>
+                    <button class="btn btn-primary nextBtn btn-lg d-flex justify-content-center" style="margin:auto;width:200px"  type="button" >Next</button>
                 </div>
-                <button class="btn btn-primary nextBtn btn-lg d-flex justify-content-center" style="margin:auto;width:200px"  type="button" >Next</button>
-            </div>
-            <div class="row setup-content" id="step-3">
-                <div class="col-xs-12">
-                    <div class="col-md-12">
-                        <h3> Xác Nhận Thông Tin</h3>
-                            <div class="row form-group">
-                            <div class="col-lg-6">
-                              <div class="input-group">
-                          <p> <strong>  Họ Và Tên: </strong><span id="name"> </span></p> 
-                              </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6 ">
-                              <div class="input-group">
-                                <p><strong>Email: </strong><span id="email"> </span></p> 
-                              </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                          </div><!-- /.row -->
-                          <div class="row form-group">
-                            <div class="col-lg-6">
-                              <div class="input-group">
-                              <p><strong>Số Điện Thoại: </strong><span id="phone"> </span></p> 
-                              </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6 ">
-                              <div class="input-group">
-                                <p><strong>Địa Chỉ: </strong><span id="address"> </span></p> 
-                              </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                          </div><!-- /.row -->
-                          <div class="row form-group">
-                            <div class="col-lg-6">
-                              <div class="input-group">
-                              <p><strong>Cơ Sở: </strong><span id="CS"> </span></p> 
-                              </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6 ">
-                              <div class="input-group">
-                                <p><strong>Dịch Vụ:</strong> <span id="DV"> </span></p> 
-                              </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                          </div><!-- /.row -->
-                          <div class="row form-group">
-                            <div class="col-lg-6">
-                              <div class="input-group">
-                              <p><strong>Ngày: </strong><span id="date"> </span></p> 
-                              </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6 ">
-                              <div class="input-group">
-                                <p><strong>Thời Gian: </strong><span id="hour"> </span></p> 
-                              </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                          </div><!-- /.row -->
-                          <div class="form-group">
-                            <p><strong>Ghi Chú: </strong><span id="ghichu" style="width: 100%;"> </span></p> 
-                        </div> 
-                    <br>
-                    <input type="hidden" name="id_user" value="{{Auth::user()->id}}"/>
+                <div class="row setup-content" id="step-3">
+                    <div class="col-xs-12">
+                        <div class="col-md-12">
+                            <h3> Xác Nhận Thông Tin</h3>
+                                <div class="row form-group">
+                                <div class="col-lg-6">
+                                  <div class="input-group">
+                              <p> <strong>  Họ Và Tên: </strong><span id="name"> </span></p> 
+                                  </div><!-- /input-group -->
+                                </div><!-- /.col-lg-6 -->
+                                <div class="col-lg-6 ">
+                                  <div class="input-group">
+                                    <p><strong>Email: </strong><span id="email"> </span></p> 
+                                  </div><!-- /input-group -->
+                                </div><!-- /.col-lg-6 -->
+                              </div><!-- /.row -->
+                              <div class="row form-group">
+                                <div class="col-lg-6">
+                                  <div class="input-group">
+                                  <p><strong>Số Điện Thoại: </strong><span id="phone"> </span></p> 
+                                  </div><!-- /input-group -->
+                                </div><!-- /.col-lg-6 -->
+                                <div class="col-lg-6 ">
+                                  <div class="input-group">
+                                    <p><strong>Địa Chỉ: </strong><span id="address"> </span></p> 
+                                  </div><!-- /input-group -->
+                                </div><!-- /.col-lg-6 -->
+                              </div><!-- /.row -->
+                              <div class="row form-group">
+                                <div class="col-lg-6">
+                                  <div class="input-group">
+                                  <p><strong>Cơ Sở: </strong><span id="CS"> </span></p> 
+                                  </div><!-- /input-group -->
+                                </div><!-- /.col-lg-6 -->
+                                <div class="col-lg-6 ">
+                                  <div class="input-group">
+                                    <p><strong>Dịch Vụ:</strong> <span id="DV"> </span></p> 
+                                  </div><!-- /input-group -->
+                                </div><!-- /.col-lg-6 -->
+                              </div><!-- /.row -->
+                              <div class="row form-group">
+                                <div class="col-lg-6">
+                                  <div class="input-group">
+                                  <p><strong>Ngày: </strong><span id="date"> </span></p> 
+                                  </div><!-- /input-group -->
+                                </div><!-- /.col-lg-6 -->
+                                <div class="col-lg-6 ">
+                                  <div class="input-group">
+                                    <p><strong>Thời Gian: </strong><span id="hour"></span></p> 
+                                  </div><!-- /input-group -->
+                                </div><!-- /.col-lg-6 -->
+                              </div><!-- /.row -->
+                              
+                              <div class="form-group">
+                                <p><strong>Ghi Chú: </strong><span id="ghichu" style="width: 100%;"> </span></p> 
+                            </div> 
+                        <br>
+                        <input type="hidden" name="id_user" value="@php if(Auth::user()){echo Auth::user()->id ;}else{echo '0';} @endphp"/>
+                        <input type="hidden" name="id_KHDL" id="id_KHDL" value="">
+                    </div>
+                    <button class="btn btn-success btn-lg d-flex justify-content-center btn-sst" style="margin:auto;width:200px" type="submit" >Finish!</button>
                 </div>
-                <button class="btn btn-success btn-lg d-flex justify-content-center" style="margin:auto;width:200px" type="submit">Finish!</button>
+            </form>
             </div>
-        </form>
         </div>
+      </div>
     </div>
+  </div>
+  
 
 <script>
+    var id_KHDL = document.querySelector('#id_KHDL').value = Math.floor(Math.random() * 999999999);;
+
     function onchange_1(){
         var name = document.querySelector('.name').value;
         document.querySelector('#name').innerText = name;
@@ -418,27 +424,34 @@
         document.querySelector('#address').innerText = name;
     }
     function onchange_5(){
-        var name = document.querySelector('.CS').value;
+        var name = document.querySelector('.CS').selectedOptions['0'].innerText;
         document.querySelector('#CS').innerText = name;
     }
     function onchange_6(){
-        var name = document.querySelector('.DV').value;
+        var name = document.querySelector('.DV').selectedOptions['0'].innerText;
         document.querySelector('#DV').innerText = name;
     }
     function onchange_7(){
         var name = document.querySelector('.date').value;
         document.querySelector('#date').innerText = name;
         document.querySelector('#date1').value = name;
+        console.log(name);
     }
     function onchange_8(){
         var name = document.querySelector('.hour').value;
         document.querySelector('#hour').innerText = name;
+        console.log(name);
     }
     function onchange_9(){
         var name = document.querySelector('.ghichu').value;
         document.querySelector('#ghichu').innerText = name;
     }
+    function onchange_10(){
+        var name = document.querySelector('.NV').selectedOptions['0'].innerText;
+        document.querySelector('#NV').innerText = name;
+        console.log(name);
 
+    }
 </script>
 
 
@@ -490,4 +503,44 @@ allNextBtn.click(function(){
 $('div.setup-panel div a.btn-primary').trigger('click');
 });
 </script>
+
+
+
+  <!--summernote-->
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>  
+  <script src="https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js"></script>
+  <script src="{{asset('adm/assets/js/lib/chosen/chosen.jquery.min.js')}}"></script>
+
+
+
+<script type="">
+    
+    jQuery(document).ready(function($) {
+    
+        $('.choose').on('change', function() {
+            var action = $(this).attr('name');
+            var ma_id = $('.CS').val();
+            var _token = $('input[name="_token"]').val();
+            
+            var result = '';
+    
+            if (action == 'CS') {
+                result = 'DV';
+            }
+            else {
+                
+            }
+            $.ajax({
+                url: '{{url('./select_DV')}}',
+                method: 'post',
+                data: {action: action, ma_id: ma_id, _token: _token},
+                success: function(data) {
+                    $('.' + result).html(data);
+                }
+            });
+        });
+    });
+    </script>
+
+
 @endsection

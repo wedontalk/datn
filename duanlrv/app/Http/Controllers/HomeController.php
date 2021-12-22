@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\View;
 use App\Models\thanhpho;
 use App\Models\quanhuyen;
 use App\Models\xaphuong;
+use App\Models\nhanvien;
 // use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\coupon;
@@ -104,14 +105,19 @@ class HomeController extends Controller
         return view('Site.products',compact('products','categoryNav','category_by_id'));
        
     }
-    public function binh_luan(Request $request ,$id){
+    public function binh_luan(Request $request ,$slug){
         $data = array();
         $data['comment'] = $request->content;
-        $data['comment_product_id'] = Auth::user()->id;
-        $data['comment_name'] = Auth::user()->name;
+        $data['comment_product_id'] =$slug;
+        $data['comment_name'] =Auth::user()->name;
         DB::table('comment')->insert($data);
         return redirect()->back();
     }
+    public function delete_comment($id){
+        DB::table('comment')->where('comment_id',$id)->delete();
+        return redirect()->back();
+    }
+
     public function blog(){
         $blog =news::orderBy('id','ASC')->where('hidden', 1)->search()->paginate(10);
 
@@ -403,8 +409,28 @@ class HomeController extends Controller
     public function calendar(){
         $CS = coso::all();
         $DV = dichvucoso::all();
-        return view("site.calendar",['CS'=>$CS],['DV'=>$DV]);
+        $NV = nhanvien::all();
+        return view("site.calendar",['CS'=>$CS],['DV'=>$DV,'NV'=>$NV]);
     }
+
+    public function select_DV(Request $request){
+        $data = $request->all();
+        
+        if ($data['action']) {
+            $output = '';
+            if ($data['action'] == "CS") {
+                $select_DV = dichvucoso::all();
+                $output .= '<option>-----Chọn Dịch Vụ-----</option>';
+                foreach ($select_DV as $key => $DV) {
+                    $output .= '<option value="' . $DV->id . '">' . $DV->name_dichvu . '</option>';
+                }
+            } else {
+            }
+            echo $output;
+        }
+        
+    }
+    
     public function Addcalendar(Request $req){
         $data = new datlich();
         $data->name = $req->name;
@@ -417,6 +443,7 @@ class HomeController extends Controller
         $data->id_nhucau = $req->DV;
         $data->date = $req->date;
         $data->hour = $req->hour;
+        $data->id_KHDL = $req->id_KHDL;
         $data->save();
         return view('site.successOrder');
     }

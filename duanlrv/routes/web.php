@@ -80,7 +80,8 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::get('/danh-muc-san-pham/{slug}', [categoryController::class, 'show_category_home']);
     Route::get('/chi-tiet-san-pham/{slug_product}', [HomeController::class, 'productDetail']);
     Route::get('/chi-tiet-san-pham/{slug}', [HomeController::class, 'productDetail']);
-    Route::get('/binh-luan/{id}', [HomeController::class, 'binh_luan']);
+    Route::get('/binh-luan/{slug}', [HomeController::class, 'binh_luan']);
+    Route::get('/delete-comment/{id}', [HomeController::class, 'delete_comment']);
     Route::post('/check-coupon', [HomeController::class, 'check_coupon'])->name('check_coupon');
     Route::get('/unset-coupon', [HomeController::class, 'unset_coupon']);
     Route::get('/loc-gia-sp', [HomeController::class, 'locgiasp'])->name('locgia');
@@ -119,7 +120,7 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::get('/wishlist', [HomeController::class, 'WishlistsViews'])->name('wishlist');
     Route::get('/addToWishlist/{id}', [HomeController::class, 'addtoWishlist'])->name('addtowishlist');
     Route::get('/deleteWishlist', [HomeController::class, 'deleteWishlist'])->name('deletewishlist1');
-    
+    Route::post('/select_DV', [HomeController::class, 'select_DV']);
 // });
 
 Auth::routes();

@@ -223,7 +223,9 @@
                                 <div class="tab-pane fade" id="tab-3" role="tabpanel">
                                     
                                     <div class="customer-review-option">
-                                    <h4>2 Comments</h4>
+                                    <h4>Bình luận</h4>
+                                    @if(Route::has('login'))
+                                        @auth
                                     @foreach ($comment as $commentt)
                                     <div class="comment-option">
 
@@ -233,16 +235,14 @@
                                                     <img src="img/product-single/avatar-1.png" alt="">
                                                 </div>
                                                 <div class="avatar-text">
-                                                    <!-- <div class="at-rating">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                    </div> -->
-                                                    <h5>{{$commentt->comment_name}} <span>27 Aug 2019</span></h5>
+
+                                                    <h5>{{$commentt->comment_name}} <span>{{$commentt->comment_date}}</span></h5>
                                                     <div class="at-reply">{{$commentt->comment}}</div>
+                                                    @if(Auth::user()->name == $commentt->comment_name)
+                                                        <div><a  class="btn btn-warning" href="{{URL::to('/delete-comment/'.$commentt->comment_id)}}">Xóa</a></div>
+                                                    @endif
                                                 </div>
+                                                
                                             </div>
                                         </div>
                                         @endforeach
@@ -252,11 +252,10 @@
                                             <div class="comment_show"></div>
 
                                         </form> -->
-                                        @if(Route::has('login'))
-                                        @auth
+                                        
                                         <div class="leave-comment">
                                             <h4>Viết đánh giá của bạn</h4>
-                                            <form action="{{URL::to('/binh-luan/'.Auth::user()->id)}}" class="comment-form">
+                                            <form action="{{URL::to('/binh-luan/'.$val->slug_product)}}" class="comment-form">
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <textarea placeholder="Nội dung bình luận" class="comment_content" name="content"></textarea>
