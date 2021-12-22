@@ -148,17 +148,26 @@
                                         <div class="icon">
                                             <i class="icon_heart_alt"></i>
                                         </div>
+                                        @if($product->quantity>0)
                                         <ul>
                                             <li class="w-icon active"><a href="#"  data-url="{{route('addToCart', ['id'=>$product->id])}}" class=" add_to_cart"  ><i class="icon_bag_alt add_to_cart"></i></a></li>
                                             <!-- <li class="quick-view add_to_cart"><a href="{{URL::to('chi-tiet-san-pham/'.$product->slug_product)}}">Xem chi tiết</a></li> -->
                                             <li class="quick-view"><a href="{{URL::to('chi-tiet-san-pham/'.$product->slug_product)}}">Xem chi tiết</a></li>
                                             <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
                                         </ul>
+                                        @else
+                                        <ul>
+                                          
+                                            <li class="quick-view" style="width:98%; margin:2px"><a href="">Hết hàng</a></li>
+                                            
+                                        </ul>
+                                        @endif
+
                                     </div>
                                     <div class="pi-text">
                                         <div class="catagory-name"></div>
                                         <!-- <div class="catagory-name">{{$product->id}}</div> -->
-                                        <a href="#">
+                                        <a href="{{URL::to('chi-tiet-san-pham/'.$product->slug_product)}}">
                                             <h5>{{$product-> title}}</h5>
                                         </a>
                                         <div class="product-price">
