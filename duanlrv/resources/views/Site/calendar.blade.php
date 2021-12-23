@@ -220,7 +220,15 @@
             });
         });
     </script>
-
+@if(session()->has('message'))
+<div class="alert alert-success">
+    {!! session()->get('message') !!}
+</div>
+@elseif(session()->has('error'))
+ <div class="alert alert-danger">
+    {!! session()->get('error') !!}
+</div>
+@endif
     <div class="breacrumb-section">
         <div class="container">
             <div class="row">
@@ -495,7 +503,9 @@
       </div>
     </div>
   </div>
+<div class="DL" style="">
 
+</div>
     <script>
         var id_KHDL = document.querySelector('#id_KHDL').value = Math.floor(Math.random() * 999999999);;
 
@@ -555,13 +565,13 @@
         function onchange_10() {
             var name = document.querySelector('.NV').selectedOptions['0'].innerText;
             document.querySelector('#NV').innerText = name;
-            console.log(name);
+            // console.log(name);
 
         }
+
+
+
     </script>
-
-
-
 
 
     <script>
