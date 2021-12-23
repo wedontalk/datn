@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\coso;
+use App\Models\orderDetail;
 use App\Models\navmenu;
 use App\Models\rating;
 use App\Models\datlich;
@@ -78,13 +79,14 @@ class HomeController extends Controller
         $danhmuc = navmenu::orderBy('id','ASC')->where('hidden', 1)->get();
         $ratingAVG = rating::where('product_id',$categoryNav->slug_product)->avg('rating_star');
         $comment = Comment::get();
-       return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc','ratingAVG','comment'));
+        $new_product = information::take(4)->get();
+       return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc','ratingAVG','comment','new_product'));
 
     }
     public function products()
     {
         $categoryNav = DB::Table('nav_menu')->orderby('id')->get();
-        $products= $this->products->getAll();
+        $products= information::orderBy('id')->where('id_status', 1)->search()->paginate(9);
         $category_by_id = DB::table('categories')->get();
         foreach($category_by_id as $key => $cate) {
             $cate_id = $cate->id;
@@ -119,9 +121,9 @@ class HomeController extends Controller
     }
 
     public function blog(){
-        $blog =news::orderBy('id','ASC')->where('hidden', 1)->search()->paginate(10);
-
-        return view('Site.blog',compact('blog'));
+        $blog =news::orderBy('id','ASC')->where('hidden', 1)->search()->paginate(6);
+        $baidang =news::orderBy('id','desc')->where('hidden', 1)->search()->paginate(4);
+        return view('Site.blog',compact('blog','baidang'));
     }
     public function news($slug){
         $news =news::orderBy('id','ASC')->where('hidden', 1)->where('slug',$slug)->get();
@@ -378,10 +380,7 @@ class HomeController extends Controller
         return view('site.successOrder');
     }
 
-    public function WishlistsViews(){
-        $Wishlists= session()->get('Wishlists');
-        return view("site.WishlistsView",compact('Wishlists'));
-    }
+
 
     public function addtoWishlist($id){
         // session()->flush('carts');
@@ -484,6 +483,7 @@ class HomeController extends Controller
         $DV = dichvucoso::all();
         return view("site.calendar",['CS'=>$CS],['DV'=>$DV]);
     }
+
     public function search_calendar(Request $request){
         $data = $request->all();
         $output = '';
@@ -593,7 +593,7 @@ class HomeController extends Controller
         $data->id_nhucau = $req->DV;
         $data->date = $req->date;
         $data->hour = $req->hour;
-        $data->ID_KHDL = $req->id_KHDL;
+        $data->id_KHDL = $req->id_KHDL;
         $data->save();
         $now =Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
         $title_mail="Đặt lịch thành công!".' '.$now;
@@ -743,11 +743,30 @@ public function loi()
     return view('layouts.404');
 }
 
-
+public function lichsudonhang()
+{
+    $data = datlich::orderBy('id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
+    $donhang = donhang::orderBy('order_id', 'desc')
+    ->where('id_user', Auth::user()->id)->search()->paginate(6);
+    return view('site.lichsudh', compact('donhang','data'));
+}
 public function donhangdatlich(Request $request){
     $data = datlich::orderBy('id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
     $donhang = donhang::orderBy('order_id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
     return view('site.profile', compact('data','donhang'));
+}
+
+public function updatelichdat(Request $request){
+    $donlich = datlich::orderBy('id', 'desc')->get();
+    $id = $request->idhuy;
+    $data = $request->all();
+    if($data['status'] == 2 ){
+    $update = datlich::find($id);
+    $update->id_status = 3;
+    $update->save();
+    echo 'done';
+    }
+    echo 'loi';
 }
 
 
