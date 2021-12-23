@@ -356,7 +356,7 @@
                                                             onchange="onchange_5()">
                                                             <option>-----Cơ Sở-----</option>
                                                             @foreach ($CS as $CS)
-                                                                <option value="{{ $CS->id }}">{{ $CS->name_coso }}
+                                                                <option value="{{ $CS->name_coso }}">{{ $CS->name_coso }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
