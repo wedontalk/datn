@@ -121,6 +121,7 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::get('/addToWishlist/{id}', [HomeController::class, 'addtoWishlist'])->name('addtowishlist');
     Route::get('/deleteWishlist', [HomeController::class, 'deleteWishlist'])->name('deletewishlist1');
     Route::post('/select_DV', [HomeController::class, 'select_DV']);
+    Route::post('/search_calendar', [HomeController::class, 'search_calendar']);
 // });
 
 Auth::routes();

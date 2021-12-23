@@ -379,7 +379,10 @@ class HomeController extends Controller
         return view('site.successOrder');
     }
 
-
+    public function WishlistsViews(){
+        $Wishlists= session()->get('Wishlists');
+        return view("site.WishlistsView",compact('Wishlists'));
+    }
 
     public function addtoWishlist($id){
         // session()->flush('carts');
@@ -482,6 +485,79 @@ class HomeController extends Controller
         $DV = dichvucoso::all();
         return view("site.calendar",['CS'=>$CS],['DV'=>$DV]);
     }
+    public function search_calendar(Request $request){
+        $data = $request->all();
+        $output = '';
+        if (isset($data['action'])) {
+            if($data['action'] == "search"){
+                $key = datlich::where('ID_KHDL',$data['key'])->first();
+                if($key != ''||$key != Null||$key['ID_KHDL'] == $data['key']){
+                    $output = ' <div class="row form-group">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                    <p> <strong> Họ Và Tên: </strong><span>'.$key->name.'</span></p>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                            <div class="col-lg-6 ">
+                                <div class="input-group">
+                                    <p><strong>Email: </strong><span> '.$key->email.'</span></p>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div><!-- /.row -->
+                        <div class="row form-group">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                    <p><strong>Số Điện Thoại: </strong><span>'.$key->phone.'</span></p>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                            <div class="col-lg-6 ">
+                                <div class="input-group">
+                                    <p><strong>Địa Chỉ: </strong><span id="address">'.$key->address.'</span></p>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div><!-- /.row -->
+                        <div class="row form-group">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                    <p><strong>Cơ Sở: </strong><span id="CS">'.$key->id_coso.'</span></p>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                            <div class="col-lg-6 ">
+                                <div class="input-group">
+                                    <p><strong>Dịch Vụ:</strong> <span id="DV">'.$key->id_nhucau.'</span></p>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div><!-- /.row -->
+                        <div class="row form-group">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                    <p><strong>Ngày: </strong><span id="date">'.$key->date.'</span></p>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                            <div class="col-lg-6 ">
+                                <div class="input-group">
+                                    <p><strong>Thời Gian: </strong><span id="hour">'.$key->hour.'</span></p>
+                                </div><!-- /input-group -->
+                            </div><!-- /.col-lg-6 -->
+                        </div><!-- /.row -->
+
+                        <div class="form-group">
+                            <p><strong>Ghi Chú: </strong><span id="ghichu" style="width: 100%;">'.$key->ghichu.'</span></p>
+                        </div>';
+                }else{
+                    $output="<p>KHÔNG HỢP LỆ</p>";
+                }
+
+            }elseif($data['action'] == "close"){
+                $output="<p>KHÔNG HỢP LỆ</p>";
+            }elseif($data['action'] =='close'){
+                $output="<p>KHÔNG HỢP LỆ</p>";
+            }
+            echo $output;
+        }elseif($data['action'] =='close'){
+            $output="<p>KHÔNG HỢP LỆ</p>";
+        }
+    }
 
     public function select_DV(Request $request){
         $data = $request->all();
@@ -513,7 +589,7 @@ class HomeController extends Controller
         $data->id_nhucau = $req->DV;
         $data->date = $req->date;
         $data->hour = $req->hour;
-        $data->id_KHDL = $req->id_KHDL;
+        $data->ID_KHDL = $req->id_KHDL;
         $data->save();
         return view('site.successOrder');
 
