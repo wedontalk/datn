@@ -147,7 +147,7 @@
                             @php
                             $i = 1;
                             @endphp
-                                @foreach($chitiet as $hd)
+                                @foreach($sanpham as $hd)
                                     <tr>
                                         <td>{{$i++}}</td>
                                         <td>

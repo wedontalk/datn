@@ -284,8 +284,14 @@ class HomeController extends Controller
         $name = \Auth::user()->name;
         $phone = \Auth::user()->phone;
 
+        $coupon=Session::get('coupon',[]);
 
+        foreach($coupon as $cou){
+            $coupon_code=$cou['coupon_code'];
+            $count_coupon=$cou['coupon_qty']-1;
+        }
         if ($request->phuongthuc_thanhtoan==2) {
+            
             $data= array();
             $data['id_user']= $id;
             $data['order_name']=$request->order_name;
@@ -311,6 +317,7 @@ class HomeController extends Controller
             $cart['product_price']=$item['price'];
             $cart['product_quantity']=$item['quantity'];
             $cart['tong_tien']=$request->tong_tien;
+            $cart['product_coupon']=$coupon_code;
             DB::table('order_detail')->insertGetId($cart);
            
         }
@@ -320,7 +327,9 @@ class HomeController extends Controller
         }else{
             $total= $request->tong_tien;
         }
-
+        session::forget('cart');
+        session::forget('coupon');
+        
             return view('Vnpay.index',compact('total','data'));
 
         }else{
@@ -352,7 +361,17 @@ class HomeController extends Controller
             $data['order_code']=\Carbon\Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
             $data_id=DB::table('order_product')->insertGetId($data);
 
-
+            $coupon=Session::get('coupon',[]);
+            if($coupon){
+                // $cou=$coupon['coupon_qty'];
+                foreach($coupon as $cou){
+                    $coupon_id=$cou['id_coupon'];
+                    $count_coupon=$cou['coupon_qty']-1;
+                }
+                // dd($coupon);
+                DB::table('coupon')->where('id',$coupon_id)->update(array('id'=>$coupon_id,'coupon_qty'=>$count_coupon));
+            }else{
+            }
         //insert order_detail
         $carts= session()->get('cart');
         if($request->phuongthuc_giaohang==2){
@@ -364,16 +383,24 @@ class HomeController extends Controller
                 $cart['product_price']=$item['price'];
                 $cart['product_quantity']=$item['quantity'];
                 $cart['tong_tien']=$total;
+                $cart['product_coupon']=$coupon_code;
                 DB::table('order_detail')->insertGetId($cart);
             }
         }else{
+            $coupon=Session::get('coupon',[]);
+
+            foreach($coupon as $cou){
+                $coupon_code=$cou['coupon_code'];
+                $count_coupon=$cou['coupon_qty']-1;
+            }
             $total= $request->tong_tien;
             foreach( $carts as $item){
                 $cart['order_id']=$data_id;
                 $cart['product_name']=$item['name'];
                 $cart['product_price']=$item['price'];
                 $cart['product_quantity']=$item['quantity'];
-                $cart['tong_tien']=$request->tongtien;
+                $cart['tong_tien']=$total;
+                $cart['product_coupon']=$coupon_code;
                 DB::table('order_detail')->insertGetId($cart);
             }
         }

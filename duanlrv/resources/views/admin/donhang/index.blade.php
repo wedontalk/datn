@@ -139,7 +139,7 @@
                                         style="background-image: linear-gradient( 135deg, #F05F57 10%, #360940 100%);"
                                     @endif>
                                         @foreach($xetduyet as $xd)
-                                            <option name="id_status" style="background: #000;" {{($xd->id == $dt->id_status) ? 'selected':'' }} id="item" value="{{$xd->id}}">{{$xd->name_type}}</option>
+                                            <option name="id_status" style="background: #000;" {{($xd->id == $dt->id_status) ? 'selected':'' }} id="item" value="{{$xd->id}}">{{$xd->name}}</option>
                                         @endforeach
                                     </select>
                                 </td>

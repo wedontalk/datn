@@ -27,7 +27,7 @@ class donhangController extends Controller
     public function index()
     {
         $data = $this->donhang->getAll();
-        $xetduyet = status::orderBy('id', 'ASC')->select('id','name_type')->get();
+        $xetduyet = status::orderBy('id', 'ASC')->select('id','name')->get();
         return view('admin.donhang.index', compact('data','xetduyet'));
     }
 

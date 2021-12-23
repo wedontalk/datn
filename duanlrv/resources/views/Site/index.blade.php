@@ -93,15 +93,23 @@
                                     <div class="icon">
                                         <a href="{{URL::to('addToWishlist/'.$items->id)}}"><i class="icon_heart_alt"></i></a>
                                     </div>
-                                    <ul>
-                                        <li class="w-icon active"><a href="#" data-url="{{route('addToCart', ['id'=>$items->id])}}" class=" add_to_cart"  ><i class="icon_bag_alt add_to_cart"></i></a></li>
-                                        <li class="quick-view"><a href="{{URL::to('chi-tiet-san-pham/'.$items->slug_product)}}">+ Xem chi tiết</a></li>
-                                        <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                    </ul>
+                                        @if($items->quantity>0)
+                                        <ul>
+                                            <li class="w-icon active"><a href="#"  data-url="{{route('addToCart', ['id'=>$items->id])}}" class=" add_to_cart"  ><i class="icon_bag_alt add_to_cart"></i></a></li>
+                                            <li class="quick-view"><a href="{{URL::to('chi-tiet-san-pham/'.$items->slug_product)}}">Xem chi tiết</a></li>
+                                            <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
+                                        </ul>
+                                        @else
+                                        <ul>
+                                          
+                                            <li class="quick-view" style="width:98%; margin:2px"><a href="">Hết hàng</a></li>
+                                            
+                                        </ul>
+                                        @endif
                                 </div>
                                 <div class="pi-text">
                                     <div class="catagory-name">Coat</div>
-                                    <a href="#">
+                                    <a href="{{URL::to('chi-tiet-san-pham/'.$items->slug_product)}}">
                                         <h5>{{$items->title}}</h5>
                                     </a>
                                     <div class="product-price">
@@ -281,15 +289,23 @@
                                     <div class="icon">
                                         <a href="{{URL::to('addToWishlist/'.$items->id)}}"><i class="icon_heart_alt"></i></a>
                                     </div>
-                                    <ul>
-                                        <li class="w-icon active"><a href="#" data-url="{{route('addToCart', ['id'=>$items->id])}}" class=" add_to_cart"  ><i class="icon_bag_alt add_to_cart"></i></a></li>
-                                        <li class="quick-view"><a href="{{URL::to('chi-tiet-san-pham/'.$items->slug_product)}}">+ Xem chi tiết</a></li>
-                                        <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                    </ul>
+                                    @if($items->quantity>0)
+                                        <ul>
+                                            <li class="w-icon active"><a href="#"  data-url="{{route('addToCart', ['id'=>$items->id])}}" class=" add_to_cart"  ><i class="icon_bag_alt add_to_cart"></i></a></li>
+                                            <li class="quick-view"><a href="{{URL::to('chi-tiet-san-pham/'.$items->slug_product)}}">Xem chi tiết</a></li>
+                                            <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
+                                        </ul>
+                                        @else
+                                        <ul>
+                                          
+                                            <li class="quick-view" style="width:98%; margin:2px"><a href="">Hết hàng</a></li>
+                                            
+                                        </ul>
+                                        @endif
                                 </div>
                                 <div class="pi-text">
                                     <div class="catagory-name">Coat</div>
-                                    <a href="#">
+                                    <a href="{{URL::to('chi-tiet-san-pham/'.$items->slug_product)}}">
                                         <h5>{{$items->title}}</h5>
                                     </a>
                                     <div class="product-price">
@@ -380,7 +396,7 @@
                                     5
                                 </div> -->
                             </div>
-                            <a href="#">
+                            <a href="{{URL::to('/news/'.$ttne->slug)}}">
                                 <h4>{{$ttne->name_post}}</h4>
                             </a>
                             <p></p>

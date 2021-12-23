@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="select-button">
                                         <a href="{{route('cartViews')}}" class="primary-btn view-card">Xem giỏ hàng</a>
-                                        <a href="#" class="primary-btn checkout-btn">Thanh toán</a>
+                                        <a href="{{route('checkout')}}" class="primary-btn checkout-btn">Thanh toán</a>
                                     </div>
                                 </div>
                                 <script>

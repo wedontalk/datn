@@ -100,8 +100,11 @@
                                 
                                 
                                 <div class="quantity">
-                                    
+                                    @if($val->quantity>0)
                                     <a data-url="{{route('addToCart', ['id'=>$val->id])}}" href="#" class="primary-btn pd-cart add_to_cart">Thêm vào giỏ hàng</a>
+                                    @else
+                                    <a class="primary-btn pd-cart add_to_cart">Hết hàng</a>
+                                    @endif
                                 </div>
                                 @if($val->type_post == 2)
                                 <ul class="pd-tags">
@@ -296,11 +299,20 @@
                             <div class="icon">
                                 <i class="icon_heart_alt"></i>
                             </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="{{URL::to('chi-tiet-san-pham/'.$producttt->slug_product)}}">Xem chi tiết</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
+
+                            @if($producttt->quantity>0)
+                                        <ul>
+                                            <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
+                                            <li class="quick-view"><a href="{{URL::to('chi-tiet-san-pham/'.$producttt->slug_product)}}">Xem chi tiết</a></li>
+                                            <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
+                                        </ul>
+                                        @else
+                                        <ul>
+                                          
+                                            <li class="quick-view" style="width:98%; margin:2px"><a href="">Hết hàng</a></li>
+                                            
+                                        </ul>
+                                        @endif
                         </div>
                         <div class="pi-text">
                             <div class="catagory-name">Coat</div>

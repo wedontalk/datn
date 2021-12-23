@@ -56,7 +56,17 @@
                 <div class="form-group">
                     <label >Kết quả:</label>
                     <label>
+                    <?php
                         
+                        if ($_GET['vnp_ResponseCode'] == '00') {
+                            
+                            
+                            echo "GD Thành công";
+                        } else {
+                            echo "GD Khong thanh cong";
+                        }
+                    
+                    ?>
                     </label>
                     <br>
                     <a href="{{route('home')}}">

@@ -79,7 +79,6 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::get('/delete-cart', [HomeController::class, 'deleteCart'])->name('deleteCart');
     Route::get('/remove-cart', [HomeController::class, 'removeCart'])->name('removeCart');
     Route::get('/checkout', [HomeController::class, 'checkout'])->name('checkout');
-    Route::get('/checkout', [HomeController::class, 'checkout'])->name('checkout');
     Route::get('/danh-muc-san-pham/{slug}', [categoryController::class, 'show_category_home']);
     Route::get('/chi-tiet-san-pham/{slug_product}', [HomeController::class, 'productDetail']);
     Route::get('/chi-tiet-san-pham/{slug}', [HomeController::class, 'productDetail']);
@@ -89,7 +88,7 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::get('/unset-coupon', [HomeController::class, 'unset_coupon']);
     Route::get('/loc-gia-sp', [HomeController::class, 'locgiasp'])->name('locgia');
 
-    Route::post('/tim-kiem', [HomeController::class, 'search'])->name('search');
+    Route::get('/tim-kiem', [HomeController::class, 'search'])->name('search');
     Route::get('/chi-tiet-dh/{id_order}', [HomeController::class, 'chi_tiet_dh']);
 
 
