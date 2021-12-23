@@ -75,6 +75,7 @@ class HomeController extends Controller
     {   
 
         $categoryNav = information::where('slug_product', $slug)->first();
+        information::where('id',$categoryNav->id)->increment('view');
         $detail_product = information::orderBy('id')->where('id',$categoryNav->id)->where('id_status', 1)->get();
         $danhmuc = navmenu::orderBy('id','ASC')->where('hidden', 1)->get();
         $ratingAVG = rating::where('product_id',$categoryNav->slug_product)->avg('rating_star');
