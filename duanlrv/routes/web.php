@@ -89,6 +89,7 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::get('/unset-coupon', [HomeController::class, 'unset_coupon']);
     Route::get('/loc-gia-sp', [HomeController::class, 'locgiasp'])->name('locgia');
     Route::post('/tim-kiem', [HomeController::class, 'search'])->name('search');
+    Route::get('/chi-tiet-dh/{id_order}', [HomeController::class, 'chi_tiet_dh']);
 
 
 

@@ -1,5 +1,6 @@
-@extends('layouts.admin')
-@section('css')
+@extends('layouts.site')
+@section('main')
+
  <style>
      .form-trum{
         background-image: linear-gradient( 135deg, #CE9FFC 10%, #7367F0 100%);
@@ -38,17 +39,19 @@
         border-radius:25px;
      }
  </style>
-@endsection
-@section('main')
+
 <style>
     .themedep{
         background-image: url({{asset('uploads/themes/themenendep.png')}});
     }
 </style>
-    <div class="content">
+    <div class="container" >
+    <br>
+    <center><h3>Chi tiết đơn hàng của bạn</h3></center>
+    <hr>
         <div class="row">
-            <div class="col-md-4">
-                @foreach($chitiet as $dt)
+        <div class="col-md-5">
+                @foreach($donhang as $dt)
                     <section class="card">
                         <div class="twt-feed themedep">
                             <div class="corner-ribon black-ribon">
@@ -115,21 +118,23 @@
                         <footer class="twt-footer">
                             <p><i class="fa fa-map-marker"></i> {{$dt->thanhpho->name_thanhpho}} - {{$dt->quanhuyen->name_quanhuyen}} - {{$dt->xaphuong->name_xaphuong}} - {{$dt->order_address}}</p>
                             <hr>
-                            <h4 style="font-weight:bold;">
-                                <span class="fa fa-money" style="color:#66bb6a"></span> 
+                            <h4 style="font-weight:bold; margin:0px 5px">
+                                <span class="fa fa-money" style="color:#66bb6a; font-size:25px; font-weight:bold">
                                 Tổng tiền thanh toán : 
-                                <span>{{number_format($dt->donhang->tong_tien, 0, '.', '.')}} VNĐ</span>
+                                <span>{{number_format($dt->donhang->tong_tien, 0, '.', '.')}} Đ</span>
+                            </span> 
                             </h4>
                             <br>
                         </footer>
                     </section>
                 @endforeach
             </div>
-            <div class="col-md-8">
+            <div class="col-md-7">
                 <div class="card">
                     <div class="card-header">
                         <strong class="card-title">Danh sách sản phẩm</strong>
                     </div>
+                    
                     <div class="table-stats order-table ov-h">
                         <table class="table">
                             <thead>
@@ -147,7 +152,7 @@
                             @php
                             $i = 1;
                             @endphp
-                                @foreach($chitiet as $hd)
+                                @foreach($chitiet as $hd) 
                                     <tr>
                                         <td>{{$i++}}</td>
                                         <td>
@@ -183,7 +188,7 @@
                         @csrf
                         </form>
                     </div> <!-- /.table-stats -->
-                    <div class="">{{$chitiet->appends(request()->all())->links()}}</div>
+                    
                 </div>
             </div>
         </div>

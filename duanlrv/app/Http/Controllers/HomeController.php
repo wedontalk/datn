@@ -106,6 +106,7 @@ class HomeController extends Controller
 
        
     }
+
     public function binh_luan(Request $request ,$slug){
         $data = array();
         $data['comment'] = $request->content;
@@ -750,10 +751,17 @@ public function lichsudonhang()
     ->where('id_user', Auth::user()->id)->search()->paginate(6);
     return view('site.lichsudh', compact('donhang','data'));
 }
+public function chi_tiet_dh($id_order){
+    $donhangid = donhang::where('order_id', $id_order)->first();
+    $data = datlich::orderBy('id', 'desc')->where('id_user', Auth::user()->id)->paginate(6);
+    $donhang = donhang::orderBy('order_id', 'desc')->where('order_id', $donhangid->order_id)->get();
+    $chitiet = orderDetail::orderBy('order_id', 'desc')->where('order_id', $donhangid->order_id)->paginate(6);
+    return view('Site.chitietdh', compact('donhang','data','chitiet'));
+}
 public function donhangdatlich(Request $request){
     $data = datlich::orderBy('id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
     $donhang = donhang::orderBy('order_id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
-    return view('site.profile', compact('data','donhang'));
+    return view('site.profile', compact('data','donhang',));
 }
 
 public function updatelichdat(Request $request){
