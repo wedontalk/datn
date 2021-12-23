@@ -118,7 +118,7 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::get("/return-vnpay", "HomeController@return")->name('payment.return');
 
 
-    Route::get('/contact', [HomeController::class, 'contact']);
+    Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
     Route::post('/mail-contact', [HomeController::class, 'contact_mail'])->name('contact_mail');
    
 

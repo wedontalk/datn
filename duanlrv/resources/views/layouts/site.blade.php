@@ -277,7 +277,7 @@
                 </div>
                 <div class="col-lg-2">
                     <div class="footer-widget">
-                        <h5>My Account</h5>
+                        <!-- <h5>My Account</h5>
                         <ul>
                             <li><a href="
                             @if(Route::has('login'))
@@ -288,7 +288,7 @@
                             ">My Account</a></li>
                             <li><a href="#">Contact</a></li>
                            
-                        </ul>
+                        </ul> -->
                     </div>
                 </div>
                 <div class="col-lg-4">

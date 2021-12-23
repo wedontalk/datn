@@ -635,7 +635,7 @@ class HomeController extends Controller
         $data->id_nhucau = $req->DV;
         $data->date = $req->date;
         $data->hour = $req->hour;
-        $data->id_KHDL = $req->id_KHDL;
+        $data->id_KHDL = \Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
         $data->save();
         $now =Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
         $title_mail="Đặt lịch thành công!".' '.$now;
@@ -650,6 +650,7 @@ class HomeController extends Controller
             'nhucau'=>$data->id_nhucau,
             'date'=>$data->date,
             'time'=>$data->hour,
+            'makh'=>$data->id_KHDL,
             'note'=>$data->ghichu,
         ],function($message)use($email,$name,$title_mail){
             $message->to($email,$name)->subject($title_mail);
@@ -801,14 +802,7 @@ public function contact_mail(Request $request){
 }
 public function contact(){
    
-    // Mail::send('Mail.Lienhe',[
-    //     'name'=>$request->name,
-    //     'email'=>$request->email,
-    //     'note'=>$request->note,
-    // ],function($message)use($email,$name,$title_mail){
-    //     $message->to('hieuhaohoa201@gmail.com')->subject($title_mail);
-    //     $message->from($email,$name);
-    // });
+    
     return view('Site.contact');
 }
 
