@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\shiping;
 use App\Models\donhang;
 use App\Models\trangthai;
+use App\Models\status;
 use App\Models\orderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +27,7 @@ class donhangController extends Controller
     public function index()
     {
         $data = $this->donhang->getAll();
-        $xetduyet = trangthai::orderBy('id', 'ASC')->select('id','name_type')->get();
+        $xetduyet = status::orderBy('id', 'ASC')->select('id','name_type')->get();
         return view('admin.donhang.index', compact('data','xetduyet'));
     }
 

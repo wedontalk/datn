@@ -86,9 +86,9 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary" id="btnPopup">Thanh toán </button>
-                    <button type="submit" class="btn btn-default" onclick="history.back()">Trở lại</button>
-
+                    
                 </form>
+                <button type="button" class="btn btn-default" onclick="history.back()">Trở lại</button>
             </div>
             <p>
                 &nbsp;

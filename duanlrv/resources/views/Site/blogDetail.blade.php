@@ -10,7 +10,7 @@
                     <div class="blog-details-inner">
                         <div class="blog-detail-title">
                             <h2>{{$value->name_post}}</h2>
-                            <p>travel <span>- May 19, 2019</span></p>
+                            <p>Tin tức <span>- {{$value->created_at}}</span></p>
                         </div>
                         <div class="blog-large-pic">
                             <img src="{{asset('uploads')}}/{{$value->image}}" alt="">
@@ -20,7 +20,7 @@
                             </p>
                         </div>
                         <!--  -->
-                        <div class="tag-share">
+                        <!-- <div class="tag-share">
                             <div class="details-tag">
                                 <ul>
                                     <li><i class="fa fa-tags"></i></li>
@@ -97,7 +97,7 @@
                                     </div>
                                 </div>
                             </form>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

@@ -124,8 +124,14 @@
 															@php 
 															$total_coupon = $total - $cou['coupon_number'];
 															@endphp
+                                                            @if($total_coupon<0)
+
+                                                            <li class="cart-total">Tổng  <span> {{number_format(0,0,',','.')}}Đ</span></li>
+                                                            @else
+                                                            <li class="cart-total">Tổng  <span> {{number_format($total_coupon,0,',','.')}}Đ</span></li>
+
+                                                            @endif
 														</p>														
-                                                        <li class="cart-total">Tổng  <span> {{number_format($total_coupon,0,',','.')}}Đ</span></li>
 													@endif
 												@endforeach
 										</li>
