@@ -422,6 +422,10 @@ class HomeController extends Controller
     }
     }
 
+    public function WishlistsViews(){
+        $Wishlists= session()->get('Wishlists');
+        return view("site.WishlistsView",compact('Wishlists'));
+    }
 
     public function addtoWishlist($id){
         // session()->flush('carts');
@@ -522,8 +526,8 @@ class HomeController extends Controller
     public function calendar(){
         $CS = coso::all();
         $DV = dichvucoso::all();
-
-        return view("site.calendar",['CS'=>$CS],['DV'=>$DV]);
+        $DL = datlich::all();
+        return view("site.calendar",['CS'=>$CS],['DV'=>$DV,'DL'=>$DL]);
     }
 
     public function search_calendar(Request $request){
@@ -626,6 +630,16 @@ class HomeController extends Controller
     }
     
     public function Addcalendar(Request $req){
+        $date = datlich::all();
+        foreach ($date as $d) {
+            $date_1=$d['date'];
+            $hour_1 =$d['hour']; 
+        }
+        if($req->date==$date_1 && $req->hour==$hour_1){
+            return redirect()->back()->with('message','Đã có người đặt cùng giờ');
+        }else{
+
+        
         $data = new datlich();
         $data->name = $req->name;
         $data->phone = $req->phone;
@@ -660,7 +674,7 @@ class HomeController extends Controller
             $message->from('ttpetshopvn@gmail.com');
         });
         return view('site.successOrder');
-
+    }
     }
     
 
