@@ -484,6 +484,85 @@ class HomeController extends Controller
         return view("site.calendar",['CS'=>$CS],['DV'=>$DV]);
     }
 
+    public function search_calendar(Request $request){
+        $data = $request->all();
+        $output = '';
+        if($data['action']){
+            $id = datlich::where('ID_KHDL',$data['key'])->first();
+            if($data['action']=='search'){
+                // $search = datlich::find($id);
+                if($data['key'] == $id['ID_KHDL']&&$data['key']!=''){
+                    $output = '<div class="row form-group">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <p> <strong> Họ Và Tên: </strong><span > ' . $id->name . '</span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 ">
+                            <div class="input-group">
+                                <p><strong>Email: </strong><span >' . $id->email . ' </span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <p><strong>Số Điện Thoại: </strong><span >' . $id->phone . ' </span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 ">
+                            <div class="input-group">
+                                <p><strong>Địa Chỉ: </strong><span >' . $id->address . ' </span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <p><strong>Cơ Sở: </strong><span > ' . $id->id_coso . '</span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 ">
+                            <div class="input-group">
+                                <p><strong>Dịch Vụ:</strong> <span>' . $id->id_nhucau . ' </span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <p><strong>Ngày: </strong><span > ' . $id->date . '</span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 ">
+                            <div class="input-group">
+                                <p><strong>Thời Gian: </strong><span>' . $id->hour . '</span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+                    <div class="form-group">
+                        <p><strong>Ghi Chú: </strong><span id="ghichu" style="width: 100%;"> </span></p>
+                    </div>';
+                    echo $output;
+                }     
+            }
+        }
+        
+    }
+    public function error_search(Request $request){
+        $data = $request->all();
+        $output = '';
+        if($data['action']){
+            if($data['action']=='search'){
+                if($data['key']==''||$data['key']==null){
+                    $output = '<p>KHÔNG HỢP LỆ</p>';
+                    return $output;
+                }   
+            }
+        }
+    }
+
     public function select_DV(Request $request){
         $data = $request->all();
         
