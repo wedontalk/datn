@@ -35,6 +35,16 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1 produts-sidebar-filter">
+                <div class="filter-widget">
+                        <h4 class="fw-title">Phân danh sách</h4>
+                        <div class="fw-brand-check">
+                        <select class="form-control" name="sortne" id="sortne" style="width:80%; font-size:15px;height:40px">
+                                <option value="{{Request::url()}}?danhsach=sanpham">Sản phẩm</option>
+                                <option value="{{Request::url()}}?danhsach=thucung">Thú cưng</option>
+                                <option value="{{Request::url()}}" selected>-- Phân danh sách --</option>
+                        </select>
+                        </div>
+                    </div>
                     <div class="filter-widget">
                         <h4 class="fw-title">Danh mục</h4>
                         <ul class="filter-catagories">
@@ -64,39 +74,6 @@
                         
                         <button type="submit" class="filter-btn">Lọc</button>
                         </form>
-                    </div>
-                    <div class="filter-widget">
-                        <h4 class="fw-title">Thương hiệu</h4>
-                        <div class="fw-brand-check">
-                            <div class="bc-item">
-                                <label for="bc-calvin">
-                                    Calvin Klein
-                                    <input type="checkbox" id="bc-calvin">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="bc-item">
-                                <label for="bc-diesel">
-                                    Diesel
-                                    <input type="checkbox" id="bc-diesel">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="bc-item">
-                                <label for="bc-polo">
-                                    Polo
-                                    <input type="checkbox" id="bc-polo">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="bc-item">
-                                <label for="bc-tommy">
-                                    Tommy Hilfiger
-                                    <input type="checkbox" id="bc-tommy">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                        </div>
                     </div>
                     <div class="filter-widget">
                         <!-- <h4 class="fw-title">Tags</h4>
@@ -198,6 +175,24 @@
     <script>
         jQuery(document).ready(function($) {
         $('#sort').on('change', function() {
+            var url = $(this).val();
+            // alert(url);
+            if(url){
+                window.location = url;
+            }
+            return false;
+        });
+        locdanhsach();
+        function locdanhsach() {
+            var url = window.location.href;
+
+            $('select[name="sort"]').find('option[value="'+url+'"]').attr("selected",true);
+        }
+    });
+</script>
+<script>
+        jQuery(document).ready(function($) {
+        $('#sortne').on('change', function() {
             var url = $(this).val();
             // alert(url);
             if(url){

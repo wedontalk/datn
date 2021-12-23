@@ -90,6 +90,19 @@ class HomeController extends Controller
         $categoryNav = DB::Table('nav_menu')->orderby('id')->get();
         $products= information::orderBy('id')->where('id_status', 1)->search()->paginate(9);
         $category_by_id = DB::table('categories')->get();
+        if(isset($_GET['danhsach'])){
+            $sort_by = $_GET['danhsach'];
+
+
+            if($sort_by == 'sanpham'){
+                $products = information::orderBy('id', 'ASC')->where('type_post', 1)->search()->paginate(10);
+                $products->render();
+            }
+            if($sort_by == 'thucung'){
+                $products = information::orderBy('id', 'ASC')->where('type_post', 1)->search()->paginate(10);
+                $products->render();
+            }
+        }
         foreach($category_by_id as $key => $cate) {
             $cate_id = $cate->id;
         
