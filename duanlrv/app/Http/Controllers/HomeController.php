@@ -487,74 +487,79 @@ class HomeController extends Controller
     public function search_calendar(Request $request){
         $data = $request->all();
         $output = '';
-        if (isset($data['action'])) {
-            if($data['action'] == "search"){
-                $key = datlich::where('ID_KHDL',$data['key'])->first();
-                if($key != ''||$key != Null||$key['ID_KHDL'] == $data['key']){
-                    $output = ' <div class="row form-group">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                    <p> <strong> Họ Và Tên: </strong><span>'.$key->name.'</span></p>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6 ">
-                                <div class="input-group">
-                                    <p><strong>Email: </strong><span> '.$key->email.'</span></p>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                        </div><!-- /.row -->
-                        <div class="row form-group">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                    <p><strong>Số Điện Thoại: </strong><span>'.$key->phone.'</span></p>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6 ">
-                                <div class="input-group">
-                                    <p><strong>Địa Chỉ: </strong><span id="address">'.$key->address.'</span></p>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                        </div><!-- /.row -->
-                        <div class="row form-group">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                    <p><strong>Cơ Sở: </strong><span id="CS">'.$key->id_coso.'</span></p>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6 ">
-                                <div class="input-group">
-                                    <p><strong>Dịch Vụ:</strong> <span id="DV">'.$key->id_nhucau.'</span></p>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                        </div><!-- /.row -->
-                        <div class="row form-group">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                    <p><strong>Ngày: </strong><span id="date">'.$key->date.'</span></p>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6 ">
-                                <div class="input-group">
-                                    <p><strong>Thời Gian: </strong><span id="hour">'.$key->hour.'</span></p>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                        </div><!-- /.row -->
+        if($data['action']){
+            $id = datlich::where('ID_KHDL',$data['key'])->first();
+            if($data['action']=='search'){
+                // $search = datlich::find($id);
+                if($data['key'] == $id['ID_KHDL']&&$data['key']!=''){
+                    $output = '<div class="row form-group">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <p> <strong> Họ Và Tên: </strong><span > ' . $id->name . '</span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 ">
+                            <div class="input-group">
+                                <p><strong>Email: </strong><span >' . $id->email . ' </span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <p><strong>Số Điện Thoại: </strong><span >' . $id->phone . ' </span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 ">
+                            <div class="input-group">
+                                <p><strong>Địa Chỉ: </strong><span >' . $id->address . ' </span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <p><strong>Cơ Sở: </strong><span > ' . $id->id_coso . '</span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 ">
+                            <div class="input-group">
+                                <p><strong>Dịch Vụ:</strong> <span>' . $id->id_nhucau . ' </span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <p><strong>Ngày: </strong><span > ' . $id->date . '</span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 ">
+                            <div class="input-group">
+                                <p><strong>Thời Gian: </strong><span>' . $id->hour . '</span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
 
-                        <div class="form-group">
-                            <p><strong>Ghi Chú: </strong><span id="ghichu" style="width: 100%;">'.$key->ghichu.'</span></p>
-                        </div>';
-                }else{
-                    $output="<p>KHÔNG HỢP LỆ</p>";
-                }
-
-            }elseif($data['action'] == "close"){
-                $output="<p>KHÔNG HỢP LỆ</p>";
-            }elseif($data['action'] =='close'){
-                $output="<p>KHÔNG HỢP LỆ</p>";
+                    <div class="form-group">
+                        <p><strong>Ghi Chú: </strong><span id="ghichu" style="width: 100%;"> </span></p>
+                    </div>';
+                    echo $output;
+                }     
             }
-            echo $output;
-        }elseif($data['action'] =='close'){
-            $output="<p>KHÔNG HỢP LỆ</p>";
+        }
+        
+    }
+    public function error_search(Request $request){
+        $data = $request->all();
+        $output = '';
+        if($data['action']){
+            if($data['action']=='search'){
+                if($data['key']==''||$data['key']==null){
+                    $output = '<p>KHÔNG HỢP LỆ</p>';
+                    return $output;
+                }   
+            }
         }
     }
 

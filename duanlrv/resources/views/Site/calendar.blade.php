@@ -252,12 +252,12 @@
                     padding: 140px;
                 ">
                         <h3>Kiểm Tra Lịch Hẹn</h3>
-                        <form action="" method="post" class="stt-11 key_search_stt">
+                        <form action="" method="post" class="stt-11 ">
                             @csrf
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="input-group mb-3" style="display:flex;"> <input type="text" style="height: auto" class="form-control input-text key_search_stt" id="key" name="search" value="" placeholder="Search products...." aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                    <div class="input-group-append"> <button type="button" class="btn btn-outline-warning btn-lg key_search_stt"  data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-search"></i></button> </div>
+                                    <div class="input-group-append"> <button type="button" class="btn btn-outline-warning btn-lg "  data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-search"></i></button> </div>
                                 </div>
                             </div>
                         </div>
@@ -479,7 +479,7 @@
     </div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-dialog modal-lg " role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">Thông Tin</h5>
@@ -488,10 +488,10 @@
           </button>
         </div>
         <div class="modal-body ">
-            <p class="check_stt_1_1">Vui Lòng Nhập Thông Tin</p>
+            <div class="check_stt_1_1"> </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary key_search_stt" name="close" data-dismiss="modal">Đóng</button>
+          <button type="button" class="btn btn-secondary " name="close" data-dismiss="modal">Đóng</button>
         </div>
       </div>
     </div>
@@ -665,19 +665,28 @@
             if (action == 'search') {
                 result = 'check_stt_1_1';
             }
-            else if(action == 'close') {
-                result = 'check_stt_1_1';
-            }
-            console.log(action);
-            console.log(key);
-            $.ajax({
+            if(key != '' && key!=null){
+                $.ajax({
                 url: '{{ url('./search_calendar') }}',
                 method: 'post',
                 data: {action: action, key: key, _token: _token},
                 success: function(data) {
                     $('.' + result).html(data);
                 }
-            });
+             });
+            }else{
+                $.ajax({
+                url: '{{ url('./error_search') }}',
+                method: 'post',
+                data: {action: action, key: key, _token: _token},
+                success: function(data) {
+                    $('.' + result).html(data);
+                }
+             });
+            }
+            console.log(key);
+            console.log(action);
+            console.log(result);
         });
     });
     </script>
