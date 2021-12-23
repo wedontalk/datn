@@ -16,7 +16,9 @@
         </div>
     </div>
     <!-- Breadcrumb Section Begin -->
-
+  
+    @if(Route::has('login'))
+    @auth
     <!-- Shopping Cart Section Begin -->
     <section class="checkout-section spad">
         <div class="container">
@@ -33,7 +35,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <label for="fir">Họ và Tên<span>*</span></label>
-                                <input type="text" id="fir" name="order_name" value="{{old('order_name')}}">
+                                <input type="text" id="fir" name="order_name" value="{{Auth::user()->name}}" >
                                 @error('order_name')
                                 <div class="alert alert-warning" role="alert">
                                 {{$message}}
@@ -101,7 +103,7 @@
                             
                             <div class="col-lg-6">
                                 <label for="email">Email <span>*</span></label>
-                                <input type="email" id="email" name="order_email" value="{{old('order_email')}}">
+                                <input type="email" id="email" name="order_email" value="{{Auth::user()->email}}">
                                 @error('order_email')
                                 <div class="alert alert-warning" role="alert">
                                         {{$message}}
@@ -110,7 +112,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <label for="phone">Số điện thoại<span>*</span></label>
-                                <input type="text" id="phone" name="order_phone" value="{{old('order_phone')}}">
+                                <input type="text" id="phone" name="order_phone" value="0{{Auth::user()->phone}}">
                                 @error('order_phone')
                                 <div class="alert alert-warning" role="alert">
                                         {{$message}}
@@ -168,7 +170,7 @@
                                 
                                 @endif
                               <!-- end cart -->
-                              <li> <span class="mt-3">Tổng:   {{ number_format($total) }} </span></li>
+                              <!-- <li> <span class="mt-3">Tổng:   {{ number_format($total) }} </span></li> -->
                             </ul>
                             <!-- <input type="hidden" name="tong_tien" value="{{ $total }}" readonly> -->
                             
@@ -252,11 +254,15 @@
             
         </div>
     </section>
-    <!-- Shopping Cart Section End -->
-  
-    <script type="">
-    jQuery(document).ready(function($) {
+    @else
+    @include('auth.login')
+@endauth
+@endif
+<!-- Shopping Cart Section End -->
 
+<script type="">
+    jQuery(document).ready(function($) {
+        
     $('.choose').on('change', function() {
         var action = $(this).attr('id');
         var ma_id = $(this).val();

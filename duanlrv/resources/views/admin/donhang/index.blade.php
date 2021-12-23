@@ -237,6 +237,7 @@
                 $('input:checkbox[name=ids]:checked').each(function(){
                     allids.push($(this).val());
                 });
+                window.location.reload(true);
                 $.ajax({
                     url:'{{route('deletechecked')}}',
                     type:"delete",
@@ -247,7 +248,6 @@
                     success:function(data){
                         $.each(allids,function(key,val){
                             $("#sid"+val).remove();
-                            $(".content").load('{{url('/admin/donhang')}}');
                         });
                     }
                 });

@@ -12,6 +12,7 @@ use App\Models\datlich;
 use App\Models\donhang;
 use App\Models\account;
 use App\Models\slide;
+use App\Models\news;
 use Carbon\Carbon;
 use App\Controllers\HomeController;
 class AppServiceProvider extends ServiceProvider
@@ -117,6 +118,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('ttaccount', account::orderBy('id','asc')->get());
             $view->with('slidene', slide::orderBy('id','asc')->get());
             $view->with('categoryNav', navmenu::orderBy('id','asc')->get());
+            $view->with('tintucne', news::orderBy('id','asc')->take(3)->get());
         });
 
         // $carts= session()->get('cart');

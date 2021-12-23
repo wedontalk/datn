@@ -1,6 +1,6 @@
 <?php
   $menu = config('menuadm');
-
+  $mnnhanvien = config('mnnhanvien')
 ?>
 
 <!doctype html>
@@ -81,6 +81,7 @@
                     </li> -->
 
                     <li class="menu-title">Danh sách menu</li>
+                    @if(auth::user()->id_role == 1)
                     @foreach($menu as $mn)
                     <li class="menu-item-has-children dropdown">
                         <a href="{{route($mn['routes'])}}" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="menu-icon {{$mn['icon']}}"></i>{{$mn['label']}}</a>
@@ -93,6 +94,7 @@
                         @endif
                     </li>
                     @endforeach
+                    @endif
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>

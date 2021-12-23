@@ -41,6 +41,7 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::delete("/delete-slide", "slideController@deleteslide")->name('deleteslide');
     Route::delete("/delete-thucung", "infoController@deletethucung")->name('deletethucung');
     Route::delete("/delete-coupon", "infoController@deletecoupon")->name('deletecoupon');
+
     Route::resources([
         'menu' => 'menuController',
         'category' => 'categoryController',
@@ -54,7 +55,9 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
         'donhang' => 'donhangController',
         'chitietdh' => 'shipingController',
         'slide' => 'slideController',
+        'nhanvien' => 'nhanvienController',
         'slide-quangcao' => 'sliquangcaoController',
+        'lichnhanvien' => 'lichnhanvienController',
         'account' => 'accountController',
     ]);
 });
@@ -77,7 +80,8 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::get('/danh-muc-san-pham/{slug}', [categoryController::class, 'show_category_home']);
     Route::get('/chi-tiet-san-pham/{slug_product}', [HomeController::class, 'productDetail']);
     Route::get('/chi-tiet-san-pham/{slug}', [HomeController::class, 'productDetail']);
-    Route::get('/binh-luan/{id}', [HomeController::class, 'binh_luan']);
+    Route::get('/binh-luan/{slug}', [HomeController::class, 'binh_luan']);
+    Route::get('/delete-comment/{id}', [HomeController::class, 'delete_comment']);
     Route::post('/check-coupon', [HomeController::class, 'check_coupon'])->name('check_coupon');
     Route::get('/unset-coupon', [HomeController::class, 'unset_coupon']);
     Route::get('/loc-gia-sp', [HomeController::class, 'locgiasp'])->name('locgia');
@@ -93,6 +97,8 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::post('/check-login', [accountController::class, 'check_login']);
     Route::get('/logout', [accountController::class, 'logout']);
     Route::get('/show-profile', [accountController::class, 'show_profile']);
+    Route::get('/show-profile', [HomeController::class, 'donhangdatlich'])->name('donhangdatlich');
+    Route::get('/delete-datlich', [HomeController::class, 'deletedatlich'])->name('deletedatlich');
     Route::post('/update-profile', [accountController::class, 'update_profile']);
     Route::post('/account-rating', [accountController::class, 'account_rating']);
     Route::get('/404', [HomeController::class, 'loi']);
@@ -106,10 +112,9 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::post("/payment/online", "HomeController@createpayment")->name('payment.online');
     Route::get("/return-vnpay", "HomeController@return")->name('payment.return');
 
-    Route::view('/contact', 'Site.contact');
-    Route::view('/introduce', 'Site.introduce');
+    Route::view('/contact', 'Site.contact')->name('contact');
+    Route::view('/introduce', 'Site.introduce')->name('introduce');
     Route::view('/blog', 'Site.blog');
-    Route::view('/success', 'Site.successOrder');
     Route::get('/calendar', [HomeController::class, 'calendar'])->name('calendar');
     Route::post('/addcalendar', [HomeController::class, 'Addcalendar'])->name('addcalendar');
     Route::get('/wishlist', [HomeController::class, 'WishlistsViews'])->name('wishlist');

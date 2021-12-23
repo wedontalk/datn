@@ -74,6 +74,20 @@
         }
     }
 </style>
+<style>
+    .select-items{
+        height:200px;
+        overflow-y: auto;
+    }
+    .select-items::-webkit-scrollbar {
+        width: 3px;
+        background-color: #F5F5F5;
+    }
+    .select-items::-webkit-scrollbar-thumb {
+        border-radius:5px;
+        background-color: #6c757d;
+    }
+</style>
 <body>
     <!-- Page Preloder -->
     <div id="preloder">
@@ -172,7 +186,7 @@
                             <li class=""><a onclick="myFunction()" class="login-panel abc"><i class="fa fa-user"></i>{{Auth::user()->name}}</a></li>
                             <div id="myDropdown" class="dropdown-content">
                                 <a href="{{route('admin.dashboard')}}">chuyển trang admin</a>
-                                <a href="#base">lịch sử mua hàng</a>
+                                <a href="{{URL::to('/show-profile')}}">Thông tin cá nhân</a>
                                 <a href="{{ route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a>
                                 <form action="{{ route('logout')}}" method="post" id="logout-form" style="display:none">
                                     @csrf
@@ -181,8 +195,8 @@
                         @else
                             <li class=""><a onclick="myFunction()" class="login-panel abc"><i class="fa fa-user"></i>{{Auth::user()->name}}</a></li>
                             <div id="myDropdown" class="dropdown-content">
-                                <a href="{{URL::to('/show-profile')}}">Thông tin tài khoản</a>
-                                <a href="#base">lịch sử mua hàng</a>
+                                <a href="{{URL::to('/show-profile')}}">Thông tin cá nhân</a>
+                                <!-- <a href="#base">lịch sử mua hàng</a> -->
                                 <!-- đăng xuất -->
                                 <a href="{{ route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a>
                                 <form action="{{ route('logout')}}" method="post" id="logout-form" style="display:none">
@@ -219,13 +233,13 @@
                 </div> -->
                 <nav class="nav-menu mobile-menu">
                     <ul>
-                        <li class="active"><a href="{{route('home')}}">Trang chủ</a></li>
-                        <li><a href="{{route('products')}}">Cửa hàng</a>
-                        <li><a href="introduce">Giới thiệu</a></li>
-                        <li><a href="{{route('blog')}}">Tin Tức</a></li>
-                        <li><a href="contact">Liên Hệ</a></li>
+                        <li class="{{Request::segment(1) == 'home' || Request::segment(1) == '' ? 'active':''}}"><a href="{{route('home')}}">Trang chủ</a></li>
+                        <li class="{{Request::segment(1) == 'cua-hang' || Request::segment(1) == 'danh-muc-san-pham' ? 'active':''}}"><a href="{{route('products')}}">Cửa hàng</a>
+                        <li class="{{Request::segment(1) == 'introduce' ? 'active':''}}"><a href="{{route('introduce')}}">Giới thiệu</a></li>
+                        <li class="{{Request::segment(1) == 'tin-tuc' || Request::segment(1) == 'news' ? 'active':''}}"><a href="{{route('blog')}}">Tin Tức</a></li>
+                        <li class="{{Request::segment(1) == 'contact' ? 'active':''}}"><a href="{{route('contact')}}">Liên Hệ</a></li>
                         <!-- <li><a href="#">Cửa hàng</a></li>-->
-                        <li><a href="{{route('calendar')}}">Dịch vụ</a></li> 
+                        <li class="{{Request::segment(1) == 'calendar' ? 'active':''}}"><a href="{{route('calendar')}}">Dịch vụ</a></li> 
                     </ul>
                 </nav>
                 <div id="mobile-menu-wrap"></div>
@@ -253,10 +267,10 @@
                     <div class="footer-widget">
                         <h5>PET SHOP</h5>
                         <ul>
-                            <li><a href="#">Giới Thiệu</a></li>
-                            <li><a href="#">Cửa Hàng</a></li>
-                            <li><a href="#">Dịch Vụ</a></li>
-                            <li><a href="#">Liên Hệ</a></li>
+                            <li><a href="{{route('introduce')}}">Giới Thiệu</a></li>
+                            <li><a href="{{route('products')}}">Cửa Hàng</a></li>
+                            <li><a href="{{route('calendar')}}">Dịch Vụ</a></li>
+                            <li><a href="{{route('contact')}}">Liên Hệ</a></li>
                         </ul>
                     </div>
                 </div>
@@ -264,7 +278,13 @@
                     <div class="footer-widget">
                         <h5>My Account</h5>
                         <ul>
-                            <li><a href="#">My Account</a></li>
+                            <li><a href="
+                            @if(Route::has('login'))
+                            @auth
+                            {{URL::to('/show-profile')}}
+                            @endif
+                            @endif
+                            ">My Account</a></li>
                             <li><a href="#">Contact</a></li>
                            
                         </ul>
@@ -277,7 +297,7 @@
                             <ul>
                                 <li>Địa Chỉ: 159 Trần Quang Khải, Tân Định, Quận 1, Thành phố Hồ Chí Minh</li>
                                 <li>Phone: +84 0964835192</li>
-                                <li>Email: petshop@gmail.com</li>
+                                <li>Email: ttpetshopvn@gmail.com</li>
                             </ul>
                             <div class="footer-social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>

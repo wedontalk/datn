@@ -71,11 +71,11 @@
                 <div class="col-lg-8 offset-lg-1">
                     <div class="filter-control">
                         <ul class="tabs" >
-                            <li class="tab-item active">Thức ăn </li>
-                            <li class="tab-item" >Vệ sinh</li>
+                            <li class="tab-item active" style="border-bottom:1px solid">Sản phẩm mới</li>
+                            <!-- <li class="tab-item" >Vệ sinh</li>
                             <li class="tab-item">Phụ kiện</li>
                             <li class="tab-item">Chuồng</li>
-                            <li class="line"></li>
+                            <li class="line"></li> -->
                         </ul>
                     </div>
                     <div class="tab-content">
@@ -262,10 +262,10 @@
                 <div class="col-lg-8">
                     <div class="filter-control">
                         <ul>
-                            <li class="active">Clothings</li>
-                            <li>HandBag</li>
+                            <li class="active" style="border-bottom:1px solid">Sản phẩm mới</li>
+                            <!-- <li>HandBag</li>
                             <li>Shoes</li>
-                            <li>Accessories</li>
+                            <li>Accessories</li> -->
                         </ul>
                     </div>
                     <div class="product-slider owl-carousel">
@@ -360,74 +360,34 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <h2>From The Blog</h2>
+                        <h2>Cẩm Nang Thú Cưng</h2>
                     </div>
                 </div>
             </div>
             <div class="row">
+                @foreach($tintucne as $ttne)
                 <div class="col-lg-4 col-md-6">
                     <div class="single-latest-blog">
-                        <img src="{{ asset('site/img/latest-1.jpg') }}" alt="">
+                        <img src="{{ asset('uploads')}}/{{$ttne->image}}" alt="" width="300px" height="300px">
                         <div class="latest-text">
                             <div class="tag-list">
                                 <div class="tag-item">
                                     <i class="fa fa-calendar-o"></i>
-                                    May 4,2019
+                                    {{$ttne->updated_at}}
                                 </div>
-                                <div class="tag-item">
+                                <!-- <div class="tag-item">
                                     <i class="fa fa-comment-o"></i>
                                     5
-                                </div>
+                                </div> -->
                             </div>
                             <a href="#">
-                                <h4>The Best Street Style From London Fashion Week</h4>
+                                <h4>{{$ttne->name_post}}</h4>
                             </a>
-                            <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
+                            <p></p>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-latest-blog">
-                        <img src="{{ asset('site/img/latest-2.jpg') }}" alt="">
-                        <div class="latest-text">
-                            <div class="tag-list">
-                                <div class="tag-item">
-                                    <i class="fa fa-calendar-o"></i>
-                                    May 4,2019
-                                </div>
-                                <div class="tag-item">
-                                    <i class="fa fa-comment-o"></i>
-                                    5
-                                </div>
-                            </div>
-                            <a href="#">
-                                <h4>Vogue's Ultimate Guide To Autumn/Winter 2019 Shoes</h4>
-                            </a>
-                            <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-latest-blog">
-                        <img src="{{ asset('site/img/latest-3.jpg') }}" alt="">
-                        <div class="latest-text">
-                            <div class="tag-list">
-                                <div class="tag-item">
-                                    <i class="fa fa-calendar-o"></i>
-                                    May 4,2019
-                                </div>
-                                <div class="tag-item">
-                                    <i class="fa fa-comment-o"></i>
-                                    5
-                                </div>
-                            </div>
-                            <a href="#">
-                                <h4>How To Brighten Your Wardrobe With A Dash Of Lime</h4>
-                            </a>
-                            <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <div class="benefit-items">
                 <div class="row">
@@ -437,8 +397,8 @@
                                 <img src="{{ asset('site/img/icon-1.png') }}" alt="">
                             </div>
                             <div class="sb-text">
-                                <h6>Free Shipping</h6>
-                                <p>For all order over 99$</p>
+                                <h6>Miễn phí vận chuyển</h6>
+                                <!-- <p>For all order over 99$</p> -->
                             </div>
                         </div>
                     </div>
@@ -448,8 +408,8 @@
                                 <img src="{{ asset('site/img/icon-2.png') }}" alt="">
                             </div>
                             <div class="sb-text">
-                                <h6>Delivery On Time</h6>
-                                <p>If good have prolems</p>
+                                <h6>Giao hàng đúng hạn</h6>
+                                <p>Trả hàn nếu gặp vấn đề</p>
                             </div>
                         </div>
                     </div>
@@ -459,8 +419,8 @@
                                 <img src="{{ asset('site/img/icon-1.png') }}" alt="">
                             </div>
                             <div class="sb-text">
-                                <h6>Secure Payment</h6>
-                                <p>100% secure payment</p>
+                                <h6>Thanh toán an toàn</h6>
+                                <p>100% thanh toán an toàn</p>
                             </div>
                         </div>
                     </div>
