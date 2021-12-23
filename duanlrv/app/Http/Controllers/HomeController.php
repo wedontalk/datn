@@ -78,6 +78,7 @@ class HomeController extends Controller
         information::where('id',$categoryNav->id)->increment('view');
         $detail_product = information::orderBy('id')->where('id',$categoryNav->id)->where('id_status', 1)->get();
         $danhmuc = navmenu::orderBy('id','ASC')->where('hidden', 1)->get();
+        $new_product = information::orderBy('id')->where('id_status', 1)->take(4)->get();
         $ratingAVG = rating::where('product_id',$categoryNav->slug_product)->avg('rating_star');
         $comment = Comment::get();
         $new_product = information::take(4)->get();
@@ -527,10 +528,11 @@ class HomeController extends Controller
 
     public function search_calendar(Request $request){
         $data = $request->all();
+        $key = $data['key'];
         $output = '';
-        if($data['action']){
+        if($data['key']){
             $id = datlich::where('ID_KHDL',$data['key'])->first();
-            if($data['action']=='search'){
+            if($data['key']){
                 // $search = datlich::find($id);
                 if($data['key'] == $id['ID_KHDL']&&$data['key']!=''){
                     $output = '<div class="row form-group">
@@ -583,7 +585,7 @@ class HomeController extends Controller
                     </div><!-- /.row -->
 
                     <div class="form-group">
-                        <p><strong>Ghi Chú: </strong><span id="ghichu" style="width: 100%;"> </span></p>
+                        <p><strong>Ghi Chú: </strong><span id="ghichu" style="width: 100%;">'. $id->ghichu .'</span></p>
                     </div>';
                     echo $output;
                 }     
@@ -614,7 +616,7 @@ class HomeController extends Controller
                 $select_DV = dichvucoso::all();
                 $output .= '<option>-----Chọn Dịch Vụ-----</option>';
                 foreach ($select_DV as $key => $DV) {
-                    $output .= '<option value="' . $DV->name_dichvu . '">' . $DV->name_dichvu . '</option>';
+                    $output .= '<option value="' . $DV->id . '">' . $DV->name_dichvu . '</option>';
                 }
             } else {
             }
@@ -635,7 +637,7 @@ class HomeController extends Controller
         $data->id_nhucau = $req->DV;
         $data->date = $req->date;
         $data->hour = $req->hour;
-        $data->id_KHDL = $req->id_KHDL;
+        $data->id_KHDL = \Carbon\Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
         $data->save();
         $now =Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
         $title_mail="Đặt lịch thành công!".' '.$now;
@@ -646,6 +648,7 @@ class HomeController extends Controller
             'email'=>$data->email,
             'phone'=>$data->phone,
             'address'=>$data->address,
+            'madatlich'=>$data->id_KHDL,
             'coso'=>$data->id_coso,
             'nhucau'=>$data->id_nhucau,
             'date'=>$data->date,
@@ -721,7 +724,7 @@ class HomeController extends Controller
         $keyword= $request->keyword;
         $categoryNav = DB::Table('nav_menu')->orderby('id')->get();
         $category_by_id = DB::table('categories')->get();
-        $products= DB::Table('information_post')->where('title','like','%'.$keyword.'%')->get();
+        $products= information::where('title','like','%'.$keyword.'%')->where('id_status', 1)->search()->paginate(9);
         return view('Site.products',compact('products','categoryNav','category_by_id'));
     }
     public function locgiasp()

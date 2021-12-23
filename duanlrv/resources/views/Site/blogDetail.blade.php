@@ -20,7 +20,7 @@
                             </p>
                         </div>
                         <!--  -->
-                        <div class="tag-share">
+                        <!-- <div class="tag-share">
                             <div class="details-tag">
                                 <ul>
                                     <li><i class="fa fa-tags"></i></li>
@@ -97,7 +97,7 @@
                                     </div>
                                 </div>
                             </form>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

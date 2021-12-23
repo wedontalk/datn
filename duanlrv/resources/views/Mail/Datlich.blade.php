@@ -43,6 +43,7 @@
                                             <p style="text-align: left ">
                                                 <hr> Họ và tên : {{$name}}
                                                 <hr> Email: {{$email}}
+                                                <hr> mã đặt lịch : {{$madatlich}}
                                                 <hr> Số điện thoại : {{$phone}}
                                                 <hr> Địa chỉ : {{$address}} 
                                                 <hr> Dịch vụ : {{$nhucau}} 

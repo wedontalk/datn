@@ -138,7 +138,7 @@
                         </div>
                     </div>
                     <div class="col-lg-7 col-md-7">
-                        <form action="{{route('search')}}" method="post">
+                        <form action="{{route('search')}}" method="get">
                         <div class="advanced-search">
                             <!-- <button type="button" class="category-btn">All Categories</button> -->
                             <div class="input-group">

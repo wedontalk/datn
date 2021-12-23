@@ -91,7 +91,7 @@
                                     @endif
                                     <div class="sale">Sale</div>
                                     <div class="icon">
-                                        <i class="icon_heart_alt"></i>
+                                        <a href="{{URL::to('addToWishlist/'.$items->id)}}"><i class="icon_heart_alt"></i></a>
                                     </div>
                                     <ul>
                                         <li class="w-icon active"><a href="#" data-url="{{route('addToCart', ['id'=>$items->id])}}" class=" add_to_cart"  ><i class="icon_bag_alt add_to_cart"></i></a></li>
@@ -279,7 +279,7 @@
                                     @endif
                                     <div class="sale">Sale</div>
                                     <div class="icon">
-                                        <i class="icon_heart_alt"></i>
+                                        <a href="{{URL::to('addToWishlist/'.$items->id)}}"><i class="icon_heart_alt"></i></a>
                                     </div>
                                     <ul>
                                         <li class="w-icon active"><a href="#" data-url="{{route('addToCart', ['id'=>$items->id])}}" class=" add_to_cart"  ><i class="icon_bag_alt add_to_cart"></i></a></li>

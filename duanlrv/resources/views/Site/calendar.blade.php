@@ -252,8 +252,7 @@
                     padding: 140px;
                 ">
                         <h3>Kiểm Tra Lịch Hẹn</h3>
-                        <form action="" method="post" class="stt-11 ">
-                            @csrf
+                        <div class="stt-11 ">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="input-group mb-3" style="display:flex;"> <input type="text" style="height: auto" class="form-control input-text key_search_stt" id="key" name="search" value="" placeholder="Search products...." aria-label="Recipient's username" aria-describedby="basic-addon2">
@@ -261,7 +260,7 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
+                        </div>
                     </div>
                 </div>
                 <div id="menu1" class="tab-pane fade">
@@ -355,8 +354,8 @@
                                                         <select class="form-control CS choose" id="sel1" name="CS"
                                                             onchange="onchange_5()">
                                                             <option>-----Cơ Sở-----</option>
-                                                            @foreach ($CS as $CS)
-                                                                <option value="{{ $CS->name_coso }}">{{ $CS->name_coso }}
+                                                            @foreach ($CS as $css)
+                                                                <option value="{{ $css->id }}">{{ $css->name_coso }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -654,11 +653,12 @@
 <script type="">
     jQuery(document).ready(function($) {
     
-        $('.key_search_stt').on('change click', function() {
+        $('.key_search_stt').on('change click', function(e) {
+            e.preventDefault();
             var action = $(this).attr('name');
             var key = $('#key').val();
             
-            var _token = $('.stt-11>input[name="_token"]').val();
+            var _token = $('input[name="_token"]').val();
             
             var result = '';
     
