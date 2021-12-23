@@ -12,7 +12,7 @@
                             <div class="col-lg-5" style="margin-top:-50px">
                                 <h1>{{$slide->tieu_de}}</h1>
                                 <p>{{$slide->thong_tin}}</p>
-                                <a href="{{$slide->link}}" class="primary-btn">Xem ngay</a>
+                                <a href="{{route('products')}}" class="primary-btn">Xem ngay</a>
                             </div>
                         </div>
                         <div class="off-card" style="margin-top:10px">
