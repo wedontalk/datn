@@ -9,7 +9,7 @@ class datlich extends Model
 {
     use HasFactory;
     protected $table = 'dat_lich';
-    protected $fillable = ['id','id_coso','id_user','id_nhucau','set_time','id_status','id_KHDL'];
+    protected $fillable = ['id','id_coso','id_user','id_nhucau','set_time','id_status','id_KHDL','id_status'];
     public $timestamps = FALSE;
 
     public function nhucau(){

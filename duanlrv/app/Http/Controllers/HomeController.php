@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\coso;
+use App\Models\orderDetail;
 use App\Models\navmenu;
 use App\Models\rating;
 use App\Models\datlich;
@@ -30,6 +31,7 @@ use App\Models\coupon;
 // use Illuminate\Support\Facades\Mail;
 use App\Mail\DatHang;
 use Mail;
+use Auth;
 use App\Http\Requests\thanhtoan;
 session_start();
 
@@ -73,17 +75,19 @@ class HomeController extends Controller
     {   
 
         $categoryNav = information::where('slug_product', $slug)->first();
+        information::where('id',$categoryNav->id)->increment('view');
         $detail_product = information::orderBy('id')->where('id',$categoryNav->id)->where('id_status', 1)->get();
         $danhmuc = navmenu::orderBy('id','ASC')->where('hidden', 1)->get();
         $ratingAVG = rating::where('product_id',$categoryNav->slug_product)->avg('rating_star');
         $comment = Comment::get();
-       return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc','ratingAVG','comment'));
+        $new_product = information::take(4)->get();
+       return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc','ratingAVG','comment','new_product'));
 
     }
     public function products()
     {
         $categoryNav = DB::Table('nav_menu')->orderby('id')->get();
-        $products= $this->products->getAll();
+        $products= information::orderBy('id')->where('id_status', 1)->search()->paginate(9);
         $category_by_id = DB::table('categories')->get();
         foreach($category_by_id as $key => $cate) {
             $cate_id = $cate->id;
@@ -118,9 +122,9 @@ class HomeController extends Controller
     }
 
     public function blog(){
-        $blog =news::orderBy('id','ASC')->where('hidden', 1)->search()->paginate(10);
-
-        return view('Site.blog',compact('blog'));
+        $blog =news::orderBy('id','ASC')->where('hidden', 1)->search()->paginate(6);
+        $baidang =news::orderBy('id','desc')->where('hidden', 1)->search()->paginate(4);
+        return view('Site.blog',compact('blog','baidang'));
     }
     public function news($slug){
         $news =news::orderBy('id','ASC')->where('hidden', 1)->where('slug',$slug)->get();
@@ -412,8 +416,6 @@ class HomeController extends Controller
         });
         session::forget('cart');
         session::forget('coupon');
-        
-
     }
         return view('site.successOrder');
     }
@@ -455,12 +457,6 @@ class HomeController extends Controller
             // return response()->json(['contentWishlist'=> $Wishlist]);
         } 
 
-        
-            //end
-
-            
-    
-        return Redirect::to('/');
     }
 
         
@@ -525,8 +521,88 @@ class HomeController extends Controller
     public function calendar(){
         $CS = coso::all();
         $DV = dichvucoso::all();
-        // $NV = nhanvien::all();
+
         return view("site.calendar",['CS'=>$CS],['DV'=>$DV]);
+    }
+
+    public function search_calendar(Request $request){
+        $data = $request->all();
+        $output = '';
+        if($data['action']){
+            $id = datlich::where('ID_KHDL',$data['key'])->first();
+            if($data['action']=='search'){
+                // $search = datlich::find($id);
+                if($data['key'] == $id['ID_KHDL']&&$data['key']!=''){
+                    $output = '<div class="row form-group">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <p> <strong> Họ Và Tên: </strong><span > ' . $id->name . '</span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 ">
+                            <div class="input-group">
+                                <p><strong>Email: </strong><span >' . $id->email . ' </span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <p><strong>Số Điện Thoại: </strong><span >' . $id->phone . ' </span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 ">
+                            <div class="input-group">
+                                <p><strong>Địa Chỉ: </strong><span >' . $id->address . ' </span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <p><strong>Cơ Sở: </strong><span > ' . $id->id_coso . '</span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 ">
+                            <div class="input-group">
+                                <p><strong>Dịch Vụ:</strong> <span>' . $id->id_nhucau . ' </span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <p><strong>Ngày: </strong><span > ' . $id->date . '</span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6 ">
+                            <div class="input-group">
+                                <p><strong>Thời Gian: </strong><span>' . $id->hour . '</span></p>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+                    <div class="form-group">
+                        <p><strong>Ghi Chú: </strong><span id="ghichu" style="width: 100%;"> </span></p>
+                    </div>';
+                    echo $output;
+                }     
+            }
+        }
+        
+    }
+    public function error_search(Request $request){
+        $data = $request->all();
+        $output = '';
+        if($data['action']){
+            if($data['action']=='search'){
+                if($data['key']==''||$data['key']==null){
+                    $output = '<p>KHÔNG HỢP LỆ</p>';
+                    return $output;
+                }   
+            }
+        }
+
     }
 
     public function select_DV(Request $request){
@@ -538,7 +614,7 @@ class HomeController extends Controller
                 $select_DV = dichvucoso::all();
                 $output .= '<option>-----Chọn Dịch Vụ-----</option>';
                 foreach ($select_DV as $key => $DV) {
-                    $output .= '<option value="' . $DV->id . '">' . $DV->name_dichvu . '</option>';
+                    $output .= '<option value="' . $DV->name_dichvu . '">' . $DV->name_dichvu . '</option>';
                 }
             } else {
             }
@@ -693,12 +769,19 @@ public function loi()
     return view('layouts.404');
 }
 
-
+public function lichsudonhang()
+{
+    $data = datlich::orderBy('id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
+    $donhang = donhang::orderBy('order_id', 'desc')
+    ->where('id_user', Auth::user()->id)->search()->paginate(6);
+    return view('site.lichsudh', compact('donhang','data'));
+}
 public function donhangdatlich(Request $request){
     $data = datlich::orderBy('id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
     $donhang = donhang::orderBy('order_id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
     return view('site.profile', compact('data','donhang'));
 }
+
 
 public function contact_mail(Request $request){
     $now =Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
@@ -728,5 +811,21 @@ public function contact(){
     // });
     return view('Site.contact');
 }
+
+public function updatelichdat(Request $request){
+    $donlich = datlich::orderBy('id', 'desc')->get();
+    $id = $request->idhuy;
+    $data = $request->all();
+    if($data['status'] == 2 ){
+    $update = datlich::find($id);
+    $update->id_status = 3;
+    $update->save();
+    echo 'done';
+    }
+    echo 'loi';
+}
+
+
+
 }
 

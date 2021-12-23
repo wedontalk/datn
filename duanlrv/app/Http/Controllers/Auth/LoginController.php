@@ -66,7 +66,7 @@ class LoginController extends Controller
             }
         }
         else{
-            return redirect()->route('Site.index')->with('error', 'email và password sai !');
+            return redirect()->route('login')->with('error', 'email và password sai !');
         }
     }
 }

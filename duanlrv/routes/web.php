@@ -62,6 +62,9 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     ]);
 });
 
+
+
+
 // Route::group(['prefix' => 'user'], function(){
 // Route::group(['prefix' => '/', 'checkUser'=>'auth'], function(){
     Route::get('/', 'HomeController@index')->name('home');
@@ -88,6 +91,7 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::post('/tim-kiem', [HomeController::class, 'search'])->name('search');
 
 
+
     // Route::get('/danh-muc-phu-kien', [categoryController::class, 'show_category_phukien']);   
     // Route::get('/danh-muc-san-pham/{slug_category_product}', [categoryController::class, 'show_category_home']);
     // Route::get('/chi-tiet-san-pham/{slug}', [productController::class, 'chi_tiet_san_pham']);    
@@ -97,6 +101,7 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::post('/check-login', [accountController::class, 'check_login']);
     Route::get('/logout', [accountController::class, 'logout']);
     Route::get('/show-profile', [accountController::class, 'show_profile']);
+    Route::get('/lichsudonhang', [HomeController::class, 'lichsudonhang'])->name('lichsudonhang');
     Route::get('/show-profile', [HomeController::class, 'donhangdatlich'])->name('donhangdatlich');
     Route::get('/delete-datlich', [HomeController::class, 'deletedatlich'])->name('deletedatlich');
     Route::post('/update-profile', [accountController::class, 'update_profile']);
@@ -112,10 +117,12 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::post("/payment/online", "HomeController@createpayment")->name('payment.online');
     Route::get("/return-vnpay", "HomeController@return")->name('payment.return');
 
+
     Route::get('/contact', [HomeController::class, 'contact']);
     Route::post('/mail-contact', [HomeController::class, 'contact_mail'])->name('contact_mail');
    
-    Route::view('/introduce', 'Site.introduce');
+
+    Route::view('/introduce', 'Site.introduce')->name('introduce');
     Route::view('/blog', 'Site.blog');
     Route::get('/calendar', [HomeController::class, 'calendar'])->name('calendar');
     Route::post('/addcalendar', [HomeController::class, 'Addcalendar'])->name('addcalendar');
@@ -123,6 +130,12 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::get('/addToWishlist/{id}', [HomeController::class, 'addtoWishlist'])->name('addtowishlist');
     Route::get('/deleteWishlist', [HomeController::class, 'deleteWishlist'])->name('deletewishlist1');
     Route::post('/select_DV', [HomeController::class, 'select_DV']);
+    Route::post('/search_calendar', [HomeController::class, 'search_calendar']);
+    Route::post('/error_search', [HomeController::class, 'error_search']);
+
+    Route::post('/update-lichdat', [HomeController::class, 'updatelichdat'])->name('updatelichdat');
+
+
 // });
 
 Auth::routes();

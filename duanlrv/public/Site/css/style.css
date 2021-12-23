@@ -2013,18 +2013,19 @@ ol {
 	padding-right: 70px;
 }
 
-.product-show-option .select-option .p-show.nice-select {
+.product-show-option .select-option .d-show.nice-select {
 	padding-right: 105px;
 }
 
-.product-show-option .select-option .p-show.nice-select:before {
+.product-show-option .select-option .d-show {
 	position: absolute;
 	right: 48px;
 	top: 0;
-	content: "09";
+	content: "";
 	font-size: 16px;
 	color: #252525;
 }
+
 
 .product-show-option p {
 	margin-bottom: 0;

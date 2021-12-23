@@ -41,42 +41,17 @@
                         <div class="recent-post">
                             <h4>Bài Đăng gần đây</h4>
                             <div class="recent-blog">
-                                <a href="#" class="rb-item">
+                                @foreach($baidang as $bd)
+                                <a href="{{URL::to('/news/'.$bd->slug)}}" class="rb-item">
                                     <div class="rb-pic">
-                                        <img src="img/blog/recent-1.jpg" alt="">
+                                        <img src="{{asset('uploads')}}/{{$bd->image}}" alt="">
                                     </div>
                                     <div class="rb-text">
-                                        <h6>The Personality Trait That Makes...</h6>
+                                        <h6>{{$bd->name_post}}</h6>
                                         <p>Fashion <span>- May 19, 2019</span></p>
                                     </div>
                                 </a>
-                                <a href="#" class="rb-item">
-                                    <div class="rb-pic">
-                                        <img src="img/blog/recent-2.jpg" alt="">
-                                    </div>
-                                    <div class="rb-text">
-                                        <h6>The Personality Trait That Makes...</h6>
-                                        <p>Fashion <span>- May 19, 2019</span></p>
-                                    </div>
-                                </a>
-                                <a href="#" class="rb-item">
-                                    <div class="rb-pic">
-                                        <img src="img/blog/recent-3.jpg" alt="">
-                                    </div>
-                                    <div class="rb-text">
-                                        <h6>The Personality Trait That Makes...</h6>
-                                        <p>Fashion <span>- May 19, 2019</span></p>
-                                    </div>
-                                </a>
-                                <a href="#" class="rb-item">
-                                    <div class="rb-pic">
-                                        <img src="img/blog/recent-4.jpg" alt="">
-                                    </div>
-                                    <div class="rb-text">
-                                        <h6>The Personality Trait That Makes...</h6>
-                                        <p>Fashion <span>- May 19, 2019</span></p>
-                                    </div>
-                                </a>
+                                @endforeach
                             </div>
                         </div>
                         <!-- <div class="blog-tags">
@@ -111,11 +86,15 @@
                         </div>
                         @endforeach
                         <div class="col-lg-12">
-                            <div class="loading-more">
+                            <!-- <div class="loading-more">
                                 <i class="icon_loading"></i>
                                 <a href="#">
                                     Loading More
                                 </a>
+                            </div> -->
+                            <div class="loading-more">
+                                <!-- <i class="icon_loading"></i> -->
+                                {{$blog->appends(request()->all())->links()}}
                             </div>
                         </div>
                     </div>

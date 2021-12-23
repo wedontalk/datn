@@ -167,7 +167,13 @@ h6 {
                 <div class="row m-l-0 m-r-0">
                     <div class="col-sm-4 bg-c-lite-green user-profile">
                         <div class="card-block text-center text-white">
-                            <div class="m-b-25"><img src="https://img.icons8.com/bubbles/100/000000/user.png" class="img-radius" alt="User-Profile-Image"> </div>
+                            <div class="m-b-25" style="border-radius:50%;">
+                            @if(Auth::user()->avatar)
+                            <img src="{{asset('uploaduser')}}/{{auth::user()->avatar}}" class="img-radius" alt="User-Profile-Image">
+                            @else
+                            <img src="https://img.icons8.com/bubbles/100/000000/user.png" class="img-radius" alt="User-Profile-Image">
+                            @endif
+                        </div>
                             <h6 class="f-w-600">admin</h6>
                             <p>0369242446</p> <i class=" mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
                         </div>
@@ -194,15 +200,16 @@ h6 {
                                 <hr>
                                 <div class="col-sm-12">
                                     <p class="m-b-10 f-w-600">Đổi mật khẩu</p>
+                                    <input type="hidden" id="iduser1" value="{{Auth::user()->id}}">
                                     <div class="form-group">
                                         <label for="">Password</label>
-                                        <input type="password" class="form-control" name="password" >    
+                                        <input type="password" class="form-control" id="passold" name="password" >    
                                     </div>
                                     <div class="form-group">
                                         <label for="">Confirm Password</label>
-                                        <input type="password" class="form-control" name="confirm_password">
+                                        <input type="password" class="form-control" id="passnew" name="confirm_password">
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                                    <button type="submit" id="submitpass" class="btn btn-primary">Đổi mật khẩu</button>
                                 </div>
                             </div>
                             <!-- <ul class="social-link list-unstyled m-t-40 m-b-10">
@@ -220,7 +227,6 @@ h6 {
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li><a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Thông Tin</a></li>
                         <li><a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Đặt lịch</a></li>
-                        <li><a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Đơn hàng</a></li>
                     </ul>
                 </div>
                 <div class="tab-content mb-4">
@@ -229,8 +235,9 @@ h6 {
                         <div class="wrapper row3">
                             <main class="hoc container clear">
                                 <section>
-                                    <form action="{{URL::to('/update-profile')}}" method="POST">
-                                    @csrf
+                                <form action="{{route('account.update', Auth::user()->id)}}" method="post" id="upload-image-form" enctype="multipart/form-data">
+                                    @csrf @method('PUT')
+                                    <input type="hidden" id="iduser" value="{{Auth::user()->id}}">
                                         <div class="row">
                                             <div class="col-sm-6">                                        
                                             <div class="form-group">
@@ -255,11 +262,11 @@ h6 {
                                         </div>
                                         <div class="form-group">
                                             <label for="">Image</label>
-                                            <input type="file" class="form-control" name="upload" value="">
+                                            <input type="file" name="file_upload" class="form-control" value="">
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Luu thong tin</button>
-                                    </form>
-                                </section>
+                                        <button type="submit" id="submitajax" class="btn btn-primary">Luu thong tin</button>
+                                </form>
+                                    </section>
                             </main>
                         </div>
 
@@ -296,26 +303,49 @@ h6 {
                                                 <th>Cơ sở</th>
                                                 <th>Trạng thái</th>
                                                 <th style="width: 40px">action</th>
+                                                <th style="width: 40px">action</th>
                                             </tr>
                                             @php
                                             $i = 1;
                                             @endphp
                                             @foreach($data as $dt)
-                                            <tr>
-                                                <td>{{$i++}}</td>
+                                            <tr id="huyid" data-id="{{$dt->id}}">
+                                                <td id="idhuy">{{$dt->id}}</td>
                                                 <td>{{$dt->nhucau->name_dichvu}}</td>
                                                 <td>{{$dt->coso->name_coso}}</td>
                                                 <td>
-                                                @if($dt->id_status == 1)
-                                                <label class="badge badge-success">thành công</label>
-                                                @elseif($dt->id_status == 2)
-                                                <label class="badge badge-warning">chờ khám</label>
-                                                @else
-                                                <label class="badge badge-danger">đã hủy</label>
-                                                @endif
+                                                    @if($dt->id_status == 1)
+                                                        <label class="badge badge-success">thành công</label>
+                                                    @elseif($dt->id_status == 2)
+                                                        <label class="badge badge-warning">chờ khám</label>
+                                                    @else
+                                                        <label class="badge badge-danger">đã hủy</label>
+                                                    @endif
                                                 </td>
-                                                <td><a href="{{route('deletedatlich',$dt->id)}}" class="btn btn-sm btn-danger btndelete"><i class="fa fa-trash"></i></a></td>
+                                                <td><a id="huylich" data-id="{{$dt->id}}" data-status="{{$dt->id_status}}" class="btn btn-sm btn-danger btndelete"><i class="fa fa-trash"></i></a></td>
+                                                <td>  
+                                                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample{{$dt->id}}" aria-expanded="false" aria-controls="collapseExample">
+                                                        chi tiết
+                                                    </button>
+                                                </td>
                                             </tr>
+
+                                            <div class="collapse" id="collapseExample{{$dt->id}}">
+                                                <div class="card card-body">
+                                                    <center><h4><strong>-- {{$dt->nhucau->name_dichvu}} - {{$dt->id}}  --</strong></h4></center>
+                                                    <hr>
+                                                    <p style="">Cơ sở khám : <span >{{$dt->coso->name_coso}}</span></p>
+                                                    <p style="">Ngày đặt lịch : <span >{{$dt->date}}</span></p>
+                                                    <p style="">thời gian khám : <span >{{$dt->hour}}</span></p>
+                                                    @if($dt->id_status == 1)
+                                                        <label class="badge badge-success" style="padding:5px 0px; font-size:20px">thành công</label>
+                                                    @elseif($dt->id_status == 2)
+                                                        <label class="badge badge-warning" style="padding:5px 0px; font-size:20px">chờ khám</label>
+                                                    @else
+                                                        <label class="badge badge-danger" style="padding:5px 0px; font-size:20px">đã hủy</label>
+                                                    @endif
+                                                </div>
+                                            </div>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -327,54 +357,6 @@ h6 {
                         </div>
                         
 
-
-
-                    </div>
-                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                        <div class="col-md-12">
-                            <div class="box">
-                                <div class="box-header with-border">
-                                   <center><h4 class="box-title">trạng thái đơn hàng</h4></center>
-                                   <br>
-                                </div> <!-- /.box-header -->
-                                <div class="box-body">
-                                    <table class="table table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <th style="width: 10px">#</th>
-                                                <th>mã đơn hàng</th>
-                                                <th>ngày đặt hàng</th>
-                                                <th>Trạng thái</th>
-                                                <th style="width: 40px">action</th>
-                                            </tr>
-                                            @php
-                                            $i = 1;
-                                            @endphp
-                                            @foreach($donhang as $dh)
-                                            <tr>
-                                                <td>{{$i++}}</td>
-                                                <td>{{$dh->order_code}}</td>
-                                                <td>{{$dh->order_date}}</td>
-                                                <td>
-                                                @if($dh->id_status == 1)
-                                                <label class="badge badge-success">thành công</label>
-                                                @elseif($dh->id_status == 2)
-                                                <label class="badge badge-warning">chờ khám</label>
-                                                @else
-                                                <label class="badge badge-danger">đã hủy</label>
-                                                @endif
-                                                </td>
-                                                <td><a href="{{route('deletedatlich',$dh->id)}}" class="btn btn-sm btn-danger btndelete"><i class="fa fa-trash"></i></a></td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div> <!-- /.box-body -->
-                                <div class="box-footer clearfix">
-                                <div class="pull-right">{{$data->appends(request()->all())->links()}}</div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
         </div>
@@ -382,5 +364,75 @@ h6 {
 </div>
 
 @stop()
+@section('js')
+<!-- đổi pass -->
+<script>
+    jQuery(document).ready(function($) {
+        $(document).on('click','#submitpass', function(){
+            var id = $('#iduser1').val();
+            var passold = $('#passold').val();
+            var passnew = $('#passnew').val();
+            var _token = $('input[name="_token"]').val();
+            if(id == ''){
+                alertify.warning('id không được rỗng !!!');
+            }else if(passold == ''){
+                alertify.warning('mật khẩu cũ không được rỗng !!!');
+            }else if(passnew == ''){
+                alertify.warning('mật khẩu mới không được rỗng !!!');
+            }
+            $.ajax({
+                url:'{{route('updatepass')}}', 
+                method:'post',
+                data:{
+                    id: id,passold: passold,passnew: passnew,_token:_token,
+                },
+                success: function(data) 
+                {
+                    if(data == 'done')
+                    {
+                        alertify.success('cập nhật thành công !');
+                    }
+                    else
+                    {
+                        alertify.error('không thành công !');
 
+                    }
+                }
+            });
+        });
+    });
+</script>
+<!-- đổi thông tin đơn đặt lịch -->
+<script>
+    jQuery(document).ready(function($) {
+        $(document).on('click', '#huylich', function(){
+            var idhuy = $(this).data('id');
+            var status = $(this).data('status');
+            var _token = $('input[name="_token"]').val();
+                // alert(idhuy);
+                // alert(status);
+                // alert(_token);
+            $.ajax({
+                url:'{{route('updatelichdat')}}', 
+                method:'post',
+                data:{
+                    idhuy: idhuy,status:status,_token:_token,
+                },
+                success: function(data) 
+                {
+                    if(data == 'done')
+                    {
+                        alertify.success('cập nhật thành công !');
+                    }
+                    else if(data == 'loi')
+                    {
+                        alertify.error('không thành công !');
+                    }
+                    window.location.reload(true);
+                }
+            });
+        });
+    });
+</script>
+@stop()
 

@@ -47,12 +47,16 @@
                                                 <hr> Địa chỉ : {{$address}} 
                                                 <hr> Dịch vụ : {{$nhucau}} 
                                                 <hr> Cơ sở : {{$coso}}
-                                                <hr> Ngày hẹn : {{$date}} 
+
+                                                <hr> Ngày hẹn : {{date('d/m/Y',strtotime($date));}} 
+
                                                 <hr> Giờ hẹn : {{$time}} 
                                                 <hr> Ghi chú Khách hàng : {{$note}}
                                             </p>
                                             <p>&nbsp;</p>
+
                                             <p align=center>
+
     
     
                                                 <br>

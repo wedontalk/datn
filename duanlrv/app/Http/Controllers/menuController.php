@@ -97,11 +97,10 @@ class menuController extends Controller
     public function update($id, Request $request)
     {
         $validated = $request->validate([
-            'name_nav' => 'required|unique:nav_menu,name_nav'.request()->$id,
+            'name_nav' => 'required'
         ],
         [
             'name_nav.required' => 'Tên menu không để trống',
-            'name_nav.unique' => 'Tên menu này đã có trong CSDL',
         ]);
         $data = $request->all();
         if($this->menu->update($id,$data))
