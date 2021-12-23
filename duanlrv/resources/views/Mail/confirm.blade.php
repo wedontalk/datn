@@ -57,7 +57,12 @@
                                                 <hr> Mã đơn hàng : {{$order_code}}
                                                 <hr> Địa chỉ : {{$address}} - @foreach($xaphuong as $item){{$item->name_xaphuong}}@endforeach - @foreach($quanhuyen as $item){{$item->name_quanhuyen}}@endforeach - @foreach($thanhpho as $item){{$item->name_thanhpho}}@endforeach
                                                 <hr> Ghi chú Khách hàng : {{$order_note}}
-    
+                                                <hr> Phí ship: 
+                                                @if($ship==2)
+                                                30k
+                                                @else
+                                                free ship
+                                                @endif
                                             </p>
                                             <p>&nbsp;</p>
                                             <p align=center>

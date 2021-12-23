@@ -288,9 +288,9 @@
                     <div class="product-item">
                         <div class="pi-pic">
                                 @if(json_decode($producttt->image))
-                                <img src="{{asset('uploads') }}/{{json_decode($producttt->image)[0]}}" alt="">
+                                <img src="{{asset('uploads') }}/{{json_decode($producttt->image)[0]}}" alt="" width="100%" height="200px">
                                 @else
-                                <img src="{{asset('uploads') }}/{{$producttt->image}}" alt="">
+                                <img src="{{asset('uploads') }}/{{$producttt->image}}" alt="" width="100%" height="200px">
                                 @endif
                             <div class="sale">Sale</div>
                             <div class="icon">

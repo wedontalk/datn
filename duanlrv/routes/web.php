@@ -88,6 +88,7 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::post('/check-coupon', [HomeController::class, 'check_coupon'])->name('check_coupon');
     Route::get('/unset-coupon', [HomeController::class, 'unset_coupon']);
     Route::get('/loc-gia-sp', [HomeController::class, 'locgiasp'])->name('locgia');
+
     Route::post('/tim-kiem', [HomeController::class, 'search'])->name('search');
     Route::get('/chi-tiet-dh/{id_order}', [HomeController::class, 'chi_tiet_dh']);
 
@@ -118,7 +119,11 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::post("/payment/online", "HomeController@createpayment")->name('payment.online');
     Route::get("/return-vnpay", "HomeController@return")->name('payment.return');
 
-    Route::view('/contact', 'Site.contact')->name('contact');
+
+    Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+    Route::post('/mail-contact', [HomeController::class, 'contact_mail'])->name('contact_mail');
+   
+
     Route::view('/introduce', 'Site.introduce')->name('introduce');
     Route::view('/blog', 'Site.blog');
     Route::get('/calendar', [HomeController::class, 'calendar'])->name('calendar');
@@ -127,7 +132,7 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::get('/addToWishlist/{id}', [HomeController::class, 'addtoWishlist'])->name('addtowishlist');
     Route::get('/deleteWishlist', [HomeController::class, 'deleteWishlist'])->name('deletewishlist1');
     Route::post('/select_DV', [HomeController::class, 'select_DV']);
-    Route::post('/search_calendar', [HomeController::class, 'search_calendar']);
+    Route::post('/search_calendar', [HomeController::class, 'search_calendar'])->name('searchcalendar');
     Route::post('/error_search', [HomeController::class, 'error_search']);
 
     Route::post('/update-lichdat', [HomeController::class, 'updatelichdat'])->name('updatelichdat');

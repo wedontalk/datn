@@ -7,8 +7,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb-text">
-                        <a href="#"><i class="fa fa-home"></i> Home</a>
-                        <span>Blog</span>
+                        <a href="#"><i class="fa fa-home"></i> Trang chủ</a>
+                        <span>Tin tức</span>
                     </div>
                 </div>
             </div>
@@ -23,9 +23,9 @@
                 <div class="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1">
                     <div class="blog-sidebar">
                         <div class="search-form">
-                            <h4>Search</h4>
+                            <h4>Tìm kiếm</h4>
                             <form action="" method="GET" role="form">
-                                <input type="text" placeholder="Search . . .  " name="key">
+                                <input type="text" placeholder="Tìm kiếm . . .  " name="key">
                                 <button type="submit"><i class="fa fa-search"></i></button>
                             </form>
                         </div>
@@ -48,7 +48,7 @@
                                     </div>
                                     <div class="rb-text">
                                         <h6>{{$bd->name_post}}</h6>
-                                        <p>Fashion <span>- May 19, 2019</span></p>
+                                        <p>Tin tức <span>- {{$bd->created_at}}</span></p>
                                     </div>
                                 </a>
                                 @endforeach
@@ -80,7 +80,7 @@
                                     <a href="{{URL::to('/news/'.$news->slug)}}">
                                         <h4>{{$news->name_post}}</h4>
                                     </a>
-                                    <p>Tin tuc <span>{{$news->updated_at}}</span></p>
+                                    <p>Tin tức <span>{{$news->updated_at}}</span></p>
                                 </div>
                             </div>
                         </div>

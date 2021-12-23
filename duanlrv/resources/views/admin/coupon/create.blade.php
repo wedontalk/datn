@@ -1,5 +1,32 @@
 @extends('layouts.admin')
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 @section('main')
+<script>
+        // jquery lấy ngày tháng năm
+        jQuery(document).ready(function($) {    
+            $( function() {
+                $( "#datepickerbatdau" ).datepicker({
+                    minDate: '0',
+                    prevText:"Tháng trước",
+                    nextText:"Tháng sau",
+                    dateFormat:"yy-mm-dd",
+                    dayNamesMin:["thứ 2", "thứ 3", "thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ Nhật"],
+                });
+            });
+            $( function() {
+                $( "#datepickerketthuc" ).datepicker({
+                    minDate: '0',
+                    prevText:"Tháng trước",
+                    nextText:"Tháng sau",
+                    dateFormat:"yy-mm-dd",
+                    dayNamesMin:["thứ 2", "thứ 3", "thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ Nhật"],
+                });
+            });
+        });
+    </script>
 <div class="content" style="background:#fff;">
     <div class="col-sm-12" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; border-radius:15px">
         <div class="card-header">
@@ -20,7 +47,7 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>ngày bắt đầu</label>
-                    <input type="date" class="form-control @error('coupon_date_start') is-invalid @enderror" id="start" name="coupon_date_start" placeholder="Nhập Tên danh mục">
+                    <input type="text" class="form-control @error('coupon_date_start') is-invalid @enderror" id="datepickerbatdau" name="coupon_date_start" placeholder="Nhập ngày bắt đầu">
                     @error('coupon_date_start')
                         <small class="form-text text-muted">{{$message}}</small>
                     @enderror
@@ -29,7 +56,7 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>ngày Kết thúc</label>
-                    <input type="date" class="form-control @error('coupon_date_end') is-invalid @enderror" id="end" name="coupon_date_end" placeholder="Nhập Tên danh mục" disabled="true">
+                    <input type="text" class="form-control @error('coupon_date_end') is-invalid @enderror" id="datepickerketthuc" name="coupon_date_end" placeholder="Nhập ngày kết thúc">
                     @error('coupon_date_end')
                         <small class="form-text text-muted">{{$message}}</small>
                     @enderror
@@ -38,7 +65,7 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>số lượng</label>
-                    <input type="text" class="form-control @error('coupon_qty') is-invalid @enderror" name="coupon_qty" placeholder="Nhập Tên danh mục">
+                    <input type="number" class="form-control @error('coupon_qty') is-invalid @enderror" name="coupon_qty" placeholder="Nhập số lượng coupon">
                     @error('coupon_qty')
                         <small class="form-text text-muted">{{$message}}</small>
                     @enderror
@@ -58,7 +85,7 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>số giảm</label>
-                    <input type="text" class="form-control sogiam @error('coupon_number') is-invalid @enderror" name="coupon_number" placeholder="nhập số tiền cần giảm" disabled="true">
+                    <input type="number" class="form-control sogiam @error('coupon_number') is-invalid @enderror" name="coupon_number" placeholder="nhập số tiền cần giảm" disabled="true">
                     @error('coupon_number')
                         <small class="form-text text-muted">{{$message}}</small>
                     @enderror
@@ -67,7 +94,7 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>code coupon</label>
-                    <input type="text" class="form-control @error('coupon_code') is-invalid @enderror" name="coupon_code" placeholder="Nhập Tên danh mục">
+                    <input type="text" class="form-control @error('coupon_code') is-invalid @enderror" name="coupon_code" placeholder="Nhập code coupon">
                     @error('coupon_code')
                         <small class="form-text text-muted">{{$message}}</small>
                     @enderror
@@ -76,11 +103,10 @@
 
          </div>
          <div class="form-group">
-            <label for="exampleFormControlSelect1">Trạng thái xét duyệt</label>
+            <label for="exampleFormControlSelect1">Trạng thái phê duyệt</label>
             <select class="form-control" id="exampleFormControlSelect1" name="id_status">
-                <option value="1">xét duyệt Thành công</option>
-                <option value="2">Đợi xét duyệt</option>
-                <option value="3">hủy xét duyệt</option>
+                <option value="1">Thành công</option>
+                <option value="2">chưa xét duyệt</option>
             </select>
         </div>
         <br>
@@ -110,24 +136,6 @@
                 var sogiam = $('.sogiam').attr('disabled', false);  
             }
         })
-    });
-</script>
-<script>
-    jQuery(document).ready(function($){
-        $(document).on('change', function(){
-            var ngaybd  = $('#start').val();
-            var ngaykt  = $('#end').val();
-            if(ngaybd > ngaykt && ngaykt != ''){
-                $('#start').css("background-color", "red");
-                $('#end').css("background-color", "red");
-            }else if(ngaybd != ''){
-                var sogiam = $('#end').attr('disabled', false);
-            }
-            else{
-                $('#start').css("background-color", "");
-                $('#end').css("background-color", " ");
-            }
-        });
     });
 </script>
 @stop

@@ -29,7 +29,7 @@ class donhang extends Model
     }
     public function xetduyet()
     {
-       return $this->hasMany(trangthai::class,'id_status','id');
+       return $this->hasMany(status::class,'id_status','id');
     }
     public function donhang()
     {

@@ -75,8 +75,10 @@ class HomeController extends Controller
     {   
 
         $categoryNav = information::where('slug_product', $slug)->first();
+        information::where('id',$categoryNav->id)->increment('view');
         $detail_product = information::orderBy('id')->where('id',$categoryNav->id)->where('id_status', 1)->get();
         $danhmuc = navmenu::orderBy('id','ASC')->where('hidden', 1)->get();
+        $new_product = information::orderBy('id')->where('id_status', 1)->take(4)->get();
         $ratingAVG = rating::where('product_id',$categoryNav->slug_product)->avg('rating_star');
         $comment = Comment::get();
         $new_product = information::take(4)->get();
@@ -286,7 +288,7 @@ class HomeController extends Controller
             $data['order_note']=$request->order_note;
             $data['order_address']=$request->order_address;
             $data['order_code']=\Carbon\Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
-            $data['id_status']=1;
+            $data['id_status']=3;
             $data_id=DB::table('order_product')->insertGetId($data);
             
             
@@ -301,7 +303,12 @@ class HomeController extends Controller
             DB::table('order_detail')->insertGetId($cart);
            
         }
-        $total= $request->tong_tien;
+        if($request->phuongthuc_giaohang==2){
+
+            $total= $request->tong_tien + 30000;
+        }else{
+            $total= $request->tong_tien;
+        }
 
             return view('Vnpay.index',compact('total','data'));
 
@@ -330,20 +337,36 @@ class HomeController extends Controller
             $data['phuongthuc_giaohang']=$request->phuongthuc_giaohang;
             $data['order_note']=$request->order_note;
             $data['order_address']=$request->order_address;
+            $data['id_status']=3;
             $data['order_code']=\Carbon\Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
             $data_id=DB::table('order_product')->insertGetId($data);
 
 
         //insert order_detail
         $carts= session()->get('cart');
-        foreach( $carts as $item){
-            $cart['order_id']=$data_id;
-            $cart['product_name']=$item['name'];
-            $cart['product_price']=$item['price'];
-            $cart['product_quantity']=$item['quantity'];
-            $cart['tong_tien']=$request->tong_tien;
-            DB::table('order_detail')->insertGetId($cart);
+        if($request->phuongthuc_giaohang==2){
+
+            $total= $request->tong_tien + 30000;
+            foreach( $carts as $item){
+                $cart['order_id']=$data_id;
+                $cart['product_name']=$item['name'];
+                $cart['product_price']=$item['price'];
+                $cart['product_quantity']=$item['quantity'];
+                $cart['tong_tien']=$total;
+                DB::table('order_detail')->insertGetId($cart);
+            }
+        }else{
+            $total= $request->tong_tien;
+            foreach( $carts as $item){
+                $cart['order_id']=$data_id;
+                $cart['product_name']=$item['name'];
+                $cart['product_price']=$item['price'];
+                $cart['product_quantity']=$item['quantity'];
+                $cart['tong_tien']=$request->tongtien;
+                DB::table('order_detail')->insertGetId($cart);
+            }
         }
+        
             
     $now =Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
         $title_mail="Đơn mua hàng ngày".' '.$now;
@@ -352,14 +375,31 @@ class HomeController extends Controller
         //lấy cart
         if(Session::get('cart')==true){
             foreach(Session::get('cart') as $key => $cart_mail){
-                $cart_array[]=array(
-                    'name'=> $cart_mail['name'],
-                    'price'=>$cart_mail['price'],
-                    'quantity'=>$cart_mail['quantity'],
-                    'tong'=>$request->tong_tien,
-                );
+                if($request->phuongthuc_giaohang==2){
+
+                    $total= $request->tong_tien + 30000;
+                    $cart_array[]=array(
+                        'name'=> $cart_mail['name'],
+                        'price'=>$cart_mail['price'],
+                        'quantity'=>$cart_mail['quantity'],
+                        'tong'=>$total,
+                    );
+                }else{
+                    $cart_array[]=array(
+                        'name'=> $cart_mail['name'],
+                        'price'=>$cart_mail['price'],
+                        'quantity'=>$cart_mail['quantity'],
+                        'tong'=>$request->tong_tien,
+                    );
+                }
+                // $cart_array[]=array(
+                //     'name'=> $cart_mail['name'],
+                //     'price'=>$cart_mail['price'],
+                //     'quantity'=>$cart_mail['quantity'],
+                //     'tong'=>$request->tong_tien,
+                // );
             }
-        }
+
         Mail::send('mail.confirm',[
             'cart_array'=>$cart_array,
             'order_code'=>$data['order_code'],
@@ -368,6 +408,7 @@ class HomeController extends Controller
             'phone'=>$phone,
             'address'=>$data['order_address'],
             'order_note'=>$data['order_note'],
+            'ship'=>$data['phuongthuc_giaohang'],
             'thanhpho'=> thanhpho::where('matp', $data['id_thanhpho'])->get(),
             'quanhuyen'=> quanhuyen::where('id', $data['id_quanhuyen'])->get(),
             'xaphuong'=> xaphuong::where('id', $data['id_xaphuong'])->get(),
@@ -380,7 +421,7 @@ class HomeController extends Controller
     }
         return view('site.successOrder');
     }
-
+    }
 
 
     public function addtoWishlist($id){
@@ -417,7 +458,7 @@ class HomeController extends Controller
             // $Wishlist=View('site.contentWishlist',compact('wishlist'))->render();
             // return response()->json(['contentWishlist'=> $Wishlist]);
         } 
-     
+
     }
 
         
@@ -482,15 +523,17 @@ class HomeController extends Controller
     public function calendar(){
         $CS = coso::all();
         $DV = dichvucoso::all();
+
         return view("site.calendar",['CS'=>$CS],['DV'=>$DV]);
     }
 
     public function search_calendar(Request $request){
         $data = $request->all();
+        $key = $data['key'];
         $output = '';
-        if($data['action']){
+        if($data['key']){
             $id = datlich::where('ID_KHDL',$data['key'])->first();
-            if($data['action']=='search'){
+            if($data['key']){
                 // $search = datlich::find($id);
                 if($data['key'] == $id['ID_KHDL']&&$data['key']!=''){
                     $output = '<div class="row form-group">
@@ -543,7 +586,7 @@ class HomeController extends Controller
                     </div><!-- /.row -->
 
                     <div class="form-group">
-                        <p><strong>Ghi Chú: </strong><span id="ghichu" style="width: 100%;"> </span></p>
+                        <p><strong>Ghi Chú: </strong><span id="ghichu" style="width: 100%;">'. $id->ghichu .'</span></p>
                     </div>';
                     echo $output;
                 }     
@@ -562,6 +605,7 @@ class HomeController extends Controller
                 }   
             }
         }
+
     }
 
     public function select_DV(Request $request){
@@ -573,13 +617,13 @@ class HomeController extends Controller
                 $select_DV = dichvucoso::all();
                 $output .= '<option>-----Chọn Dịch Vụ-----</option>';
                 foreach ($select_DV as $key => $DV) {
-                    $output .= '<option value="' . $DV->name_dichvu . '">' . $DV->name_dichvu . '</option>';
+                    $output .= '<option value="' . $DV->id . '">' . $DV->name_dichvu . '</option>';
                 }
             } else {
             }
             echo $output;
         }
-        
+
     }
     
     public function Addcalendar(Request $req){
@@ -594,7 +638,7 @@ class HomeController extends Controller
         $data->id_nhucau = $req->DV;
         $data->date = $req->date;
         $data->hour = $req->hour;
-        $data->id_KHDL = $req->id_KHDL;
+        $data->id_KHDL = \Carbon\Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
         $data->save();
         $now =Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
         $title_mail="Đặt lịch thành công!".' '.$now;
@@ -605,10 +649,12 @@ class HomeController extends Controller
             'email'=>$data->email,
             'phone'=>$data->phone,
             'address'=>$data->address,
+            'madatlich'=>$data->id_KHDL,
             'coso'=>$data->id_coso,
             'nhucau'=>$data->id_nhucau,
             'date'=>$data->date,
             'time'=>$data->hour,
+            'makh'=>$data->id_KHDL,
             'note'=>$data->ghichu,
         ],function($message)use($email,$name,$title_mail){
             $message->to($email,$name)->subject($title_mail);
@@ -617,9 +663,7 @@ class HomeController extends Controller
         return view('site.successOrder');
 
     }
-    // session()->forget('url_prev');
-    // return redirect($url)->with('errors' ,'Lỗi trong quá trình thanh toán phí dịch vụ');
-
+    
 
     public function check_coupon(Request $request){
         $data = $request->all();
@@ -670,16 +714,6 @@ class HomeController extends Controller
     }
 
 
-
-
-
-
-
-
-
-
-
-
     public function unset_coupon(){
         $coupon =session()->get('coupon');
         if($coupon=true){
@@ -692,7 +726,7 @@ class HomeController extends Controller
         $keyword= $request->keyword;
         $categoryNav = DB::Table('nav_menu')->orderby('id')->get();
         $category_by_id = DB::table('categories')->get();
-        $products= DB::Table('information_post')->where('title','like','%'.$keyword.'%')->get();
+        $products= information::where('title','like','%'.$keyword.'%')->where('id_status', 1)->search()->paginate(9);
         return view('Site.products',compact('products','categoryNav','category_by_id'));
     }
     public function locgiasp()
@@ -706,10 +740,6 @@ class HomeController extends Controller
     //    return view('Site.products',compact('products','categoryNav','category_by_id','product_loc'));
 
     } 
-
-
-
- 
 
     public function return(Request $request){   
             
@@ -762,6 +792,29 @@ public function donhangdatlich(Request $request){
     $data = datlich::orderBy('id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
     $donhang = donhang::orderBy('order_id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
     return view('site.profile', compact('data','donhang',));
+}
+
+
+public function contact_mail(Request $request){
+    $now =Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
+    $title_mail="Liên hệ".' '.$now;
+    $email=$request->email;
+    $name=$request->name;
+
+    Mail::send('Mail.Lienhe',[
+        'name'=>$request->name,
+        'email'=>$request->email,
+        'note'=>$request->note,
+    ],function($message)use($email,$name,$title_mail){
+        $message->to('ttpetshopvn@gmail.com')->subject($title_mail);
+        $message->from($email,$name);
+    });
+    return redirect()->back();
+}
+public function contact(){
+   
+    
+    return view('Site.contact');
 }
 
 public function updatelichdat(Request $request){
