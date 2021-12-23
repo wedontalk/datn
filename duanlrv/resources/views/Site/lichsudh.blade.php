@@ -303,6 +303,7 @@ h6 {
                                                 <th>ngày đặt hàng</th>
                                                 <th>Trạng thái</th>
                                                 <th style="width: 40px">action</th>
+                                                <th style="width: 40px">action</th>
                                             </tr>
                                             @php
                                             $i = 1;
@@ -322,7 +323,21 @@ h6 {
                                                 @endif
                                                 </td>
                                                 <td><a href="{{route('deletedatlich',$dh->id)}}" class="btn btn-sm btn-danger btndelete"><i class="fa fa-trash"></i></a></td>
+                                                <td>  
+                                                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample{{$dh->order_id}}" aria-expanded="false" aria-controls="collapseExample">
+                                                        chi tiết
+                                                    </button>
+                                                </td>
                                             </tr>
+                                            <div class="collapse" id="collapseExample{{$dh->order_id}}">
+                                                <div class="card card-body">
+                                                    <center><h4><strong>-- {{$dh->order_name}} - {{$dh->order_id}}  --</strong></h4></center>
+                                                    <hr>
+                                                    
+                                                    <p style="">Tên thú cưng : <span >{{$dh->product_name}}</span></p>
+                                                    <p style="">Giá : <span >{{$dh->product_price}}</span></p>
+                                                    <p style="">Số lượng : <span >{{$dh->product_quantity}}</span></p>
+                                            </div>
                                             @endforeach
                                         </tbody>
                                     </table>

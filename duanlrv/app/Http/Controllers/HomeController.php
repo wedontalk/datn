@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\coso;
+use App\Models\orderDetail;
 use App\Models\navmenu;
 use App\Models\rating;
 use App\Models\datlich;
@@ -78,7 +79,8 @@ class HomeController extends Controller
         $danhmuc = navmenu::orderBy('id','ASC')->where('hidden', 1)->get();
         $ratingAVG = rating::where('product_id',$categoryNav->slug_product)->avg('rating_star');
         $comment = Comment::get();
-       return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc','ratingAVG','comment'));
+        $new_product = information::take(4)->get();
+       return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc','ratingAVG','comment','new_product'));
 
     }
     public function products()
@@ -647,7 +649,8 @@ public function loi()
 public function lichsudonhang()
 {
     $data = datlich::orderBy('id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
-    $donhang = donhang::orderBy('order_id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
+    $donhang = donhang::orderBy('order_id', 'desc')
+    ->where('id_user', Auth::user()->id)->search()->paginate(6);
     return view('site.lichsudh', compact('donhang','data'));
 }
 public function donhangdatlich(Request $request){
