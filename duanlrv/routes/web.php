@@ -136,6 +136,7 @@ Route::group(['prefix' => 'admin','middleware'=>['checkAdmin','auth']], function
     Route::post('/error_search', [HomeController::class, 'error_search']);
 
     Route::post('/update-lichdat', [HomeController::class, 'updatelichdat'])->name('updatelichdat');
+    Route::post('/update-donhang', [HomeController::class, 'updatedonhang'])->name('updatedonhang');
 
 
 // });

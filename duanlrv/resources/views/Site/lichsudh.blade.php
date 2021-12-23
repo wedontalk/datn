@@ -303,7 +303,7 @@ h6 {
                                                 <th>ngày đặt hàng</th>
                                                 <th>Trạng thái</th>
                                                 <th style="width: 40px">action</th>
-                                                <th style="width: 40px">action</th>
+                                                <th style="width: 60px">action</th>
                                             </tr>
                                             @php
                                             $i = 1;
@@ -315,14 +315,16 @@ h6 {
                                                 <td>{{$dh->order_date}}</td>
                                                 <td>
                                                 @if($dh->id_status == 1)
-                                                <label class="badge badge-success">thành công</label>
+                                                <label  style="font-size:11px; padding:3px" class="badge badge-success">thành công</label>
                                                 @elseif($dh->id_status == 2)
-                                                <label class="badge badge-warning">chờ khám</label>
+                                                <label style="font-size:11px; padding:3px" class="badge badge-info">đang giao hàng</label>
+                                                @elseif($dh->id_status == 3)
+                                                <label style="font-size:11px; padding:3px" class="badge badge-warning">chờ xét duyệt</label>
                                                 @else
-                                                <label class="badge badge-danger">đã hủy</label>
+                                                <label style="font-size:11px; padding:3px" class="badge badge-danger">đã hủy</label>
                                                 @endif
                                                 </td>
-                                                <td><a href="{{route('deletedatlich',$dh->id)}}" class="btn btn-sm btn-danger btndelete"><i class="fa fa-trash"></i></a></td>
+                                                <td><a id="huydonhang" data-id="{{$dh->order_id}}" data-status="{{$dh->id_status}}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
                                                 <td>  
                                                     <a href="{{URL::to('/chi-tiet-dh/'.$dh->order_id)}}">Chi tiết</a>
                                                 </td>
@@ -376,6 +378,37 @@ h6 {
                         alertify.error('không thành công !');
 
                     }
+                }
+            });
+        });
+    });
+</script>
+<script>
+    jQuery(document).ready(function($) {
+        $(document).on('click', '#huydonhang', function(){
+            var idhuy = $(this).data('id');
+            var status = $(this).data('status');
+            var _token = $('input[name="_token"]').val();
+                // alert(idhuy);
+                // alert(status);
+                // alert(_token);
+            $.ajax({
+                url:'{{route('updatedonhang')}}', 
+                method:'post',
+                data:{
+                    idhuy: idhuy,status:status,_token:_token,
+                },
+                success: function(data) 
+                {
+                    if(data == 'done')
+                    {
+                        alertify.success('cập nhật thành công !');
+                    }
+                    else if(data == 'loi')
+                    {
+                        alertify.error('không thành công !');
+                    }
+                    window.location.reload(true);
                 }
             });
         });

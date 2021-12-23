@@ -92,8 +92,6 @@ class HomeController extends Controller
         $category_by_id = DB::table('categories')->get();
         if(isset($_GET['danhsach'])){
             $sort_by = $_GET['danhsach'];
-
-
             if($sort_by == 'sanpham'){
                 $products = information::orderBy('id', 'ASC')->where('type_post', 1)->search()->paginate(10);
                 $products->render();
@@ -843,7 +841,17 @@ public function updatelichdat(Request $request){
     echo 'loi';
 }
 
-
+public function updatedonhang(Request $request){
+    $id = $request->idhuy;
+    $data = $request->all();
+    if($data['status'] == 3 ){
+    $update = donhang::find($id);
+    $update->id_status = 4;
+    $update->save();
+    echo 'done';
+    }
+    echo 'loi';
+}
 
 }
 
