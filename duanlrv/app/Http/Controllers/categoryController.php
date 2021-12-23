@@ -173,7 +173,7 @@ class categoryController extends Controller
                 $sort_by = $_GET['locsp'];
 
 
-                if($sort_by == $cate->slug){
+                if($sort_by == $cate_pr->slug){
                     $products = information::with('phansanpham')->where('id_category', $cate_id)->orderBy('id', 'ASC')->search()->paginate(10);
                     $products->render();
                 }

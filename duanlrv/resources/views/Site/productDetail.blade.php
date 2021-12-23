@@ -26,7 +26,7 @@
                         <h4 class="fw-title">Danh mục</h4>
                         @foreach($danhmuc as $dm)
                         <ul class="filter-catagories">
-                            <li><a href="#">{{$dm->name_nav}}</a></li>
+                        <li><a href="{{URL::to('/danh-muc-san-pham/'.$dm->slug)}}">{{$dm->name_nav}}</a></li>
                         </ul>
                         @endforeach
                     </div>
@@ -63,11 +63,18 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="product-details">
+                                @if($val->type_post == 2)
                                 <div class="pd-title">
                                     <span>{{$val->category->name}}</span>
                                     <h3>{{$val->title}}</h3>
                                     <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
                                 </div>
+                                @else
+                                <div class="pd-title">
+                                    <h3>{{$val->title}}</h3>
+                                    <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
+                                </div>
+                                @endif
                             @if(Route::has('login'))
                             @auth
                                 <div id="rateYo"></div>
@@ -96,11 +103,12 @@
                                     
                                     <a data-url="{{route('addToCart', ['id'=>$val->id])}}" href="#" class="primary-btn pd-cart add_to_cart">Thêm vào giỏ hàng</a>
                                 </div>
-                                
+                                @if($val->type_post == 2)
                                 <ul class="pd-tags">
                                     <li><span>Danh mục</span>:{{$val->category->name}}</li>
                                     
                                 </ul>
+                                @endif
                                 <?php
                                     if($val->render == Null){?>
                                     
@@ -116,8 +124,9 @@
                                     <?php }else{ ?>
                                         <p class="card-text">Tuổi:{{$val->age}}</p>
                                         <?php } ?>
-                                
+                                @if($val->type_post == 2)
                                 <p class="card-text">Tình trạng:{{$val->status}}</p>
+                                @endif
                                 <p class="card-text">Vận chuyển: có phí</p>
                                 
                                 <p class="card-text">Mô tả thêm: {!! $val->description !!}</p>
@@ -170,6 +179,7 @@
                                                     <div class="p-price">{{number_format($val->price,0,',','.')}}VND</div>
                                                 </td>
                                             </tr>
+                                            @if($val->type_post == 2)
                                             <tr>
                                                 <td class="p-catagory">Tính trạng sức khỏe</td>
                                                 <td>
@@ -188,6 +198,14 @@
                                                     <div class="p-stock">{{$val->render}}</div>
                                                 </td>
                                             </tr>
+                                            @else
+                                            <tr>
+                                                <td class="p-catagory">Thương hiệu</td>
+                                                <td>
+                                                    <div class="cart-add">{{$val->brand}}</div>
+                                                </td>
+                                            </tr>
+                                            @endif
                                             
                                         </table>
                                     </div>
@@ -263,106 +281,42 @@
                     </div>
                 </div>
             </div>
+            
             <div class="row">
+                @foreach ($new_product as $producttt)
                 <div class="col-lg-3 col-sm-6">
                     <div class="product-item">
                         <div class="pi-pic">
-                            <img src="img/products/women-1.jpg" alt="">
+                                @if(json_decode($producttt->image))
+                                <img src="{{asset('uploads') }}/{{json_decode($producttt->image)[0]}}" alt="">
+                                @else
+                                <img src="{{asset('uploads') }}/{{$producttt->image}}" alt="">
+                                @endif
                             <div class="sale">Sale</div>
                             <div class="icon">
                                 <i class="icon_heart_alt"></i>
                             </div>
                             <ul>
                                 <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
+                                <li class="quick-view"><a href="{{URL::to('chi-tiet-san-pham/'.$producttt->slug_product)}}">Xem chi tiết</a></li>
                                 <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
                             </ul>
                         </div>
                         <div class="pi-text">
                             <div class="catagory-name">Coat</div>
                             <a href="#">
-                                <h5>Pure Pineapple</h5>
+                                <h5>{{$producttt->title}}</h5>
                             </a>
                             <div class="product-price">
-                                $14.00
-                                <span>$35.00</span>
+                            {{number_format($val->price,0,',','.')}}VND
+                                
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="img/products/women-2.jpg" alt="">
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Shoes</div>
-                            <a href="#">
-                                <h5>Guangzhou sweater</h5>
-                            </a>
-                            <div class="product-price">
-                                $13.00
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="img/products/women-3.jpg" alt="">
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Towel</div>
-                            <a href="#">
-                                <h5>Pure Pineapple</h5>
-                            </a>
-                            <div class="product-price">
-                                $34.00
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="img/products/women-4.jpg" alt="">
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Towel</div>
-                            <a href="#">
-                                <h5>Converse Shoes</h5>
-                            </a>
-                            <div class="product-price">
-                                $34.00
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
+            
         </div>
     </div>
 @stop()

@@ -77,8 +77,9 @@ class HomeController extends Controller
         $detail_product = information::orderBy('id')->where('id',$categoryNav->id)->where('id_status', 1)->get();
         $danhmuc = navmenu::orderBy('id','ASC')->where('hidden', 1)->get();
         $ratingAVG = rating::where('product_id',$categoryNav->slug_product)->avg('rating_star');
-        $comment = Comment::get();
-       return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc','ratingAVG','comment'));
+        $comment = Comment::where('comment_product_id',$slug)->get();
+        $new_product = information::take(4)->get();
+       return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc','ratingAVG','comment','new_product'));
 
     }
     public function products()
