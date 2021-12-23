@@ -163,59 +163,32 @@
                                 <div class="tab-pane fade" id="tab-2" role="tabpanel">
                                     <div class="specification-table">
                                         <table>
+                                            
                                             <tr>
-                                                <td class="p-catagory">Customer Rating</td>
+                                                <td class="p-catagory">Giá</td>
                                                 <td>
-                                                    <div class="pd-rating">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <span>(5)</span>
-                                                    </div>
+                                                    <div class="p-price">{{number_format($val->price,0,',','.')}}VND</div>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="p-catagory">Price</td>
+                                                <td class="p-catagory">Tính trạng sức khỏe</td>
                                                 <td>
-                                                    <div class="p-price">$495.00</div>
+                                                    <div class="cart-add">{{$val->status}}</div>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="p-catagory">Add To Cart</td>
+                                                <td class="p-catagory">Tuổi</td>
                                                 <td>
-                                                    <div class="cart-add">+ add to cart</div>
+                                                    <div class="p-stock">{{$val->age}}</div>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="p-catagory">Availability</td>
+                                                <td class="p-catagory">Giống</td>
                                                 <td>
-                                                    <div class="p-stock">22 in stock</div>
+                                                    <div class="p-stock">{{$val->render}}</div>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td class="p-catagory">Weight</td>
-                                                <td>
-                                                    <div class="p-weight">1,3kg</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="p-catagory">Size</td>
-                                                <td>
-                                                    <div class="p-size">Xxl</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="p-catagory">Color</td>
-                                                <td><span class="cs-color"></span></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="p-catagory">Sku</td>
-                                                <td>
-                                                    <div class="p-code">00012</div>
-                                                </td>
-                                            </tr>
+                                            
                                         </table>
                                     </div>
                                 </div>
