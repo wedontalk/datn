@@ -52,6 +52,8 @@
                                                 <hr> Ngày hẹn : {{date('d/m/Y',strtotime($date));}} 
 
                                                 <hr> Giờ hẹn : {{$time}} 
+                                                <hr> Mã Đặt lịch : {{$makh}}
+
                                                 <hr> Ghi chú Khách hàng : {{$note}}
                                             </p>
                                             <p>&nbsp;</p>
