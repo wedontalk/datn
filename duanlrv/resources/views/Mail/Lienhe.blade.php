@@ -49,20 +49,12 @@
                                     <tr>
                                         <td bgcolor="#FFFFFF " style="padding:15px; ">
                                             <br>
-                                            <h2 style="text-align: center ">THÔNG TIN ĐƠN HÀNG</h2>
+                                            <h2 style="text-align: center ">THÔNG TIN LIÊN HỆ</h2>
                                             <p style="text-align: left ">
                                                 <hr> Họ và tên : {{$name}}
                                                 <hr> Email: {{$email}}
-                                                <hr> Số điện thoại : {{$phone}}
-                                                <hr> Mã đơn hàng : {{$order_code}}
-                                                <hr> Địa chỉ : {{$address}} - @foreach($xaphuong as $item){{$item->name_xaphuong}}@endforeach - @foreach($quanhuyen as $item){{$item->name_quanhuyen}}@endforeach - @foreach($thanhpho as $item){{$item->name_thanhpho}}@endforeach
-                                                <hr> Ghi chú Khách hàng : {{$order_note}}
-                                                <hr> Phí ship: 
-                                                @if($ship==2)
-                                                30k
-                                                @else
-                                                free ship
-                                                @endif
+                                                <hr> Ghi chú Khách hàng : {{$note}}
+    
                                             </p>
                                             <p>&nbsp;</p>
                                             <p align=center>
@@ -76,41 +68,7 @@
     
                             </td>
                         </tr>
-                        <tr>
-                            <td style="padding:20px; " bgcolor="#ECECEC ">
-                        <table  border="1" width="100% " >
-                                    <thead bgcolor="#FFFFFF " style="padding:15px; ">
-                                        <tr>
-                                        <th scope="col">Tên sản phẩm</th>
-                                        <th scope="col">Đơn giá</th>
-                                        <th scope="col">Số lượng</th>
-                                        <th scope="col">Tổng</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody bgcolor="#FFFFFF " style="padding:15px; ">
-                                    @php 
-                                    $total = 0;
-                                    @endphp
-                                    @foreach($cart_array as $id => $CartItem)
-                                    @php 
-                                    $total += $CartItem['price'] * $CartItem['quantity'];
-                                    @endphp
-                                    <tr style="text-align: center">
-                                        <td>{{$CartItem['name']}}</td>
-                                        <td>{{number_format($CartItem['price'])}} đ</td>
-                                        <td>{{$CartItem['quantity']}}</td>
-                                        <td>{{number_format($CartItem['quantity'] * $CartItem['price']) }}đ</td>
-                                    </tr>
-                                    @endforeach
-                                        <tr >   
-                                            <td colspan="4" style="text-align: right"> Thanh toán: {{ number_format($CartItem['tong']) }} đ
-                                        </td>
-                                            </tr> 
-                                        
-                                    </tbody>
-                                    </table>
-                            </td>
-                        </tr>
+                        
     
                         <tr>
                             <td style="padding:20px; color: #1c4a8a " bgcolor="ECECEC " ; height="60 ">Petshop.vn<br> Địa chỉ: 74 Nguyễn Cửu Đàm, P. Tân Sơn Nhì, Q.Tân Phú, HCM

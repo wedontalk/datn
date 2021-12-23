@@ -282,7 +282,7 @@ class HomeController extends Controller
             $data['order_note']=$request->order_note;
             $data['order_address']=$request->order_address;
             $data['order_code']=\Carbon\Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
-            $data['id_status']=1;
+            $data['id_status']=3;
             $data_id=DB::table('order_product')->insertGetId($data);
             
             
@@ -297,7 +297,12 @@ class HomeController extends Controller
             DB::table('order_detail')->insertGetId($cart);
            
         }
-        $total= $request->tong_tien;
+        if($request->phuongthuc_giaohang==2){
+
+            $total= $request->tong_tien + 30000;
+        }else{
+            $total= $request->tong_tien;
+        }
 
             return view('Vnpay.index',compact('total','data'));
 
@@ -326,20 +331,36 @@ class HomeController extends Controller
             $data['phuongthuc_giaohang']=$request->phuongthuc_giaohang;
             $data['order_note']=$request->order_note;
             $data['order_address']=$request->order_address;
+            $data['id_status']=3;
             $data['order_code']=\Carbon\Carbon::now('Asia/Ho_Chi_Minh')->timestamp;
             $data_id=DB::table('order_product')->insertGetId($data);
 
 
         //insert order_detail
         $carts= session()->get('cart');
-        foreach( $carts as $item){
-            $cart['order_id']=$data_id;
-            $cart['product_name']=$item['name'];
-            $cart['product_price']=$item['price'];
-            $cart['product_quantity']=$item['quantity'];
-            $cart['tong_tien']=$request->tong_tien;
-            DB::table('order_detail')->insertGetId($cart);
+        if($request->phuongthuc_giaohang==2){
+
+            $total= $request->tong_tien + 30000;
+            foreach( $carts as $item){
+                $cart['order_id']=$data_id;
+                $cart['product_name']=$item['name'];
+                $cart['product_price']=$item['price'];
+                $cart['product_quantity']=$item['quantity'];
+                $cart['tong_tien']=$total;
+                DB::table('order_detail')->insertGetId($cart);
+            }
+        }else{
+            $total= $request->tong_tien;
+            foreach( $carts as $item){
+                $cart['order_id']=$data_id;
+                $cart['product_name']=$item['name'];
+                $cart['product_price']=$item['price'];
+                $cart['product_quantity']=$item['quantity'];
+                $cart['tong_tien']=$request->tongtien;
+                DB::table('order_detail')->insertGetId($cart);
+            }
         }
+        
             
     $now =Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
         $title_mail="Đơn mua hàng ngày".' '.$now;
@@ -348,20 +369,30 @@ class HomeController extends Controller
         //lấy cart
         if(Session::get('cart')==true){
             foreach(Session::get('cart') as $key => $cart_mail){
-                $cart_array[]=array(
-                    'name'=> $cart_mail['name'],
-                    'price'=>$cart_mail['price'],
-                    'quantity'=>$cart_mail['quantity'],
-                    'tong'=>$request->tong_tien,
-                );
+                if($request->phuongthuc_giaohang==2){
+
+                    $total= $request->tong_tien + 30000;
+                    $cart_array[]=array(
+                        'name'=> $cart_mail['name'],
+                        'price'=>$cart_mail['price'],
+                        'quantity'=>$cart_mail['quantity'],
+                        'tong'=>$total,
+                    );
+                }else{
+                    $cart_array[]=array(
+                        'name'=> $cart_mail['name'],
+                        'price'=>$cart_mail['price'],
+                        'quantity'=>$cart_mail['quantity'],
+                        'tong'=>$request->tong_tien,
+                    );
+                }
+                // $cart_array[]=array(
+                //     'name'=> $cart_mail['name'],
+                //     'price'=>$cart_mail['price'],
+                //     'quantity'=>$cart_mail['quantity'],
+                //     'tong'=>$request->tong_tien,
+                // );
             }
-
-
-           
-  
-
-
-           
 
         Mail::send('mail.confirm',[
             'cart_array'=>$cart_array,
@@ -371,6 +402,7 @@ class HomeController extends Controller
             'phone'=>$phone,
             'address'=>$data['order_address'],
             'order_note'=>$data['order_note'],
+            'ship'=>$data['phuongthuc_giaohang'],
             'thanhpho'=> thanhpho::where('matp', $data['id_thanhpho'])->get(),
             'quanhuyen'=> quanhuyen::where('id', $data['id_quanhuyen'])->get(),
             'xaphuong'=> xaphuong::where('id', $data['id_xaphuong'])->get(),
@@ -385,7 +417,7 @@ class HomeController extends Controller
     }
         return view('site.successOrder');
     }
-
+    }
 
 
     public function addtoWishlist($id){
@@ -427,7 +459,7 @@ class HomeController extends Controller
             //end
 
             
-    }
+    
         return Redirect::to('/');
     }
 
@@ -493,8 +525,8 @@ class HomeController extends Controller
     public function calendar(){
         $CS = coso::all();
         $DV = dichvucoso::all();
-        $NV = nhanvien::all();
-        return view("site.calendar",['CS'=>$CS],['DV'=>$DV,'NV'=>$NV]);
+        // $NV = nhanvien::all();
+        return view("site.calendar",['CS'=>$CS],['DV'=>$DV]);
     }
 
     public function select_DV(Request $request){
@@ -512,7 +544,7 @@ class HomeController extends Controller
             }
             echo $output;
         }
-        
+
     }
     
     public function Addcalendar(Request $req){
@@ -529,12 +561,28 @@ class HomeController extends Controller
         $data->hour = $req->hour;
         $data->id_KHDL = $req->id_KHDL;
         $data->save();
+        $now =Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
+        $title_mail="Đặt lịch thành công!".' '.$now;
+        $email=$req->email;
+        $name=$req->name;
+        Mail::send('Mail.Datlich',[
+            'name'=>$data->name,
+            'email'=>$data->email,
+            'phone'=>$data->phone,
+            'address'=>$data->address,
+            'coso'=>$data->id_coso,
+            'nhucau'=>$data->id_nhucau,
+            'date'=>$data->date,
+            'time'=>$data->hour,
+            'note'=>$data->ghichu,
+        ],function($message)use($email,$name,$title_mail){
+            $message->to($email,$name)->subject($title_mail);
+            $message->from('ttpetshopvn@gmail.com');
+        });
         return view('site.successOrder');
 
     }
-    // session()->forget('url_prev');
-    // return redirect($url)->with('errors' ,'Lỗi trong quá trình thanh toán phí dịch vụ');
-
+    
 
     public function check_coupon(Request $request){
         $data = $request->all();
@@ -585,16 +633,6 @@ class HomeController extends Controller
     }
 
 
-
-
-
-
-
-
-
-
-
-
     public function unset_coupon(){
         $coupon =session()->get('coupon');
         if($coupon=true){
@@ -621,10 +659,6 @@ class HomeController extends Controller
     //    return view('Site.products',compact('products','categoryNav','category_by_id','product_loc'));
 
     } 
-
-
-
- 
 
     public function return(Request $request){   
             
@@ -666,7 +700,33 @@ public function donhangdatlich(Request $request){
     return view('site.profile', compact('data','donhang'));
 }
 
+public function contact_mail(Request $request){
+    $now =Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
+    $title_mail="Liên hệ".' '.$now;
+    $email=$request->email;
+    $name=$request->name;
 
-
+    Mail::send('Mail.Lienhe',[
+        'name'=>$request->name,
+        'email'=>$request->email,
+        'note'=>$request->note,
+    ],function($message)use($email,$name,$title_mail){
+        $message->to('ttpetshopvn@gmail.com')->subject($title_mail);
+        $message->from($email,$name);
+    });
+    return redirect()->back();
+}
+public function contact(){
+   
+    // Mail::send('Mail.Lienhe',[
+    //     'name'=>$request->name,
+    //     'email'=>$request->email,
+    //     'note'=>$request->note,
+    // ],function($message)use($email,$name,$title_mail){
+    //     $message->to('hieuhaohoa201@gmail.com')->subject($title_mail);
+    //     $message->from($email,$name);
+    // });
+    return view('Site.contact');
+}
 }
 
