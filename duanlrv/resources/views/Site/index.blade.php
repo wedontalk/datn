@@ -33,7 +33,7 @@
                     <div class="single-banner">
                         <img src="{{ asset('uploads/cho2.jpg') }}" alt="" width="400px" height="250px">
                         <div class="inner-text">
-                            <h4>Chó</h4>
+                            <a href="{{URL::to('/danh-muc-san-pham/cho')}}"><h4>Chó</h4></a>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                     <div class="single-banner">
                         <img src="{{ asset('uploads/meo2.jpg') }}" alt="" width="400px" height="250px">
                         <div class="inner-text">
-                            <h4>Mèo</h4>
+                        <a href="{{URL::to('/danh-muc-san-pham/meo')}}"><h4>Mèo</h4></a>
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                     <div class="single-banner">
                         <img src="{{ asset('uploads/dichvu.jpg') }}" alt="" width="400px" height="250px">
                         <div class="inner-text">
-                            <h4>Dịch vụ chăm sóc</h4>
+                        <a href="{{URL::to('/calendar')}}"><h4>Dịch vụ chăm sóc</h4></a>
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                 <div class="col-lg-3">
                     <div class="product-large set-bg" data-setbg="{{ asset('uploads/dog.jpg') }}">
                         <h2>Cún yêu</h2>
-                        <a href="#">Xem ngay</a>
+                        <a href="{{URL::to('/danh-muc-san-pham/cho')}}">Xem ngay</a>
                     </div>
                 </div>
                 <div class="col-lg-8 offset-lg-1">
@@ -305,7 +305,7 @@
                 <div class="col-lg-3 offset-lg-1">
                     <div class="product-large set-bg m-large" data-setbg="{{ asset('uploads/meo.jpg') }}">
                         <h2>Mèo</h2>
-                        <a href="#">Discover More</a>
+                        <a href="{{URL::to('/danh-muc-san-pham/meo')}}">Xem Ngay</a>
                     </div>
                 </div>
             </div>
