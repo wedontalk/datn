@@ -493,7 +493,7 @@ class HomeController extends Controller
                 $select_DV = dichvucoso::all();
                 $output .= '<option>-----Chọn Dịch Vụ-----</option>';
                 foreach ($select_DV as $key => $DV) {
-                    $output .= '<option value="' . $DV->id . '">' . $DV->name_dichvu . '</option>';
+                    $output .= '<option value="' . $DV->name_dichvu . '">' . $DV->name_dichvu . '</option>';
                 }
             } else {
             }
@@ -516,6 +516,24 @@ class HomeController extends Controller
         $data->hour = $req->hour;
         $data->id_KHDL = $req->id_KHDL;
         $data->save();
+        $now =Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
+        $title_mail="Đặt lịch thành công!".' '.$now;
+        $email=$req->email;
+        $name=$req->name;
+        Mail::send('Mail.Datlich',[
+            'name'=>$data->name,
+            'email'=>$data->email,
+            'phone'=>$data->phone,
+            'address'=>$data->address,
+            'coso'=>$data->id_coso,
+            'nhucau'=>$data->id_nhucau,
+            'date'=>$data->date,
+            'time'=>$data->hour,
+            'note'=>$data->ghichu,
+        ],function($message)use($email,$name,$title_mail){
+            $message->to($email,$name)->subject($title_mail);
+            $message->from('ttpetshopvn@gmail.com');
+        });
         return view('site.successOrder');
 
     }
