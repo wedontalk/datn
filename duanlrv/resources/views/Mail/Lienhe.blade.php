@@ -30,7 +30,17 @@
                                 </table>
                             </td>
                         </tr>
-                        
+                        <!-- <tr>
+                            <td style="padding:20px; " bgcolor="ECECEC " height="60 ">
+                                <table border="0 " width="100% " cellpadding="0 " style="border-collapse: collapse">
+                                    <tr>
+                                        <td> <img src="http://127.0.0.1:8000/site/img/logo1.png" width="200 " height="200 "></td>
+                                        <td class="logo" align="center " style="color: #1c4a8a;font-family: Abril Fatface;font-weight:400 ">Petshop.vn
+                                            
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr> -->
                         <tr>
                             <td style="padding:20px; " bgcolor="#ECECEC ">
     
@@ -39,24 +49,15 @@
                                     <tr>
                                         <td bgcolor="#FFFFFF " style="padding:15px; ">
                                             <br>
-                                            <h2 style="text-align: center ">THÔNG TIN ĐẶT LỊCH</h2>
+                                            <h2 style="text-align: center ">THÔNG TIN LIÊN HỆ</h2>
                                             <p style="text-align: left ">
                                                 <hr> Họ và tên : {{$name}}
                                                 <hr> Email: {{$email}}
-                                                <hr> Số điện thoại : {{$phone}}
-                                                <hr> Địa chỉ : {{$address}} 
-                                                <hr> Dịch vụ : {{$nhucau}} 
-                                                <hr> Cơ sở : {{$coso}}
-
-                                                <hr> Ngày hẹn : {{date('d/m/Y',strtotime($date));}} 
-
-                                                <hr> Giờ hẹn : {{$time}} 
                                                 <hr> Ghi chú Khách hàng : {{$note}}
+    
                                             </p>
                                             <p>&nbsp;</p>
-
                                             <p align=center>
-
     
     
                                                 <br>
@@ -67,7 +68,7 @@
     
                             </td>
                         </tr>
-                       
+                        
     
                         <tr>
                             <td style="padding:20px; color: #1c4a8a " bgcolor="ECECEC " ; height="60 ">Petshop.vn<br> Địa chỉ: 74 Nguyễn Cửu Đàm, P. Tân Sơn Nhì, Q.Tân Phú, HCM

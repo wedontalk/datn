@@ -140,6 +140,28 @@
 
                             </div>
                             <div class="col-lg-12">
+                                <label for="ghichu">Phương thức vận chuyển<span></span></label>
+                                <!-- <input class="form-check-input radio" type="radio" name="phuongthuc_thanhtoan" id="flexRadioDefault2" value="1" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    Thanh toán khi nhận hàng
+                                </label> -->
+                             
+                                <div class="form-check ">
+                                <input class="form-check-input radio" type="radio" name="phuongthuc_giaohang" id="exampleRadios2" onchange="myFunctiona()" value="1" checked>
+                                <label class="form-check-label" for="exampleRadios1" style="margin-left:50px">
+                                    Giao hàng tiết kiệm
+                                </label>
+                                </div>
+                                <div class="form-check ">
+                                <input class="form-check-input radio" type="radio" name="phuongthuc_giaohang" id="exampleRadios2" onclick="myFunctionb()" value="2" check>
+                                <label class="form-check-label" for="exampleRadios1" style="margin-left:50px">
+                                    Giao hàng nhanh
+                                </label>
+                                </div>
+
+
+                            </div>
+                            <div class="col-lg-12">
                                 <label for="ghichu">Ghi chú<span>*</span></label>
                                 <textarea name="order_note" id="ghichu" cols="95" rows="10"></textarea>
 
@@ -197,8 +219,9 @@
                                          <div class="col-lg-12 offset-lg-12">
                                             <div class="proceed-checkout">
                                                 <ul>
-                                                
+                                               
                                                     <li class="cart-total">Tổng  <span> {{number_format($total,0,',','.')}}Đ</span></li>
+                                                
                                                     <input type="hidden" name="tong_tien" value="{{ $total }}" readonly>
 
                                                     <li class="subtotal"> 
@@ -213,18 +236,27 @@
                                                                             $total_coupon = ($total*$cou['coupon_number'])/100;
                                                                             @endphp
                                                                         </p>
-                                                                        <li class="cart-total">Tổng  <span> {{number_format($total - $total_coupon,0,',','.')}}Đ</span></li>
+                                                                        <li class="cart-total">Tổng  <span id="demo1"> {{number_format($total - $total_coupon,0,',','.')}}Đ</span></li>
                                                                         <input type="hidden" name="tong_tien" value="{{ $total - $total_coupon }}" readonly>
 
                                                                     @elseif($cou['coupon_condition']==2)
                                                                         Mã giảm : {{number_format($cou['coupon_number'],0,',','.')}}đ
                                                                         <p>
                                                                             @php 
+                                                                           
                                                                             $total_coupon = $total - $cou['coupon_number'];
+
                                                                             @endphp
-                                                                        </p>														
-                                                                        <li class="cart-total">Thanh toán  <span> {{number_format($total_coupon,0,',','.')}}Đ</span></li>
-                                                                        <input type="hidden" name="tong_tien" value="{{ $total_coupon }}" readonly>
+                                                                            @if($total_coupon<0)
+
+                                                                            <li class="cart-total">Thanh toán  <span id="demo"> {{number_format(0,0,',','.')}}Đ</span></li>
+                                                                            <input type="hidden" name="tong_tien" value="0" readonly>
+                                                                            @else
+                                                                            <li class="cart-total">Thanh toán  <span > {{number_format($total_coupon,0,',','.')}}Đ</span></li>
+                                                                            <input type="hidden" name="tong_tien" value="{{ $total_coupon }}" readonly>
+                                                                            @endif
+                                                                        </p>							
+                                                                        
 
                                                                     @endif
                                                                 @endforeach
@@ -233,6 +265,7 @@
                                                             
                                                     
                                                     </li>
+                                                    <li class="cart-total ">phí ship:   <span id="demo">+ 0Đ </span></li>
                                                 </ul>
                                                 <div class="order-btn">
                                                     <button type="submit" style="width:100%" class="site-btn place-btn ">Thanh toán</button>
@@ -286,5 +319,23 @@
         });
     });
 });
+</script>
+<script>
+function myFunctiona() {
+var x = document.getElementById("exampleRadios2").value;
+var a= 0;
+    document.getElementById("demo").innerHTML = '+ '+a+" đ";
+
+}
+
+function myFunctionb() {
+var x = document.getElementById("exampleRadios2").value;
+var a= "30.000";
+    document.getElementById("demo").innerHTML = '+ '+a+"đ";
+
+
+
+}
+
 </script>
 @endsection

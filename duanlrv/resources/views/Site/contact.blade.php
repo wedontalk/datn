@@ -76,16 +76,17 @@
                         <div class="leave-comment">
                             <h4>Để lại bình luận</h4>
                             <p>Nhân viên của chúng tôi sẽ gọi lại sau và giải đáp các thắc mắc của bạn.</p>
-                            <form action="#" class="comment-form">
+                            <form action="{{URL::To('/mail-contact')}}" class="comment-form" method="post">
+                                @csrf
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <input type="text" placeholder="Họ Và Tên">
+                                        <input type="text" name="name" placeholder="Họ Và Tên">
                                     </div>
                                     <div class="col-lg-6">
-                                        <input type="text" placeholder="email">
+                                        <input type="email" name="email" placeholder="email">
                                     </div>
                                     <div class="col-lg-12">
-                                        <textarea placeholder="Tin Nhắn"></textarea>
+                                        <textarea placeholder="Tin Nhắn" name="note"></textarea>
                                         <button type="submit" class="site-btn">Gửi Tin Nhắn</button>
                                     </div>
                                 </div>
