@@ -94,9 +94,18 @@ class accountController extends Controller
      * @param  \App\Models\account  $account
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, account $account)
+    public function update($id, Request $request)
     {
-        //
+        if($request->has('file_upload'))
+        {
+            $file= $request->file_upload;
+            $ext = $request->file_upload->extension();
+            $file_name = time().'-'.'avatar.'.$ext;
+            $file->move(public_path('uploaduser'), $file_name);
+        }
+        $request->merge(['avatar'=>$file_name]);
+        $this->account->update($id,$request->all());
+        return redirect()->route('donhangdatlich')->with('success', 'chỉnh sửa công');
     }
 
     public function updateaccount(Request $request)
@@ -110,6 +119,27 @@ class accountController extends Controller
         $update->address = $data['address'];
         $update->save();
         echo 'done';
+    }
+
+    public function updateprouser(Request $request)
+    {
+        $data = $request->all();
+        if($request->has('file_upload'))
+        {
+            $file= $request->file_upload;
+            $ext = $request->file_upload->extension();
+            $file_name = time().'-'.'avatar.'.$ext;
+            $file->move(public_path('uploaduser'), $file_name);
+        }
+            $id = $request->id;
+            $update = account::find($id);
+            $update->name = $data['name'];
+            $update->email = $data['email'];
+            $update->phone = $data['phone'];
+            $update->avatar = $file_name;
+            $update->address = $data['address'];
+            $update->save();
+            echo 'done';
     }
 
     public function updatepass(Request $request)

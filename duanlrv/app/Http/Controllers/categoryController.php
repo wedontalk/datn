@@ -166,15 +166,13 @@ class categoryController extends Controller
         $category_id = navmenu::where('slug', $slug)->first();
         $category = navmenu::where('id', $category_id->id)->get();
         $products = information::where('id_menu',$category_id->id)->search()->paginate(9);
-        $category_by_id = DB::table('categories')->where('id_nav',$category_id->id)->get();
-        foreach($products as $key => $cate_pr) {
-            $cate_id = $cate_pr->type_post;
+        $category_by_id = category::where('id_nav',$category_id->id)->get();
+        foreach($category_by_id as $cate_pr) {
+            $cate_id = $cate_pr->id;
             if(isset($_GET['locsp'])){
                 $sort_by = $_GET['locsp'];
-
-
                 if($sort_by == $cate_pr->slug){
-                    $products = information::with('phansanpham')->where('id_category', $cate_id)->orderBy('id', 'ASC')->search()->paginate(10);
+                    $products = information::with('phansanpham')->where('id_category', $cate_id)->where('id_status', 1)->orderBy('id', 'ASC')->search()->paginate(10);
                     $products->render();
                 }
             }

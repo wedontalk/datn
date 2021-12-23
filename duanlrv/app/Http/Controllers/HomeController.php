@@ -77,15 +77,14 @@ class HomeController extends Controller
         $detail_product = information::orderBy('id')->where('id',$categoryNav->id)->where('id_status', 1)->get();
         $danhmuc = navmenu::orderBy('id','ASC')->where('hidden', 1)->get();
         $ratingAVG = rating::where('product_id',$categoryNav->slug_product)->avg('rating_star');
-        $comment = Comment::where('comment_product_id',$slug)->get();
-        $new_product = information::take(4)->get();
-       return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc','ratingAVG','comment','new_product'));
+        $comment = Comment::get();
+       return view('Site.productDetail',compact('detail_product','categoryNav','danhmuc','ratingAVG','comment'));
 
     }
     public function products()
     {
         $categoryNav = DB::Table('nav_menu')->orderby('id')->get();
-        $products= $this->products->getAll();
+        $products= information::orderBy('id')->where('id_status', 1)->search()->paginate(9);
         $category_by_id = DB::table('categories')->get();
         foreach($category_by_id as $key => $cate) {
             $cate_id = $cate->id;
@@ -120,9 +119,9 @@ class HomeController extends Controller
     }
 
     public function blog(){
-        $blog =news::orderBy('id','ASC')->where('hidden', 1)->search()->paginate(10);
-
-        return view('Site.blog',compact('blog'));
+        $blog =news::orderBy('id','ASC')->where('hidden', 1)->search()->paginate(6);
+        $baidang =news::orderBy('id','desc')->where('hidden', 1)->search()->paginate(4);
+        return view('Site.blog',compact('blog','baidang'));
     }
     public function news($slug){
         $news =news::orderBy('id','ASC')->where('hidden', 1)->where('slug',$slug)->get();
@@ -379,10 +378,7 @@ class HomeController extends Controller
         return view('site.successOrder');
     }
 
-    public function WishlistsViews(){
-        $Wishlists= session()->get('Wishlists');
-        return view("site.WishlistsView",compact('Wishlists'));
-    }
+
 
     public function addtoWishlist($id){
         // session()->flush('carts');
@@ -485,79 +481,6 @@ class HomeController extends Controller
         $DV = dichvucoso::all();
         return view("site.calendar",['CS'=>$CS],['DV'=>$DV]);
     }
-    public function search_calendar(Request $request){
-        $data = $request->all();
-        $output = '';
-        if (isset($data['action'])) {
-            if($data['action'] == "search"){
-                $key = datlich::where('ID_KHDL',$data['key'])->first();
-                if($key != ''||$key != Null||$key['ID_KHDL'] == $data['key']){
-                    $output = ' <div class="row form-group">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                    <p> <strong> Họ Và Tên: </strong><span>'.$key->name.'</span></p>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6 ">
-                                <div class="input-group">
-                                    <p><strong>Email: </strong><span> '.$key->email.'</span></p>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                        </div><!-- /.row -->
-                        <div class="row form-group">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                    <p><strong>Số Điện Thoại: </strong><span>'.$key->phone.'</span></p>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6 ">
-                                <div class="input-group">
-                                    <p><strong>Địa Chỉ: </strong><span id="address">'.$key->address.'</span></p>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                        </div><!-- /.row -->
-                        <div class="row form-group">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                    <p><strong>Cơ Sở: </strong><span id="CS">'.$key->id_coso.'</span></p>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6 ">
-                                <div class="input-group">
-                                    <p><strong>Dịch Vụ:</strong> <span id="DV">'.$key->id_nhucau.'</span></p>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                        </div><!-- /.row -->
-                        <div class="row form-group">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                    <p><strong>Ngày: </strong><span id="date">'.$key->date.'</span></p>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6 ">
-                                <div class="input-group">
-                                    <p><strong>Thời Gian: </strong><span id="hour">'.$key->hour.'</span></p>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-                        </div><!-- /.row -->
-
-                        <div class="form-group">
-                            <p><strong>Ghi Chú: </strong><span id="ghichu" style="width: 100%;">'.$key->ghichu.'</span></p>
-                        </div>';
-                }else{
-                    $output="<p>KHÔNG HỢP LỆ</p>";
-                }
-
-            }elseif($data['action'] == "close"){
-                $output="<p>KHÔNG HỢP LỆ</p>";
-            }elseif($data['action'] =='close'){
-                $output="<p>KHÔNG HỢP LỆ</p>";
-            }
-            echo $output;
-        }elseif($data['action'] =='close'){
-            $output="<p>KHÔNG HỢP LỆ</p>";
-        }
-    }
 
     public function select_DV(Request $request){
         $data = $request->all();
@@ -589,7 +512,7 @@ class HomeController extends Controller
         $data->id_nhucau = $req->DV;
         $data->date = $req->date;
         $data->hour = $req->hour;
-        $data->ID_KHDL = $req->id_KHDL;
+        $data->id_KHDL = $req->id_KHDL;
         $data->save();
         return view('site.successOrder');
 
@@ -721,11 +644,29 @@ public function loi()
     return view('layouts.404');
 }
 
-
+public function lichsudonhang()
+{
+    $data = datlich::orderBy('id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
+    $donhang = donhang::orderBy('order_id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
+    return view('site.lichsudh', compact('donhang','data'));
+}
 public function donhangdatlich(Request $request){
     $data = datlich::orderBy('id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
     $donhang = donhang::orderBy('order_id', 'desc')->where('id_user', Auth::user()->id)->search()->paginate(6);
     return view('site.profile', compact('data','donhang'));
+}
+
+public function updatelichdat(Request $request){
+    $donlich = datlich::orderBy('id', 'desc')->get();
+    $id = $request->idhuy;
+    $data = $request->all();
+    if($data['status'] == 2 ){
+    $update = datlich::find($id);
+    $update->id_status = 3;
+    $update->save();
+    echo 'done';
+    }
+    echo 'loi';
 }
 
 

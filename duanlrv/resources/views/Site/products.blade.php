@@ -116,7 +116,7 @@
                         <div class="row">
                             <div class="col-lg-7 col-md-7">
                                 <div class="select-option">
-                                    <select class="" name="sort" id="sort">
+                                    <select class="c-show" name="sort" id="sort">
                                         @foreach($category_by_id as $key =>$cate_id)
                                             <a href="{{URL::to('/show-category/'.$cate_id->slug)}}">
                                             <option value="{{Request::url()}}?locsp={{$cate_id->slug}}">{{$cate_id->name}}</option>
@@ -124,14 +124,14 @@
                                         @endforeach
                                         <option value="{{Request::url()}}" selected>-- phân loại --</option>
                                     </select>
-                                    <select class="p-show">
+                                    <select class="p-show" style="display:none">
                                         <option value="">Show:</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-lg-5 col-md-5 text-right">
+                            <!-- <div class="col-lg-5 col-md-5 text-right">
                                 <p>Hiển thị 01- 09 trong 36 sản phẩm</p>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="product-list">
@@ -185,7 +185,7 @@
                     </div>
                     <div class="loading-more">
                         <!-- <i class="icon_loading"></i> -->
-                       
+                        {{$products->appends(request()->all())->links()}}
                     </div>
                 </div>
             </div>

@@ -187,6 +187,7 @@
                             <div id="myDropdown" class="dropdown-content">
                                 <a href="{{route('admin.dashboard')}}">chuyển trang admin</a>
                                 <a href="{{URL::to('/show-profile')}}">Thông tin cá nhân</a>
+                                <a href="{{URL::to('/lichsudonhang')}}">lịch sử mua hàng</a>
                                 <a href="{{ route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a>
                                 <form action="{{ route('logout')}}" method="post" id="logout-form" style="display:none">
                                     @csrf
@@ -196,7 +197,7 @@
                             <li class=""><a onclick="myFunction()" class="login-panel abc"><i class="fa fa-user"></i>{{Auth::user()->name}}</a></li>
                             <div id="myDropdown" class="dropdown-content">
                                 <a href="{{URL::to('/show-profile')}}">Thông tin cá nhân</a>
-                                <!-- <a href="#base">lịch sử mua hàng</a> -->
+                                <a href="{{URL::to('/lichsudonhang')}}">lịch sử mua hàng</a>
                                 <!-- đăng xuất -->
                                 <a href="{{ route('logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a>
                                 <form action="{{ route('logout')}}" method="post" id="logout-form" style="display:none">
