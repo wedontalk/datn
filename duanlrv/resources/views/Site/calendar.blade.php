@@ -306,27 +306,25 @@
                                                 <input type="text" required="required" class="form-control name"
                                                     placeholder="Họ và Tên" name="name" onchange="onchange_1()" />
                                             </div>
-                                            <div class="row form-group">
-                                                <div class="col-lg-6">
+                                                <div class="form-group">
                                                     <div class="input-group">
                                                         <label for="">Email</label>
                                                         <input type="text" required="required" class="form-control email"
                                                             placeholder="Email" name="email" onchange="onchange_2()">
                                                     </div><!-- /input-group -->
                                                 </div><!-- /.col-lg-6 -->
-                                                <div class="col-lg-6 ">
+                                                <div class="form-group">
                                                     <div class="input-group">
                                                         <label for="">Số Điện Thoại</label>
-                                                        <input type="text" required="required" class="form-control phone"
+                                                        <input type="number" required="required" class="form-control phone"
                                                             placeholder="Số Điện Thoại" name="phone" onchange="onchange_3()">
                                                     </div><!-- /input-group -->
-                                                </div><!-- /.col-lg-6 -->
-                                            </div><!-- /.row -->
-                                            <div class="form-group">
+                                                </div><!-- /.col-lg-6 --><!-- /.row -->
+                                            <!-- <div class="form-group">
                                                 <label class="control-label">Địa Chỉ</label>
                                                 <input type="text" required="required" class="form-control address"
                                                     placeholder="Địa Chỉ" name="address" onchange="onchange_4()" />
-                                            </div>
+                                            </div> -->
                                             <button class="btn btn-primary nextBtn btn-lg d-flex justify-content-center"
                                             style="margin:auto;width:200px" type="button">Tiếp Tục</button>
                                         </div>

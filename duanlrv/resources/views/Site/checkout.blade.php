@@ -112,7 +112,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <label for="phone">Số điện thoại<span>*</span></label>
-                                <input type="text" id="phone" name="order_phone" value="0{{Auth::user()->phone}}">
+                                <input type="number" id="phone" name="order_phone" value="0{{Auth::user()->phone}}">
                                 @error('order_phone')
                                 <div class="alert alert-warning" role="alert">
                                         {{$message}}

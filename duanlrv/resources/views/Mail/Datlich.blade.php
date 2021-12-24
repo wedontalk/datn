@@ -45,7 +45,6 @@
                                                 <hr> Email: {{$email}}
                                                 <hr> mã đặt lịch : {{$madatlich}}
                                                 <hr> Số điện thoại : {{$phone}}
-                                                <hr> Địa chỉ : {{$address}} 
                                                 <hr> Dịch vụ : {{$nhucau}} 
                                                 <hr> Cơ sở : {{$coso}}
 

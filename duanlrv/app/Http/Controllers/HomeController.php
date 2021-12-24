@@ -596,21 +596,17 @@ class HomeController extends Controller
                                 <p><strong>Số Điện Thoại: </strong><span >' . $id->phone . ' </span></p>
                             </div><!-- /input-group -->
                         </div><!-- /.col-lg-6 -->
-                        <div class="col-lg-6 ">
-                            <div class="input-group">
-                                <p><strong>Địa Chỉ: </strong><span >' . $id->address . ' </span></p>
-                            </div><!-- /input-group -->
-                        </div><!-- /.col-lg-6 -->
+                    </div>
                     </div><!-- /.row -->
                     <div class="row form-group">
                         <div class="col-lg-6">
                             <div class="input-group">
-                                <p><strong>Cơ Sở: </strong><span > ' . $id->id_coso . '</span></p>
+                                <p><strong>Cơ Sở: </strong><span > ' . $id->coso->name_coso . '</span></p>
                             </div><!-- /input-group -->
                         </div><!-- /.col-lg-6 -->
                         <div class="col-lg-6 ">
                             <div class="input-group">
-                                <p><strong>Dịch Vụ:</strong> <span>' . $id->id_nhucau . ' </span></p>
+                                <p><strong>Dịch Vụ:</strong> <span>' . $id->nhucau->name_dichvu . ' </span></p>
                             </div><!-- /input-group -->
                         </div><!-- /.col-lg-6 -->
                     </div><!-- /.row -->

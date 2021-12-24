@@ -101,7 +101,7 @@
                             <th>phone</th>
                             <th>vai trò</th>
                             <th>xem chi tiết</th>
-                            <th style="width:100px;">Action</th>
+                            <!-- <th style="width:100px;">Action</th> -->
                             <!-- <th>Quantity</th> -->
                             <!-- <th>Status</th> -->
                         </tr>
@@ -129,10 +129,10 @@
                                 <td>
                                     <span class="badge badge-pending" data-toggle="modal" data-target=".bd-example-modal-lg{{$dt->id}}">chi tiết <i class="fa fa-mail-reply"></i></span>
                                 </td>
-                                <td>
+                                <!-- <td>
                                     <a href="{{route('qlsanpham.edit',$dt->id)}}" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></a>
                                     <a href="{{route('qlsanpham.destroy',$dt->id)}}" class="btn btn-sm btn-danger btndelete"><i class="fa fa-trash"></i></a>
-                                </td>
+                                </td> -->
                                 <div class="modal fade bd-example-modal-lg{{$dt->id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content model-ct">

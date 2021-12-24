@@ -44,19 +44,21 @@
                                         <input type="checkbox" id="save-pass">
                                         <span class="checkmark"></span>
                                     </label>
-                                    <a href="#" class="forget-pass">Forget your Password</a>
+                                    @if (Route::has('password.request'))
+                                    <a href="{{ route('password.request') }}" class="forget-pass">Quên mật khẩu</a>
+                                    @endif
                                 </div>
                             </div>
                             <button type="submit" class="site-btn login-btn">Sign In</button>
                         </form>
                         <div class="switch-login">
-                            <a href="{{route('register')}}" class="or-login">Or Create An Account</a>
+                            <a href="{{route('register')}}" class="or-login">Đăng ký tài khoản</a>
                         </div>
-                        @if (Route::has('password.request'))
+                        <!-- @if (Route::has('password.request'))
                             <a class="btn btn-link" href="{{ route('password.request') }}">
                                 {{ __('Quên Password?') }}
                             </a>
-                        @endif
+                        @endif -->
                     </div>
                 </div>
             </div>

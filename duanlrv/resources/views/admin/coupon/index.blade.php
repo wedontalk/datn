@@ -247,6 +247,7 @@
                 $('input:checkbox[name=ids]:checked').each(function(){
                     allids.push($(this).val());
                 });
+                window.location.reload(true);
                 $.ajax({
                     url:'{{route('deletecoupon')}}',
                     type:"delete",
